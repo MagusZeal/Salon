@@ -1,4 +1,29 @@
 <p>
- Lista de Cobros Pendientes
+    Lista de Cobros Pendientes asdasd
 </p>
-<ng-container *ngFor="let boleta of boletas" ></ng-container>
+<ng-container *ngFor="let boleta of boletas">{{boleta.total}}</ng-container>
+<div class="container">
+    <ng-container *ngFor="let boton of botones;index as i">
+            <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" 
+                    [value]="boton.nombre" 
+                    [checked]="botones[i].nombre == boton.nombre" 
+                    id="exampleRadios1"  
+                    [(ngModel)]="botonSeleccionado"
+                    (ngModelChange)="radioButtonChange($event)">
+                   
+                    <label class="form-check-label" for="exampleRadios1">
+                        {{boton.nombre}}
+                    </label>
+                </div>
+    </ng-container>
+    <ng-container *ngFor="let checkbox of checkboxes;index as i">
+            <div *ngIf="checkbox.enabled"  class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                     {{checkbox.nombre}}
+                    </label>
+                  </div>
+    </ng-container>
+
+</div>
