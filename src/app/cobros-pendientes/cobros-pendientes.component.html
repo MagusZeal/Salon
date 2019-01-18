@@ -73,7 +73,7 @@
                     </ng-container>
                     <ng-container *ngFor="let checkbox of checkboxes;index as i">
                         <div *ngIf="checkbox.enabled" class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="1" [(ngModel)]="checkbox.valor" id="defaultCheck1">
                             <label class="form-check-label" for="defaultCheck1">
                                 {{checkbox.nombre}}
                             </label>
