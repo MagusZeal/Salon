@@ -8,11 +8,13 @@ import {ListaServiciosService} from './lista-servicios/lista-servicios.service';
 import { FormsModule} from '@angular/forms';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { CobrosPendientesComponent } from './cobros-pendientes/cobros-pendientes.component';
+import { CajaComponent } from './caja/caja.component';
 @NgModule({
   declarations: [
     AppComponent,
     ListaServiciosComponent,
-    CobrosPendientesComponent
+    CobrosPendientesComponent,
+    CajaComponent
   ],
   imports: [
     BrowserModule,

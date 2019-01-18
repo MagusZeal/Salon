@@ -7,12 +7,20 @@ export class CobrosPendientesService {
 
   constructor(private http:HttpClient) { }
 
-  async obtenerBoletas(){
+  obtenerBoletas(){
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?').toPromise();
+    return  this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?');
     
   }
 
+   eliminarBoleta(boletaBorrar){
 
+    return  this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletaCreada/${boletaBorrar}.json?`);
+  }
+
+  async agregarJornada(fecha, boleta){
+
+    return await this.http.post<any[]>(`https://devs-c9cdc.firebaseio.com/jornadas/${fecha}.json?`,boleta).toPromise();
+   }
 
 }

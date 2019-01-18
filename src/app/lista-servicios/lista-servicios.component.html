@@ -1,7 +1,7 @@
 <div class="container" [ngStyle]="{'font-weight': 'bold'}" >
   <div class="text-right"  >
    Total {{precioTotal | currency:'CLP':'symbol-narrow'}}
-  </div >
+  </div>
   Filtrar por categoría:
   <select class="form-control" id="exampleFormControlSelect1">
     <ng-container *ngFor="let categoria of categorias">

@@ -1,29 +1,165 @@
-<p>
-    Lista de Cobros Pendientes asdasd
-</p>
-<ng-container *ngFor="let boleta of boletas">{{boleta.total}}</ng-container>
 <div class="container">
-    <ng-container *ngFor="let boton of botones;index as i">
-            <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" 
-                    [value]="boton.nombre" 
-                    [checked]="botones[i].nombre == boton.nombre" 
-                    id="exampleRadios1"  
-                    [(ngModel)]="botonSeleccionado"
-                    (ngModelChange)="radioButtonChange($event)">
-                   
-                    <label class="form-check-label" for="exampleRadios1">
-                        {{boton.nombre}}
-                    </label>
-                </div>
-    </ng-container>
-    <ng-container *ngFor="let checkbox of checkboxes;index as i">
-            <div *ngIf="checkbox.enabled"  class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
-                     {{checkbox.nombre}}
-                    </label>
-                  </div>
-    </ng-container>
-
+    <div class="font-weight-bold col-sm">
+        Lista de Cobros Pendientes
+    </div>
 </div>
+<br>
+<div class="container">
+    <div class="row">
+        <div *ngFor="let boleta of boletas;index as i" class="font-weight-bold col">
+            <div class="font-weight-bold"> Cliente : <b class="text-success">{{boleta.nombreCliente }} </b></div>
+            <div class="font-weight-bold">Total: <b class="text-danger">{{boleta.total |
+                    currency:'CLP':'symbol-narrow'}}</b>
+
+
+                <div class="text-primary font-weight-bold" *ngFor="let orden of boleta.ordenes">
+                    {{orden.TrabajadoraNombre}}
+                    <div class="text-dark"> {{orden.ServicioDescripcion}}</div>
+                </div>
+                <div class="container pull-right ">
+
+                    <div class="btn-group btn-group-sm  ">
+                        <button type="button" class="btn btn-danger font-weight-bold" (click)="seleccionarBoletaBorrar(boleta)"
+                            data-toggle="modal" data-target="#BorrarModal">Borrar</button>
+                        <button type="button" class="btn btn-dark font-weight-bold" (click)="seleccionarBoletaPagar(boleta)"
+                            data-toggle="modal" data-target="#PagarModal">Pagar</button>
+
+                    </div>
+                </div>
+                <br>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Pagar -->
+<div class="modal fade bd-example-modal-lg" id="PagarModal" tabindex="-1" role="dialog" aria-labelledby="PagarModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" id="PagarModala">
+            <div class="modal-header">
+                <h5 class="modal-title" id="PagarModalLabel">Pagar Cuenta</h5>
+                <button type="button" id="cerrarModal" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" *ngIf="boletaSeleccionada">
+                <div class="form-group label-floating">
+                    <label class="control-label">Nombre Cliente</label>
+                    <input required type="text" [(ngModel)]="boletaSeleccionada['nombreCliente']" readonly="true" class="form-control">
+
+
+                </div>
+
+
+                <div class="form-group label-floating">
+                    <label class="control-label">Total a Pagar </label>
+                    <input required type="text" [(ngModel)]="boletaSeleccionada['total']" readonly="true" class="form-control">
+
+                </div>
+
+                <div class="container">
+                    <ng-container *ngFor="let boton of botones;index as i">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" [value]="boton.nombre"
+                                [checked]="botones[i].nombre == boton.nombre" id="exampleRadios1" [(ngModel)]="botonSeleccionado"
+                                (ngModelChange)="radioButtonChange(botonSeleccionado)">
+
+                            <label class="form-check-label" for="exampleRadios1">
+                                {{boton.nombre}}
+                            </label>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngFor="let checkbox of checkboxes;index as i">
+                        <div *ngIf="checkbox.enabled" class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">
+                                {{checkbox.nombre}}
+                            </label>
+                        </div>
+                    </ng-container>
+
+                </div>
+
+                <div class="form-group label-floating">
+                    <label class="control-label">Monto Entregado por Cliente</label>
+                    <input required type="number" [(ngModel)]="montoPrincipal" (ngModelChange)="calcularVuelto()" class="form-control">
+
+                </div>
+
+                <div class="form-group label-floating; check-element animate-show-hide;" *ngIf="checkboxes[0].valor">
+                    <label class="control-label">Monto descuento</label>
+                    <input required type="number" [(ngModel)]="montoDescuento" (ngModelChange)="calcularVuelto()" class="form-control">
+
+                </div>
+                <div class="form-group label-floating; check-element animate-show-hide;" *ngIf="checkboxes[1].valor">
+                    <label class="control-label">Monto descuento Gift Card</label>
+                    <input required type="number" [(ngModel)]="montoGiftCard" (ngModelChange)="calcularVuelto()" class="form-control">
+
+                </div>
+                <div class="form-group label-floating; check-element animate-show-hide;" *ngIf="checkboxes[2].valor">
+                    <label class="control-label">Monto Efectivo</label>
+                    <input required type="number" [(ngModel)]="montoEfectivo" (ngModelChange)="calcularVuelto()" class="form-control">
+
+                </div>
+                <div class="form-group label-floating">
+                    <label class="control-label"> Vuelto a Cliente </label>
+                    <input required type="number" [(ngModel)]="montoVuelto" class="form-control" readonly="true">
+
+                </div>
+
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="modalDescripcionError != ''">
+                <strong>{{modalDescripcionError}}</strong>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" (click)="pagarBoleta()">Pagar</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+            </div>
+
+            <nav>
+                <a routerLink="/Servicios" id="LinkServicios" routerLinkActive="active" hidden></a>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Borrar -->
+<div class="modal fade bd-example-modal-lg" id="BorrarModal" tabindex="-1" role="dialog" aria-labelledby="BorrarModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="BorrarModalLabel">Borrar Ordenes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <b>Desea eliminar esta orden?</b>
+                    <hr>
+                    <div *ngIf="boletaSeleccionada">
+                        <div class="font-weight-bold"> Cliente : <b class="text-success">{{boletaSeleccionada.nombreCliente
+                                }} </b></div>
+                        <div class="font-weight-bold">Total: <b class="text-danger">{{boletaSeleccionada.total |
+                                currency:'CLP':'symbol-narrow'}}</b>
+                            <div class="text-primary font-weight-bold" *ngFor="let orden of boletaSeleccionada.ordenes">
+                                {{orden.TrabajadoraNombre}}
+                                <div class="text-dark"> {{orden.ServicioDescripcion}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger" (click)="borrarBoleta(boletaSeleccionada)"
+                            data-dismiss="modal">Borrar</button>
+                        <button type="submit" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
