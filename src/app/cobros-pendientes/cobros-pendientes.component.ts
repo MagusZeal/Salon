@@ -73,6 +73,7 @@ this.modalDescripcionError="";
   if (isNaN(this.montoGiftCard) || this.montoGiftCard == null || this.montoGiftCard <= 0) {
       this.montoGiftCard = 0;
   }
+  
   if (this.boletaSeleccionada.total > (this.montoPrincipal + this.montoDescuento + this.montoGiftCard + this.montoEfectivo)) {
       this.modalDescripcionError = "Lo sentimos! Monto cancelado debe ser mayor o igual al total a pagar";
       
@@ -90,7 +91,8 @@ this.modalDescripcionError="";
     montoEfectivo:this.montoEfectivo,
     montoGiftCard:this.montoGiftCard,
     montoCobrado:this.boletaSeleccionada.total,
-    ordenes:this.boletaSeleccionada.ordenes
+    ordenes:this.boletaSeleccionada.ordenes,
+    montoVuelto:this.montoVuelto
       };
       document.getElementById("cerrarModal").click();
       document.getElementById("LinkServicios").click();

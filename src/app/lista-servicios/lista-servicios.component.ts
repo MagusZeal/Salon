@@ -48,8 +48,14 @@ export class ListaServiciosComponent implements OnInit {
     if (this.serviciosSeleccionados.length == 0) {
       this.precioTotal = 0;
     } else {
+     
+      
       this.precioTotal = this.serviciosSeleccionados.map(o => o.valor).reduce((a, b) => a + b);
+     
+      
     }
+   
+    
   }
   async cargarServicios() {
 

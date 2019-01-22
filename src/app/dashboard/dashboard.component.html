@@ -1,0 +1,39 @@
+
+
+  <ngb-datepicker [(ngModel)]="inicio"></ngb-datepicker>
+  <ngb-datepicker [(ngModel)]="termino"></ngb-datepicker>
+  <select [(ngModel)]="trabajadoraSeleccionada" class="form-control col" id="exampleFormControlSelect2" >
+  <ng-container  *ngFor="let trabajadora of trabajadoraDrop" >
+ 
+    <option  *ngIf="trabajadora.perfil =='trabajadora'"
+      [ngValue]="trabajadora" >{{trabajadora.name}}</option>
+
+  </ng-container>
+</select>
+  <button type="submit" class="btn btn-success" (click)="buscar()">Pagar</button>
+
+
+  <table class="table">
+    <thead>
+        <tr>
+            <td>Total</td>
+            <th>Efectivo</th>
+            <th>Credito</th>
+            <th>Debito</th>
+            <th>Transferencia</th>
+            <th>Gift Card</th>
+            <th>Descuento</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{resumenDia.total}}</td>
+            <td>{{resumenDia.totalEfectivo}}</td>
+            <td>{{resumenDia.totalCredito}}</td>
+            <td>{{resumenDia.totalDebito}}</td>
+            <td>{{resumenDia.totalTransferencia}}</td>
+            <td>{{resumenDia.totalGiftCard}}</td>
+            <td>{{resumenDia.totalDescuento}}</td>
+        </tr>
+    </tbody>
+</table>

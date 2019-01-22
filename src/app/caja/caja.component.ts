@@ -30,6 +30,22 @@ export class CajaComponent implements OnInit {
 
  async ngOnInit() {
   this.boletas = [];
+  this. resumenDia = {
+
+    serviciosRealizados: 0,
+    totalDia: 0,
+    totalDiaConBase: 0,
+    clientesAtendidos: 0,
+    totalTransbank: 0,
+    totalDebito: 0,
+    totalCredito: 0,
+    totalTransferencia:0,
+    totalEfectivo: 0,
+    totalGiftCard: 0,
+    totalDescuento:0
+
+};
+  
   let c  = new Date().toLocaleString().substring(0,10);
 
 
@@ -52,14 +68,13 @@ let d = 1;
       switch ( boleta.formaDePagoPrincipal){
         case 'Efectivo':
        
-        this.resumenDia.totalEfectivo += boleta.montoPrincipal;
-        this.resumenDia.totalEfectivo+= boleta.montoEfectivo;
+        this.resumenDia.totalEfectivo += boleta.montoPrincipal -boleta.montoVuelto;
         this.resumenDia.totalGiftCard+=boleta.montoGiftCard;
         this.resumenDia.totalDescuento+=boleta.montoDescuento;
           break;
         case 'Tarjeta de Crédito':
         this.resumenDia.totalCredito += boleta.montoPrincipal;
-        this.resumenDia.totalEfectivo+= boleta.montoEfectivo;
+        this.resumenDia.totalEfectivo+= boleta.montoEfectivo -boleta.montoVuelto;
         this.resumenDia.totalGiftCard+=boleta.montoGiftCard;
         this.resumenDia.totalDescuento+=boleta.montoDescuento;
    
@@ -67,7 +82,7 @@ let d = 1;
     case 'Tarjeta de Débito':
       
         this.resumenDia.totalDebito += boleta.montoPrincipal;
-        this.resumenDia.totalEfectivo+= boleta.montoEfectivo;
+        this.resumenDia.totalEfectivo+= boleta.montoEfectivo -boleta.montoVuelto;
         this.resumenDia.totalGiftCard+=boleta.montoGiftCard;
         this.resumenDia.totalDescuento+=boleta.montoDescuento;
        
