@@ -6,14 +6,14 @@
   <ng-container  *ngFor="let trabajadora of trabajadoraDrop" >
  
     <option  *ngIf="trabajadora.perfil =='trabajadora'"
-      [ngValue]="trabajadora" >{{trabajadora.name}}</option>
+      [ngValue]="trabajadora"  >{{trabajadora.name}}</option>
 
   </ng-container>
 </select>
   <button type="submit" class="btn btn-success" (click)="buscar()">Pagar</button>
 
 
-  <table class="table">
+  <table class="table" *ngIf="tablaTotalesCheckbox">
     <thead>
         <tr>
             <td>Total</td>
@@ -37,3 +37,22 @@
         </tr>
     </tbody>
 </table>
+
+<table class="table" *ngIf="tablaSueldoCheckbox">
+    <thead>
+        <tr>
+            <td>Sueldo</td>
+            <th>Total Generado</th>
+            <th>Servicios Realizados</th>
+          
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{sueldo.ganancia |currency:'CLP':'symbol-narrow'}}</td>
+            <td>{{sueldo.total |currency:'CLP':'symbol-narrow'}}</td>
+            <td>{{sueldo.cantidadServicios}}</td>
+        </tr>
+    </tbody>
+</table>
+
