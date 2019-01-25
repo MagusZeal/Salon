@@ -1,71 +1,102 @@
-<table class="table">
-    <thead>
-        <tr>
-            <th>Efectivo</th>
-            <th>Credito</th>
-            <th>Debito</th>
-            <th>Transferencia</th>
-            <th>Gift Card</th>
-            <th>Descuento</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>{{resumenDia.totalEfectivo}}</td>
-            <td>{{resumenDia.totalCredito}}</td>
-            <td>{{resumenDia.totalDebito}}</td>
-            <td>{{resumenDia.totalTransferencia}}</td>
-            <td>{{resumenDia.totalGiftCard}}</td>
-            <td>{{resumenDia.totalDescuento}}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Total día</th>
+                <th>Efectivo</th>
+                <th>Credito</th>
+                <th>Debito</th>
+                <th>Transferencia</th>
+                <th>Gift Card</th>
+                <th>Descuento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{resumenDia.totalDia | currency:'CLP':'symbol-narrow'}}</td>
+                <td>{{resumenDia.totalEfectivo | currency:'CLP':'symbol-narrow'}}</td>
+                <td>{{resumenDia.totalCredito | currency:'CLP':'symbol-narrow'}}</td>
+                <td>{{resumenDia.totalDebito | currency:'CLP':'symbol-narrow'}}</td>
+                <td>{{resumenDia.totalTransferencia | currency:'CLP':'symbol-narrow'}}</td>
+                <td>{{resumenDia.totalGiftCard | currency:'CLP':'symbol-narrow'}}</td>
+                <td>{{resumenDia.totalDescuento | currency:'CLP':'symbol-narrow'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-
-
+<!-- div boletas -->
 <div class="container">
-    <div class="row">
-        <div *ngFor="let boleta of boletas" class="font-weight-bold col">
-            <div class="font-weight-bold"> Cliente : <b class="text-success">{{boleta.nombreCliente }} </b></div>
-            <div class="font-weight-bold">Total: <b class="text-danger">{{boleta.montoCobrado |
-                    currency:'CLP':'symbol-narrow'}}</b>
-
-
-                <div class="text-primary font-weight-bold" *ngFor="let orden of boleta.ordenes">
-                    {{orden.TrabajadoraNombre}}
-                    <div class="text-dark"> {{orden.ServicioDescripcion}}</div>
-                </div>
-                <div class="container pull-right ">
-
-                    <div class="btn-group btn-group-sm  ">
-                        <button type="button" class="btn btn-danger font-weight-bold" (click)="seleccionarBoleta(boleta)"
-                            data-toggle="modal" data-target="#BorrarModal">Borrar</button>
-                        <button type="button" class="btn btn-primary font-weight-bold" (click)="seleccionarBoleta(boleta)"
-                            data-toggle="modal" data-target="#VerBoletaModal">Ver Boleta</button>
-
+        <div class="row">
+            <div *ngFor="let boleta of boletas" class="font-weight-bold col">
+                <div class="font-weight-bold"> Cliente : <b class="text-success">{{boleta.nombreCliente }} </b></div>
+                <div class="font-weight-bold">Total: <b class="text-danger">{{boleta.montoCobrado |
+                        currency:'CLP':'symbol-narrow'}}</b>
+    
+    
+                    <div class="text-primary font-weight-bold" *ngFor="let orden of boleta.ordenes">
+                        {{orden.TrabajadoraNombre}} <b class="text-danger"> {{orden.ValorServicio |
+                            currency:'CLP':'symbol-narrow'}}</b>
+                        <div class="text-dark">-> {{orden.ServicioDescripcion}}</div>
                     </div>
+                    <div class="container pull-right ">
+    
+                        <div class="btn-group btn-group-sm  ">
+                            <button type="button" class="btn btn-danger font-weight-bold" (click)="seleccionarBoleta(boleta)"
+                                data-toggle="modal" data-target="#BorrarModal">Borrar</button>
+                            <!-- <button type="button" class="btn btn-primary font-weight-bold" (click)="seleccionarBoleta(boleta)"
+                                data-toggle="modal" data-target="#VerBoletaModal">Ver Boleta</button>
+                            -->
+    
+                        </div>
+                    </div>
+                    <br>
+                    <hr>
                 </div>
-                <br>
-                <hr>
             </div>
         </div>
     </div>
-</div>
+<!-- Card -->
+<div class="container">
+    <div class="row">
+       
+            <div class="card col-sm" *ngFor="let boleta of boletas" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title font-weight-bold">Cliente : {{boleta.nombreCliente }}</h5>
+                    <h6 class="card-subtitle mb-2 font-weight-bold">Total: {{boleta.montoCobrado |
+                        currency:'CLP':'symbol-narrow'}}</h6>
+                    <ng-container *ngFor="let orden of boleta.ordenes">
+                        <div class="card-text font-weight-bold text-primary" > {{orden.TrabajadoraNombre}}<b class="text-danger">
+                             {{orden.ValorServicio
+                                |
+                                currency:'CLP':'symbol-narrow'}}</b></div>
+                        <div class="card-text font-weight-bold text-secondary" > -> {{orden.ServicioDescripcion}}</div>
 
+                    </ng-container>
+                    <footer >
+                            <button type="button" class="btn btn-danger font-weight-bold" (click)="seleccionarBoleta(boleta)"
+                            data-toggle="modal" data-target="#BorrarModal">Borrar</button>
+                    </footer>
+                    
+                </div>
+            </div>
+       
+    </div>
+</div>
 <!-- Modal Borrar -->
 <div class="modal fade bd-example-modal-lg" id="BorrarModal" tabindex="-1" role="dialog" aria-labelledby="BorrarModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="BorrarModalLabel">Borrar Ordenes</h5>
+                <h5 class="modal-title" id="BorrarModalLabel">Borrar boleta</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <b>Desea eliminar esta orden?</b>
+                    <b>Desea eliminar esta boleta?</b>
                     <hr>
                     <div *ngIf="boletaSeleccionada">
                         <div class="font-weight-bold"> Cliente : <b class="text-success">{{boletaSeleccionada.nombreCliente
@@ -89,42 +120,43 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal Borrar -->
-    <div class="modal fade bd-example-modal-lg" id="VerBoletaModal" tabindex="-1" role="dialog" aria-labelledby="VerBoletaModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="VerBoletaModalLabel">Borrar Ordenes</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <b>Desea eliminar esta orden?</b>
-                        <hr>
-                        <div *ngIf="boletaSeleccionada">
-                            <div class="font-weight-bold"> Cliente : <b class="text-success">{{boletaSeleccionada.nombreCliente
-                                    }} </b></div>
-                            <div class="font-weight-bold">Total: <b class="text-danger">{{boletaSeleccionada.montoCobrado
-                                    |
-                                    currency:'CLP':'symbol-narrow'}}</b>
-                                <div class="text-primary font-weight-bold" *ngFor="let orden of boletaSeleccionada.ordenes">
-                                    {{orden.TrabajadoraNombre}}
-                                    <div class="text-dark"> {{orden.ServicioDescripcion}}</div>
-                                </div>
+</div>
+<!-- Modal Ver Boleta -->
+<div class="modal fade bd-example-modal-lg" id="VerBoletaModal" tabindex="-1" role="dialog" aria-labelledby="VerBoletaModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="VerBoletaModalLabel">Ver boleta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <b>Desea eliminar esta orden?</b>
+                    <hr>
+                    <div *ngIf="boletaSeleccionada">
+                        <div class="font-weight-bold"> Cliente : <b class="text-success">{{boletaSeleccionada.nombreCliente
+                                }} </b></div>
+                        <div class="font-weight-bold">Total: <b class="text-danger">{{boletaSeleccionada.montoCobrado
+                                |
+                                currency:'CLP':'symbol-narrow'}}</b>
+                            <div class="text-primary font-weight-bold" *ngFor="let orden of boletaSeleccionada.ordenes">
+                                {{orden.TrabajadoraNombre}}
+                                <div class="text-dark"> {{orden.ServicioDescripcion}}</div>
                             </div>
                         </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-danger" (click)="borrarBoleta(boletaSeleccionada)"
-                                data-dismiss="modal">Borrar</button>
-                            <button type="submit" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                        </div>
-
                     </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger" (click)="borrarBoleta(boletaSeleccionada)"
+                            data-dismiss="modal">Borrar</button>
+                        <button type="submit" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                    </div>
+
                 </div>
             </div>
         </div>
+    </div>
+</div>

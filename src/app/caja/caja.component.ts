@@ -65,6 +65,9 @@ let d = 1;
       let boleta = objeto[key];
       boleta['idBoleta'] = key;
      
+      this.resumenDia.totalDia += boleta.montoPrincipal + boleta.montoGiftCard +
+      boleta.montoDescuento + boleta.montoEfectivo - boleta.montoVuelto;
+
       switch ( boleta.formaDePagoPrincipal){
         case 'Efectivo':
        

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ListaServiciosService } from '../lista-servicios/lista-servicios.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-lista-servicios',
@@ -16,6 +17,9 @@ export class ListaServiciosComponent implements OnInit {
   clientes: any[] = [];
   clienteFiltrado: string;
   nombresClientes: string[]=[];
+  dias:any[]=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+  meses:any[]=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+ 
   constructor(private ListaServicio: ListaServiciosService) { }
 
   async ngOnInit() {
@@ -100,8 +104,16 @@ export class ListaServiciosComponent implements OnInit {
     
   }
 
-  filtrarCliente(){
 
+  async agregarCliente(f: NgForm){
 
-  }
+   for(var i in this.clientes){
+  
+if(this.clientes[i].nombre.toLowerCase() == f.value.nombre.toLowerCase()){
+  console.log("Nombre ya existe, por favor use otro");
+  
+}
+  }}
+
+  filtrarCliente(){}
 }
