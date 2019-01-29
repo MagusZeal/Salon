@@ -1,58 +1,184 @@
+<div class="container">
+    <ngb-datepicker [(ngModel)]="inicio"></ngb-datepicker>
+    <ngb-datepicker [(ngModel)]="termino"></ngb-datepicker>
+</div>
+<div class="container" [ngStyle]="{'font-weight': 'bold'}">
+    <div class="row">
+        <label class="control-label text-center "><u>Seleccione</u></label>
+        <select [(ngModel)]="trabajadoraSeleccionada" class="form-control col"  id="exampleFormControlSelect2">
+          <option value="">asd</option>
+            <ng-container *ngFor="let trabajadora of trabajadoraDrop">
+
+                <option *ngIf="trabajadora.perfil =='trabajadora'" [ngValue]="trabajadora">{{trabajadora.name}}</option>
+
+            </ng-container>
+        </select></div>
+</div>
+<br>
+<div class="container">
+    <button type="submit" class="btn btn-success" (click)="buscar()">Buscar</button>
+
+</div>
+<br>
+<ngb-tabset type="pills" *ngIf="tablaTotalesCheckbox">
+    <ngb-tab>
+        <ng-template ngbTabTitle><b>Ventas totales</b></ng-template>
+        <ng-template ngbTabContent>
+            <br>
+            <div class="row">
+                <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Total</div>
+                <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Servicios</div>
+                <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Efectivo</div>
+                <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Crédito</div>
+            </div>
+            <div class="row">
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.total}}</div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.serviciosRealizados}}</div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalEfectivo}}</div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalCredito}}</div>
+            </div>
+            <div class="row">
+                <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Débito</div>
+                <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Transfer</div>
+                <div class="col text-center bg-primary font-weight-bold border border-dark text-white">G.Card</div>
+                <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Descue</div>
+            </div>
+            <div class="row">
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalDebito}}</div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalTransferencia}}</div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalGiftCard}}</div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalDescuento}}</div>
+            </div>
+
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Servicios Realizados">
+        <ng-template ngbTabContent>
+            <br>
+            <div class="table-responsive">
+                <table class="table" *ngIf="tablaTotalesCheckbox">
+                    <thead>
+                        <tr>
+                            <td class="text-center bg-primary font-weight-bold border border-dark text-white">Servicio</td>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Trabajadora</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Precio</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Cliente</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <ng-container *ngFor="let boleta of boletas">
+                            <tr *ngFor="let orden of boleta.ordenes">
+
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.ServicioDescripcion}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.TrabajadoraNombre}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.ValorServicio}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.nombreCliente}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.fechaPago}}</td>
+
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>
 
 
-  <ngb-datepicker [(ngModel)]="inicio"></ngb-datepicker>
-  <ngb-datepicker [(ngModel)]="termino"></ngb-datepicker>
-  <select [(ngModel)]="trabajadoraSeleccionada" class="form-control col" id="exampleFormControlSelect2" >
-  <ng-container  *ngFor="let trabajadora of trabajadoraDrop" >
- 
-    <option  *ngIf="trabajadora.perfil =='trabajadora'"
-      [ngValue]="trabajadora"  >{{trabajadora.name}}</option>
+<ngb-tabset type="pills" *ngIf="tablaSueldoCheckbox">
+    <ngb-tab>
+        <ng-template ngbTabTitle><b>Ventas totales</b></ng-template>
+        <ng-template ngbTabContent>
+            <br>
 
-  </ng-container>
-</select>
-  <button type="submit" class="btn btn-success" (click)="buscar()">Pagar</button>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Sueldo</td>
+                        <th>Total Generado</th>
+                        <th>Servicios Realizados</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{sueldo.ganancia |currency:'CLP':'symbol-narrow'}}</td>
+                        <td>{{sueldo.total |currency:'CLP':'symbol-narrow'}}</td>
+                        <td>{{sueldo.cantidadServicios}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab>
+        <ng-template ngbTabTitle><b>Servicios Realizados</b></ng-template>
+        <ng-template ngbTabContent>
+            <br>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Servicio</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Trabajadora</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Precio</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Cliente</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <ng-container *ngFor="let boleta of boletas">
+                            <tr *ngFor="let orden of boleta.ordenes">
+                                <ng-container *ngIf="orden.TrabajadoraNombre == trabajadoraSeleccionada.name">
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.ServicioDescripcion}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.TrabajadoraNombre}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.ValorServicio}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.nombreCliente}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.fechaPago}}</td>
+                                </ng-container>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
 
 
-  <table class="table" *ngIf="tablaTotalesCheckbox">
-    <thead>
-        <tr>
-            <td>Total</td>
-            <th>Efectivo</th>
-            <th>Credito</th>
-            <th>Debito</th>
-            <th>Transferencia</th>
-            <th>Gift Card</th>
-            <th>Descuento</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>{{resumenDia.total}}</td>
-            <td>{{resumenDia.totalEfectivo}}</td>
-            <td>{{resumenDia.totalCredito}}</td>
-            <td>{{resumenDia.totalDebito}}</td>
-            <td>{{resumenDia.totalTransferencia}}</td>
-            <td>{{resumenDia.totalGiftCard}}</td>
-            <td>{{resumenDia.totalDescuento}}</td>
-        </tr>
-    </tbody>
-</table>
+            <br>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab>
+        <ng-template ngbTabTitle><b>Dias Trabajados</b></ng-template>
+        <ng-template ngbTabContent>
+            <br>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td class="text-center bg-primary font-weight-bold border border-dark text-white">Fecha</td>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Ganancia</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">N°Serv</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-<table class="table" *ngIf="tablaSueldoCheckbox">
-    <thead>
-        <tr>
-            <td>Sueldo</td>
-            <th>Total Generado</th>
-            <th>Servicios Realizados</th>
-          
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>{{sueldo.ganancia |currency:'CLP':'symbol-narrow'}}</td>
-            <td>{{sueldo.total |currency:'CLP':'symbol-narrow'}}</td>
-            <td>{{sueldo.cantidadServicios}}</td>
-        </tr>
-    </tbody>
-</table>
+                        <ng-container *ngFor="let sueldo of sueldo2">
+                            <tr>
+                                <ng-container>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.fecha}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.valor}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.cantidadServicios}}</td>
 
+                                </ng-container>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <br>
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>

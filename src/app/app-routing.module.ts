@@ -4,13 +4,16 @@ import { ListaServiciosComponent } from './lista-servicios/lista-servicios.compo
 import { CobrosPendientesComponent } from './cobros-pendientes/cobros-pendientes.component';
 import { CajaComponent } from './caja/caja.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { AdmClientesComponent } from './adm-clientes/adm-clientes.component'
+import { AdmServiciosComponent} from './adm-servicios/adm-servicios.component'
 
 const routes: Routes = [
   {path:'Servicios', component:ListaServiciosComponent},
   {path:'CobrosPendientes', component:CobrosPendientesComponent},
   {path:'Caja', component:CajaComponent},
   {path:'Dashboard', component:DashboardComponent},
+  {path:'AdministrarClientes', component:AdmClientesComponent},
+  {path:'AdministrarServicios', component:AdmServiciosComponent},
   {path:'**', component:ListaServiciosComponent}
  
 ];

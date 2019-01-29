@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   trabajadoraSeleccionada: {};
   trabajadoraDrop: any[] = [];
   serviciosRealizados: any = [];
+  sueldo2: any[] = [];
   resumenDia = {
     serviciosRealizados: 0,
     total: 0,
@@ -35,7 +36,9 @@ export class DashboardComponent implements OnInit {
     totalDescuento: 0
   };
 
+
   sueldo = {
+
     total: 0,
     ganancia: 0,
     cantidadServicios: 0
@@ -69,9 +72,6 @@ export class DashboardComponent implements OnInit {
 
   }
 
-
-
-
   mapearObjetosArray(objeto) {
 
     for (var i in objeto) {
@@ -81,6 +81,147 @@ export class DashboardComponent implements OnInit {
       }
 
     }
+  }
+
+
+
+  async buscar() {
+
+    this.limpiar();
+
+    console.log(this.trabajadoraSeleccionada);
+
+    this.fechaInicio = this.lena((this.inicio['day'].toString())) + "-" +
+      this.lena((this.inicio['month'].toString())) + "-" +
+      this.inicio['year'].toString();
+    this.fechaTermino = this.lena((this.termino['day'].toString())) + "-" +
+      this.lena((this.termino['month'].toString())) + "-" +
+      this.termino['year'].toString();
+
+    this.jornadas = await Object.values(await this.Dashboard.obtenerJornadas(this.fechaInicio, this.fechaTermino));
+    this.mapearObjetosArray(this.jornadas);
+
+
+
+    if (this.trabajadoraSeleccionada['name'] == "TODAS LAS TRABAJADORAS") {
+      this.tablaTotalesCheckbox = true;
+      this.montos(this.boletas);
+
+    } else {
+      this.tablaSueldoCheckbox = true;
+      this.dineroGanado(this.boletas);
+     
+      for (var k in this.sueldo2) {
+
+        if (this.sueldo2[k].valor <= this.trabajadoraSeleccionada['sueldoBase']) {
+
+          this.sueldo2[k].valor= this.trabajadoraSeleccionada['sueldoBase'];
+          this.sueldo.ganancia +=this.sueldo2[k].valor;
+        }else {
+          this.sueldo.ganancia +=this.sueldo2[k].valor;
+        }
+      }
+    console.log(this.sueldo2);
+
+    }
+  }
+
+
+  dineroGanado(objeto) {
+    if (this.trabajadoraSeleccionada['name'] != 'TODAS LAS TRABAJADORAS') {
+      for (var i in objeto) {
+
+
+      
+        console.log(objeto[i]);
+        for (var z in objeto[i].ordenes) {
+
+          if (this.trabajadoraSeleccionada['name'] == objeto[i].ordenes[z].TrabajadoraNombre) {
+            if (!this.sueldo2.find(o => o.fecha === objeto[i].fechaPago.substring(0, 10))) {
+              this.sueldo2.push({ fecha: objeto[i].fechaPago.substring(0, 10), valor: 0, cantidadServicios:0 });
+            }
+            this.serviciosRealizados.push(objeto[i].ordenes[z]);
+            this.sueldo.total += objeto[i].ordenes[z].ValorServicio;
+            this.sueldo.cantidadServicios += + 1;
+            console.log(objeto[i].ordenes[z]);
+            
+            for (var k in this.sueldo2) {
+
+              if (this.sueldo2[k].fecha == objeto[i].fechaPago.substring(0, 10)) {
+                this.sueldo2[k].cantidadServicios +=  +1;
+                this.sueldo2[k].valor += objeto[i].ordenes[z].ValorServicio * (this.trabajadoraSeleccionada['servicios'][objeto[i].ordenes[z].ServicioCategoria] * 0.01);
+              }
+            }
+
+          }
+        }
+      }
+      
+
+    }
+  }
+
+
+  montos(boleta) {
+
+    for (var i in boleta) {
+
+      this.resumenDia.total += boleta[i].montoPrincipal + boleta[i].montoGiftCard +
+        boleta[i].montoDescuento + boleta[i].montoEfectivo - boleta[i].montoVuelto;
+
+      switch (boleta[i].formaDePagoPrincipal) {
+        case 'Efectivo':
+
+
+          this.resumenDia.totalEfectivo += boleta[i].montoPrincipal - boleta[i].montoVuelto;
+          this.resumenDia.totalGiftCard += boleta[i].montoGiftCard;
+          this.resumenDia.totalDescuento += boleta[i].montoDescuento;
+          break;
+        case 'Tarjeta de Crédito':
+
+          this.resumenDia.totalCredito += boleta[i].montoPrincipal;
+          this.resumenDia.totalEfectivo += boleta[i].montoEfectivo - boleta[i].montoVuelto;
+          this.resumenDia.totalGiftCard += boleta[i].montoGiftCard;
+          this.resumenDia.totalDescuento += boleta[i].montoDescuento;
+          break;
+        case 'Tarjeta de Débito':
+
+          this.resumenDia.totalDebito += boleta[i].montoPrincipal;
+          this.resumenDia.totalEfectivo += boleta[i].montoEfectivo - boleta[i].montoVuelto;
+          this.resumenDia.totalGiftCard += boleta[i].montoGiftCard;
+          this.resumenDia.totalDescuento += boleta[i].montoDescuento;
+          break;
+        case 'Transferencia':
+
+          this.resumenDia.totalTransferencia += boleta[i].montoPrincipal;
+          this.resumenDia.totalGiftCard += boleta[i].montoGiftCard;
+          this.resumenDia.totalDescuento += boleta[i].montoDescuento;
+          break;
+        case 'Gift Card':
+
+          this.resumenDia.totalGiftCard += boleta[i].montoPrincipal;
+          this.resumenDia.totalDescuento += boleta[i].montoDescuento;
+        default:
+
+          break;
+
+      }
+      for (var z in boleta[i].ordenes) {
+        this.resumenDia.serviciosRealizados += + 1;
+      }
+    }
+  }
+
+  //utils
+
+  lena(a) {
+
+    if (a.length == 1) {
+      a = "0" + a;
+
+      return a;
+    }
+    return a;
   }
 
   limpiar() {
@@ -107,140 +248,9 @@ export class DashboardComponent implements OnInit {
       cantidadServicios: 0
 
     };
+    this.sueldo2 = [];
     this.serviciosRealizados = [];
     this.boletas = [];
   }
-
-  async buscar() {
-
-
-    this.limpiar();
-
-    console.log(this.trabajadoraSeleccionada);
-
-
-    this.fechaInicio = this.lena((this.inicio['day'].toString())) + "-" +
-      this.lena((this.inicio['month'].toString())) + "-" +
-      this.inicio['year'].toString();
-    this.fechaTermino = this.lena((this.termino['day'].toString())) + "-" +
-      this.lena((this.termino['month'].toString())) + "-" +
-      this.termino['year'].toString();
-
-
-    this.jornadas = await Object.values(await this.Dashboard.obtenerJornadas(this.fechaInicio, this.fechaTermino));
-    this.mapearObjetosArray(this.jornadas);
-
-    if (this.trabajadoraSeleccionada['name'] == "TODAS LAS TRABAJADORAS") {
-      this.tablaTotalesCheckbox = true;
-      this.montos(this.trabajadoraSeleccionada, this.boletas);
-
-    } else {
-      this.tablaSueldoCheckbox = true;
-      this.dineroGanado(this.boletas);
-      console.log(this.sueldo.total);
-      console.log(this.sueldo.ganancia);
-    }
-
-
-
-  }
-
-
-  dineroGanado(objeto) {
-    if (this.trabajadoraSeleccionada['name'] != 'TODAS LAS TRABAJADORAS') {
-      for (var i in objeto) {
-        console.log(objeto[i]);
-        for (var z in objeto[i].ordenes) {
-
-
-          if (this.trabajadoraSeleccionada['name'] == objeto[i].ordenes[z].TrabajadoraNombre) {
-            console.log(objeto[i].ordenes[z].ValorServicio);
-            this.serviciosRealizados.push(objeto[i].ordenes[z]);
-            this.sueldo.total += objeto[i].ordenes[z].ValorServicio;
-            console.log(objeto[i].ordenes[z].ValorServicio);
-            this.sueldo.cantidadServicios += this.sueldo.cantidadServicios + 1;
-            this.sueldo.ganancia += objeto[i].ordenes[z].ValorServicio * (this.trabajadoraSeleccionada['servicios'][objeto[i].ordenes[z].ServicioCategoria] * 0.01);
-
-
-
-            //this.trabajadoraSeleccionada.servicios['objeto[i].ordenes[z].ServicioCategoria'];
-
-          }
-
-        }
-      }
-    }
-
-
-  }
-
-
-  montos(trabajadora, boleta) {
-    if (trabajadora.name == "TODAS LAS TRABAJADORAS") {
-
-
-      for (var i in boleta) {
-        this.resumenDia.total = boleta[i].montoPrincipal + boleta[i].montoGiftCard +
-          boleta[i].montoDescuento + boleta[i].montoEfectivo - boleta[i].montoVuelto;
-
-
-        console.log(boleta[0].montoCobrado);
-        console.log(boleta[0].montoVuelto);
-
-
-
-        switch (boleta[i].formaDePagoPrincipal) {
-          case 'Efectivo':
-
-            this.resumenDia.totalEfectivo += boleta[i].montoPrincipal - boleta[i].montoVuelto;
-            this.resumenDia.totalGiftCard += boleta[i].montoGiftCard;
-            this.resumenDia.totalDescuento += boleta[i].montoDescuento;
-            break;
-          case 'Tarjeta de Crédito':
-            this.resumenDia.totalCredito += boleta[i].montoPrincipal;
-            this.resumenDia.totalEfectivo += boleta[i].montoEfectivo - boleta[i].montoVuelto;
-            this.resumenDia.totalGiftCard += boleta[i].montoGiftCard;
-            this.resumenDia.totalDescuento += boleta[i].montoDescuento;
-
-            break;
-          case 'Tarjeta de Débito':
-
-            this.resumenDia.totalDebito += boleta[i].montoPrincipal;
-            this.resumenDia.totalEfectivo += boleta[i].montoEfectivo - boleta.montoVuelto;
-            this.resumenDia.totalGiftCard += boleta[i].montoGiftCard;
-            this.resumenDia.totalDescuento += boleta[i].montoDescuento;
-
-            break;
-          case 'Transferencia':
-
-            this.resumenDia.totalTransferencia += boleta[i].montoPrincipal;
-            this.resumenDia.totalGiftCard += boleta[i].montoGiftCard;
-            this.resumenDia.totalDescuento += boleta[i].montoDescuento;
-
-            break;
-          case 'Gift Card':
-            this.resumenDia.totalGiftCard += boleta[i].montoPrincipal;
-            this.resumenDia.totalDescuento += boleta[i].montoDescuento;
-          default:
-
-            break;
-        }
-
-
-      }
-    }
-  }
-
-  lena(a) {
-
-    if (a.length == 1) {
-      a = "0" + a;
-
-      return a;
-    }
-    return a;
-  }
-
-
 
 }

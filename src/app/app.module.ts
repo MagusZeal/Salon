@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ListaServiciosComponent } from './lista-servicios/lista-servicios.component';
 import { ListaServiciosService } from './lista-servicios/lista-servicios.service';
-import { FormsModule} from '@angular/forms';
+import { FormsModule , ReactiveFormsModule} from '@angular/forms';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { CobrosPendientesComponent } from './cobros-pendientes/cobros-pendientes.component';
 import { CajaComponent } from './caja/caja.component';
@@ -13,6 +13,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import LocaleCL from '@angular/common/locales/es-CL';
 import { registerLocaleData } from '@angular/common';
+import { AdmClientesComponent } from './adm-clientes/adm-clientes.component';
+import { AdmServiciosComponent } from './adm-servicios/adm-servicios.component';
+
 registerLocaleData(LocaleCL);
 
 @NgModule({
@@ -21,7 +24,10 @@ registerLocaleData(LocaleCL);
     ListaServiciosComponent,
     CobrosPendientesComponent,
     CajaComponent,
-    DashboardComponent,    
+    DashboardComponent,
+    AdmClientesComponent,
+    AdmServiciosComponent,
+       
   ],
   imports: [
     BrowserModule,
@@ -29,7 +35,8 @@ registerLocaleData(LocaleCL);
     AppRoutingModule,
     FormsModule,
     TypeaheadModule.forRoot(),
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule
   ],
   providers: [ListaServiciosService,
     {provide: LOCALE_ID, useValue: 'es-CL' }],

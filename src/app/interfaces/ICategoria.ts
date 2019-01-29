@@ -1,0 +1,3 @@
+interface ICategoria {
+    nombre: string;
+}

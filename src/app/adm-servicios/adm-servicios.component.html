@@ -1,0 +1,112 @@
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        Administrar Servicios<button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#AgregarServicioModal">Agregar Servicio</button>
+      </div>
+      <div class="card-body">
+  
+        <div class="row">
+  
+          <input type="text" class="form-control" placeholder="Buscar Clientes..." (keyup)="filtrarNombre(inputFiltro.value)"
+            #inputFiltro>
+  
+          <div class=" table-responsive">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+  
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col">Accion</th>
+                </tr>
+              </thead>
+              <tbody>
+  
+                <ng-container *ngFor="let servicio of serviciosFiltrados">
+                  <tr>
+  
+                    <td>
+                      <div class="col">
+                        {{servicio.descripcion}}
+                      </div>
+  
+                    </td>
+  
+                    <td>
+                        <div class="col">
+                          {{servicio.valor}}
+                        </div>
+    
+                      </td>
+  
+                    <td>
+                      <div>
+                        <button type="button" class="btn-sm btn-primary " data-toggle="modal" data-target="#EditarModal"
+                          (click)="seleccionarCliente(cliente)">Editar</button>
+                        <button type="button" class="btn-sm btn-warning " (click)="borrarServicio(servicio)">Eliminar</button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+  
+  
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal AgregarServicio -->
+<div class="modal fade bd-example-modal-lg" id="AgregarServicioModal" tabindex="-1" role="dialog" aria-labelledby="AgregarServicioModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="AgregarServicioModalLabel">Agregar Cliente</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form *ngIf="servicioForm" [formGroup]="servicioForm">
+        <div class="form-group">
+          <label for="descripcion">Nombre (*Requerido)</label>
+          <input type="text" class="form-control " id="descripcion" placeholder="Ingrese nombre del servicio" formControlName="descripcion"
+           >
+        </div>
+     
+
+        <div class="form-group">
+          <label for="exampleInputEmail1">Precio</label>
+          <input type="number" class="form-control" id="numero" placeholder="5000" formControlName="valor">
+        </div>
+
+
+        <div class="form-group" formGroupName="categoria">
+           Categoria
+            <div class="form-control ">
+              <select id="221" formControlName="nombre">
+                <ng-container *ngFor="let cat of categorias">
+                  <option >{{cat.nombre}}</option>
+            
+                </ng-container>
+              </select>
+
+            </div>
+
+        
+          </div>
+
+        <button class="btn btn-danger" (click)="agregarServicios()">Agregar</button>
+        <button type="button" class="btn btn-primary">Cancelar</button>
+
+      </form>
+
+
+
+    </div>
+  </div>
+</div>
+</div>

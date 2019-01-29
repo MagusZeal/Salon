@@ -1,0 +1,204 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      Administrar Clientes<button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#AgregarClienteModal">Agregar
+        Cliente</button>
+    </div>
+    <div class="card-body">
+
+      <div class="row">
+
+        <input type="text" class="form-control" placeholder="Buscar Clientes..." (keyup)="filtrarNombre(inputFiltro.value)"
+          #inputFiltro>
+
+        <div class=" table-responsive">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+
+                <th scope="col">Nombre</th>
+
+                <th scope="col">Accion</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <ng-container *ngFor="let cliente of clientesFiltrados">
+                <tr>
+
+                  <td>
+                    <div class="col">
+                      {{cliente.nombre}}
+                    </div>
+
+                  </td>
+
+
+                  <td>
+                    <div>
+                      <button type="button" class="btn-sm btn-primary " data-toggle="modal" data-target="#EditarModal"
+                        (click)="seleccionarCliente(cliente)">Editar</button>
+                      <button type="button" class="btn-sm btn-warning ">Eliminar</button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal EditarCliente -->
+<div class="modal fade bd-example-modal-lg" id="EditarModal" tabindex="-1" role="dialog" aria-labelledby="EditarModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="EditarModalLabel">Editar Cliente</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="clienteForm" [formGroup]="clienteForm">
+          <div class="form-group">
+            <label for="nombre">Nombre (*Requerido)</label>
+            <input type="text" class="form-control is-invalid" id="nombre" placeholder="Ingrese Nombre" formControlName="nombre">
+          </div>
+          <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger">
+
+            <div *ngIf="nombre.errors.required">
+              Nombre es requerido.
+            </div>
+            <div *ngIf="nombre.errors.minlength">
+              Nombre debe tener al menos 2 letras.
+            </div>
+            <div *ngIf="nombre.errors.forbiddenName">
+              Nombre ocupado.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="ejemplo@salon.cl"
+              formControlName="mail">
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input">
+            <label class="custom-control-label" for="customCheck1">Cliente quiere dar su cumpleños? (solo Día y Mes)</label>
+          </div>
+          <div class="form-group" formGroupName="cumple">
+            <label for="">Fecha cumpleaños</label>
+            <div class="form-control ">
+              Día
+              <select id="exampleFormControlSelect2" formControlName="dia">
+                <ng-container *ngFor="let dia of dias;let i = index">
+                  <option value="i">{{dia}}</option>
+                </ng-container>
+              </select>
+              Mes
+              <select id="exampleFormControlSelect2" formControlName="mes">
+                <ng-container *ngFor="let mes of meses">
+                  <option>{{mes}}</option>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-danger">Guardar</button>
+          <button type="button" class="btn btn-primary">Limpiar</button>
+        </form>
+
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger" data-dismiss="modal">Borrar</button>
+          <button type="submit" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal AgregarCliente -->
+<div class="modal fade bd-example-modal-lg" id="AgregarClienteModal" tabindex="-1" role="dialog" aria-labelledby="AgregarClienteModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AgregarClienteModalLabel">Agregar Cliente</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="clienteForm" [formGroup]="clienteForm">
+          <div class="form-group">
+            <label for="nombre">Nombre (*Requerido)</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Ingrese Nombre" formControlName="nombre"
+              [ngClass]="{ 'is-invalid':nombre.invalid && (nombre.dirty || nombre.touched)}">
+          </div>
+          <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback">
+
+            <div *ngIf="nombre.errors.required">
+              Nombre es requerido.
+            </div>
+            <div *ngIf="nombre.errors.minlength">
+              Nombre debe tener al menos 2 letras.
+            </div>
+            <div *ngIf="nombre.errors.forbiddenName">
+              Nombre ocupado.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Telefono</label>
+            <input type="number" class="form-control" id="numero" placeholder="56987187361" formControlName="numero">
+            <div class="invalid-feedback">aaaaa</div>
+          </div>
+
+
+
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="ejemplo@salon.cl"
+              formControlName="mail">
+          </div>
+
+
+
+          <div class="form-group" formGroupName="cumple">
+            <label for="">Fecha cumpleaños</label>
+            <div class="form-control ">
+              Día
+              <select id="exampleFormControlSelect2" formControlName="dia">
+                <option value="">Dia</option>
+                <ng-container *ngFor="let dia of dias">
+                  <option>{{dia}}</option>
+                </ng-container>
+              </select>
+              Mes
+              <select id="exampleFormControlSelect2" formControlName="mes">
+                <option value="">Mes</option>
+                <ng-container *ngFor="let mes of meses">
+                  <option>{{mes}}</option>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Detalles Cliente</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" formControlName="nota"></textarea>
+          </div>
+          <button class="btn btn-danger" (click)="agregarCliente()">Agregar</button>
+          <button type="button" class="btn btn-primary">Cancelar</button>
+
+        </form>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>

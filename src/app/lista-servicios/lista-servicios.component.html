@@ -1,17 +1,17 @@
-<div class="container" [ngStyle]="{'font-weight': 'bold'}" >
-  <div class="text-right"  >
-   Total {{precioTotal | currency:'CLP':'symbol-narrow'}}
+<div class="container" [ngStyle]="{'font-weight': 'bold'}">
+  <div class="text-right">
+    Total {{precioTotal | currency:'CLP':'symbol-narrow'}}
   </div>
   Filtrar por categoría:
   <select class="form-control" id="exampleFormControlSelect1">
     <ng-container *ngFor="let categoria of categorias">
-      <option *ngIf="categoria && categoria.id && categoria.nombre" value="{{categoria.id}}">{{categoria.nombre}}</option>
+      <option value="">{{categoria.nombre}}</option>
     </ng-container>
 
   </select>
 
   <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#PrecioVariableModal">
-   Precio Variable
+    Precio Variable
   </button>
 
   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -26,12 +26,12 @@
 
 <div class="container">
   <div class="row">
-    <ng-container *ngFor="let servicio of servicios" >
+    <ng-container *ngFor="let servicio of servicios">
 
-      <div [ngStyle]="{'color':'#d84343' ,  'font-weight': 'bold','background-color':servicio.seleccionado}"  
-      class="col-sm-4 float-right" (click)="seleccionarServicio(servicio)">
-        ${{servicio.valor}} <b [ngStyle]="{'color':servicio.seleccionado2,'text-overflow': 'ellipsis','width': '230px','overflow':'hidden', 'white-space': 'nowrap'}" 
-        class="float-left"> {{servicio.descripcion}} </b>
+      <div [ngStyle]="{'color':'#d84343' ,  'font-weight': 'bold','background-color':servicio.seleccionado}" class="col-sm-4 float-right"
+        (click)="seleccionarServicio(servicio)">
+        ${{servicio.valor}} <b [ngStyle]="{'color':servicio.seleccionado2,'text-overflow': 'ellipsis','width': '230px','overflow':'hidden', 'white-space': 'nowrap'}"
+          class="float-left"> {{servicio.descripcion}} </b>
 
 
       </div>
@@ -49,28 +49,29 @@
   aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-    
-       
-      
-    
+
+
+
+
       <div class="modal-body">
         <div class="row">
-           
-          <div class="col" [ngStyle]="{'font-weight': 'bold'}" >Servicio</div>
-          <div class="col" [ngStyle]="{'font-weight': 'bold'}" >Profesional</div>
+
+          <div class="col" [ngStyle]="{'font-weight': 'bold'}">Servicio</div>
+          <div class="col" [ngStyle]="{'font-weight': 'bold'}">Profesional</div>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <hr>
         <ng-container *ngFor="let servicio of serviciosSeleccionados; let i = index">
           <div class="row">
-            <div class="col" [ngStyle]="{'font-weight': 'bold'}" > {{servicio.descripcion}}</div>
-            <select [(ngModel)]="serviciosSeleccionados[i].trabajadoraId" class="form-control col" id="exampleFormControlSelect2">
-              <ng-container  *ngFor="let trabajadora of trabajadoras">
-                <option  *ngIf="trabajadora.perfil =='trabajadora' && servicio.categoria && trabajadora.servicios[servicio.categoria]"
-                  value="{{trabajadora.id}}">{{trabajadora.name}}</option>
-
+            <div class="col" [ngStyle]="{'font-weight': 'bold'}"> {{servicio.descripcion}} </div>
+            <select [(ngModel)]="serviciosSeleccionados[i].trabajadoraNombre" class="form-control col" id="exampleFormControlSelect2">
+              <ng-container *ngFor="let trabajadora of trabajadoras">
+                <ng-container *ngFor="let categoriatrabajadora of trabajadora.categoriaTrabajadora">
+                <option  *ngIf="categoriatrabajadora.categoria==servicio.categoria"
+                  value="{{trabajadora.nombre}}">{{trabajadora.nombre}}</option>
+                </ng-container>
               </ng-container>
 
             </select>
@@ -79,20 +80,15 @@
           <hr>
 
         </ng-container>
-        <div class="col" [ngStyle]="{'font-weight': 'bold'}" >
+        <div class="col" [ngStyle]="{'font-weight': 'bold'}">
           Asignar Cliente:
-         <input  list="clientes" (ngModelChange)="filtrarCliente()" [(ngModel)]="clienteFiltrado" [typeahead]="nombresClientes" >
-      
-          
-           
-        
-         
+          <input list="clientes" (ngModelChange)="filtrarCliente()" [(ngModel)]="clienteFiltrado" [typeahead]="nombresClientes">
 
         </div>
         <div class="modal-footer">
-        
-          <button type="button"  [ngStyle]="{'font-weight': 'bold'}"  class="btn btn-primary col" (click) = "asignarServicios()" data-dismiss="modal"
-          >Asignar Servicios</button>
+
+          <button type="button" [ngStyle]="{'font-weight': 'bold'}" class="btn btn-primary col" (click)="asignarServicios()"
+            data-dismiss="modal">Asignar Servicios</button>
           <nav>
             <a routerLink="/CobrosPendientes" id="LinkCobros" routerLinkActive="active" hidden></a>
           </nav>
@@ -102,7 +98,7 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal Agregar Cliente -->
 <div class="modal fade bd-example-modal-lg" id="clientesModal" tabindex="-1" role="dialog" aria-labelledby="clientesModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -114,27 +110,63 @@
         </button>
       </div>
       <div class="modal-body">
-          <form>
-              <div class="form-group">
-                  <label for="exampleInputEmail1">Nombre</label>
-                  <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp" placeholder="Ingrese Nombre">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Numero Contacto</label>
-                    <input type="number" class="form-control" id="nombre" aria-describedby="emailHelp" placeholder="56987187361">
-                  </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Email</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="ejemplo@salon.cl">
-              </div>
-         
-        
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-      
+        <form #f="ngForm" (ngSubmit)="agregarCliente(f)" validate>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Nombre (*Requerido)</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Ingrese Nombre" name="nombre" ngModel
+              required #nombre="ngModel">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Numero Contacto</label>
+            <input type="number" class="form-control" id="numero" placeholder="56987187361" name="numero" ngModel
+              required #numero="ngModel">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="ejemplo@salon.cl"
+              name="mail" ngModel required #mail="ngModel">
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="cumpleCheck" id="customCheck1" ngModel required
+              #cumpleCheck="ngModel">
+            <label class="custom-control-label" for="customCheck1">Cliente quiere dar su cumpleños? (solo Día y Mes)</label>
+          </div>
+
+          <div class="form-group" *ngIf="f.value.cumpleCheck">
+            <label for="">Fecha cumpleaños</label>
+            <div class="form-control ">
+              Día
+              <select id="exampleFormControlSelect2" name="dia" ngModel required #dia="ngModel">
+
+                <ng-container *ngFor="let dia of dias">
+
+                  <option>{{dia}}</option>
+
+                </ng-container>
+              </select>
+              Mes
+
+              <select id="exampleFormControlSelect2" name="mes" ngModel required #mes="ngModel">
+
+                <ng-container *ngFor="let mes of meses">
+
+                  <option>{{mes}}</option>
+
+                </ng-container>
+              </select>
+            </div>
+          </div>
+
+
+
+
+          <button class="btn btn-primary">Agregar Cliente</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+        </form>
+
+      </div>
     </div>
   </div>
-</div>
 </div>
 <!-- Modal -->
 <div class="modal fade bd-example-modal-lg" id="PrecioVariableModal" tabindex="-1" role="dialog" aria-labelledby="PrecioVariableModalLabel"
@@ -150,14 +182,14 @@
       <div class="modal-body">
         <ng-container *ngFor="let servicio of serviciosSeleccionados;index as i">
           <div class="row">
-            <div class="col form-group">  <label for="exampleInputEmail1" [ngStyle]="{'font-weight': 'bold'}">{{servicio.descripcion}}</label>
-              <input [ngStyle]="{'font-weight': 'bold'}" (change)="calcularPrecio()" 
-              class="float-right" type="number" value="{{servicio.valor}}" [(ngModel)]="serviciosSeleccionados[i].valor">
+            <div class="col form-group"> <label for="exampleInputEmail1" [ngStyle]="{'font-weight': 'bold'}">{{servicio.descripcion}}</label>
+              <input [ngStyle]="{'font-weight': 'bold'}" (change)="calcularPrecio()" class="float-right" type="number"
+                value="{{servicio.valor}}" [(ngModel)]="serviciosSeleccionados[i].valor">
             </div>
           </div>
         </ng-container>
         <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+      </div>
     </div>
   </div>
-</div>
 </div>

@@ -7,30 +7,37 @@ export class ListaServiciosService {
 
   constructor(private http:HttpClient) { }
 
-  async obtenerCategorias(){
+ obtenerCategorias(){
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/categorias.json?').toPromise();
+    return  this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/categorias.json?');
     
   }
 
-  async obtenerServicios(){
+  obtenerServicios(){
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/servicios.json?').toPromise();
+    return  this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/servicios.json?');
   }
 
-  async obtenerTrabajadoras(){
+  
+  obtenerTrabajadoras(){
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/trabajadoras.json?').toPromise();
+    return  this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/trabajadoras.json?');
   }
 
-  async obtenerClientes(){
+  obtenerClientes(){
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?').toPromise();
+    return  this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?');
   }
 
   async agregarBoleta(boletaGuardar){
 
    return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?',boletaGuardar).toPromise();
+  }
+
+  async agregarCliente(cliente){
+
+   return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?',cliente).toPromise();
+    
   }
 
 }
