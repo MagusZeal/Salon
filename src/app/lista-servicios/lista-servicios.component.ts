@@ -126,7 +126,15 @@ export class ListaServiciosComponent implements OnInit {
     }
   }
 
-  filtrarCliente() {
+//   filtrarCliente() {
 
-  }
+//    for(var i in this.clientes){
+  
+// if(this.clientes[i].nombre.toLowerCase() == f.value.nombre.toLowerCase()){
+//   console.log("Nombre ya existe, por favor use otro");
+  
+// }
+//   }}
+
+  filtrarCliente(){}
 }
