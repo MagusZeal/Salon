@@ -66,11 +66,11 @@
         <ng-container *ngFor="let servicio of serviciosSeleccionados; let i = index">
           <div class="row">
             <div class="col" [ngStyle]="{'font-weight': 'bold'}"> {{servicio.descripcion}} </div>
-            <select [(ngModel)]="serviciosSeleccionados[i].trabajadoraNombre" class="form-control col" id="exampleFormControlSelect2">
-              <ng-container *ngFor="let trabajadora of trabajadoras">
+            <select [(ngModel)]="trabajadoraSeleccionada[i]" #trabajadora class="form-control col" id="exampleFormControlSelect2" (change)="asignarServicioTrabajadora(servicio, i)" >
+              <ng-container *ngFor="let trabajadora of trabajadoras" >
                 <ng-container *ngFor="let categoriatrabajadora of trabajadora.categoriaTrabajadora">
                 <option  *ngIf="categoriatrabajadora.categoria==servicio.categoria"
-                  value="{{trabajadora.nombre}}">{{trabajadora.nombre}}</option>
+                  [ngValue]="trabajadora">{{trabajadora.nombre}}</option>
                 </ng-container>
               </ng-container>
 
@@ -82,7 +82,7 @@
         </ng-container>
         <div class="col" [ngStyle]="{'font-weight': 'bold'}">
           Asignar Cliente:
-          <input list="clientes" (ngModelChange)="filtrarCliente()" [(ngModel)]="clienteFiltrado" [typeahead]="nombresClientes">
+          <input list="clientes"  [(ngModel)]="clienteFiltrado" [typeahead]="nombresClientes">
 
         </div>
         <div class="modal-footer">

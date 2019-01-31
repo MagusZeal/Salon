@@ -12,34 +12,31 @@ export class ListaServiciosComponent implements OnInit {
   categorias: ICategoria[] = [];
   servicios: IServicio[] = [];
   serviciosSeleccionados: IServicio[] = [];
-  precioTotal: Number = 0;
+  precioTotal: number = 0;
   trabajadoras: ITrabajadora[] = [];
   clientes: ICliente[] = [];
   clienteFiltrado: string;
   nombresClientes: string[] = [];
   serviciosNuevos: any[] = [];
+  trabajadoraSeleccionada:ITrabajadora[]=[];
+  ordenes: IOrden[] = [];
   dias: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
   meses: any[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
   constructor(private ListaServicio: ListaServiciosService) { }
 
   async ngOnInit() {
-    this.ListaServicio.obtenerCategorias().subscribe(o=>this.categorias = o)
-    this.ListaServicio.obtenerServicios().subscribe(o=>{
+    this.ListaServicio.obtenerCategorias().subscribe(o => this.categorias = o)
+    this.ListaServicio.obtenerServicios().subscribe(o => {
       this.servicios = Object.values(o);
       this.cargarServicios();
     })
-    
-    this.ListaServicio.obtenerTrabajadoras().subscribe(o=>this.trabajadoras = Object.values(o));
-    this.ListaServicio.obtenerClientes().subscribe(o=>{
-      this.clientes =Object.values(o);
+
+    this.ListaServicio.obtenerTrabajadoras().subscribe(o => this.trabajadoras = Object.values(o));
+    this.ListaServicio.obtenerClientes().subscribe(o => {
+      this.clientes = Object.values(o);
       this.nombresClientes = this.clientes.map(o => o.nombre);
     });
-
-
-    console.log(this.trabajadoras[0].categoriaTrabajadora[0].categoria);
- 
-
   }
 
   seleccionarServicio(servicio) {
@@ -62,18 +59,13 @@ export class ListaServiciosComponent implements OnInit {
     if (this.serviciosSeleccionados.length == 0) {
       this.precioTotal = 0;
     } else {
-
-
       this.precioTotal = this.serviciosSeleccionados.map(o => o.valor).reduce((a, b) => a + b);
-
-
     }
 
 
   }
-   cargarServicios() {
+  cargarServicios() {
 
-    
     for (let item of this.servicios) {
 
       item['seleccionado'] = "white";
@@ -84,28 +76,12 @@ export class ListaServiciosComponent implements OnInit {
   async asignarServicios() {
 
 
-    let servicios: any[] = [];
 
-    for (let servicio of this.serviciosSeleccionados) {
-
-
-      servicios.push({
-        ServicioCategoria: servicio.categoria,
-        ServicioDescripcion: servicio.descripcion,
-
-
-        TrabajadoraNombre: this.trabajadoras.filter(o => o.nombre == servicio.descripcion)[0].nombre,
-        ValorServicio: servicio.valor
-
-      });
-    }
-
-    var boleta = {
-      nombreCliente: this.clienteFiltrado,
+    var boleta:IBoleta = {
+      cliente: this.filtrarCliente(),
       total: this.precioTotal,
-      fecha: new Date().toLocaleString(),
-      pagado: false,
-      ordenes: servicios
+      fecha: (new Date().toLocaleString()).toString(),
+      ordenes: this.ordenes
     }
 
     await this.ListaServicio.agregarBoleta(boleta);
@@ -126,15 +102,29 @@ export class ListaServiciosComponent implements OnInit {
     }
   }
 
-//   filtrarCliente() {
+  //   filtrarCliente() {
 
-//    for(var i in this.clientes){
-  
-// if(this.clientes[i].nombre.toLowerCase() == f.value.nombre.toLowerCase()){
-//   console.log("Nombre ya existe, por favor use otro");
-  
-// }
-//   }}
+  //    for(var i in this.clientes){
 
-  filtrarCliente(){}
+  // if(this.clientes[i].nombre.toLowerCase() == f.value.nombre.toLowerCase()){
+  //   console.log("Nombre ya existe, por favor use otro");
+
+  // }
+  //   }}
+
+  asignarServicioTrabajadora(servicio, i) {
+
+    this.ordenes[i] = {
+      'servicio':{ descripcion: servicio.descripcion,
+        categoria: servicio.categoria,
+        valor: servicio.valor},
+      'trabajadora': this.trabajadoraSeleccionada[i]
+    }
+
+  }
+
+  filtrarCliente(): ICliente {
+
+    return this.clientes.find(o => o.nombre.includes(this.clienteFiltrado.trim()));
+  }
 }

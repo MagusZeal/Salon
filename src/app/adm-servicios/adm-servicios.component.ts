@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdmServiciosService } from '../adm-servicios/adm-servicios.service'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { forbiddenNameValidator } from './validaciones';
 @Component({
   selector: 'app-adm-servicios',
   templateUrl: './adm-servicios.component.html',
@@ -17,17 +17,15 @@ categorias: ICategoria[]=[];
 
   async ngOnInit() {
     this.servicios = await Object.values(await this.AdmServicios.obtenerServicios());
-    this.categorias = await Object.values(await this.AdmServicios.obtenerCategorias());
+    this.AdmServicios.obtenerCategorias().subscribe(o=>this.categorias = o)
     this.serviciosFiltrados = this.servicios;
     this.servicioForm = this.fb.group({
-      descripcion:['', [Validators.required]],
+      descripcion:['', [Validators.required, Validators.minLength(2),forbiddenNameValidator(this.servicios) ]],
       valor:['', [Validators.required]],
       categoria:this.fb.group({
-        nombre:[''],
-        id:['']
-      
-      }),
-   
+        nombre:['']
+            }),
+
     })
 
   }

@@ -6,10 +6,10 @@
     <div class="row">
         <label class="control-label text-center "><u>Seleccione</u></label>
         <select [(ngModel)]="trabajadoraSeleccionada" class="form-control col"  id="exampleFormControlSelect2">
-          <option value="">asd</option>
+       
             <ng-container *ngFor="let trabajadora of trabajadoraDrop">
 
-                <option *ngIf="trabajadora.perfil =='trabajadora'" [ngValue]="trabajadora">{{trabajadora.name}}</option>
+                <option  [ngValue]="trabajadora">{{trabajadora.nombre}}</option>
 
             </ng-container>
         </select></div>
@@ -71,11 +71,11 @@
                         <ng-container *ngFor="let boleta of boletas">
                             <tr *ngFor="let orden of boleta.ordenes">
 
-                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.ServicioDescripcion}}</td>
-                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.TrabajadoraNombre}}</td>
-                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.ValorServicio}}</td>
-                                <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.nombreCliente}}</td>
-                                <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.fechaPago}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.servicio.descripcion}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.trabajadora.nombre}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.servicio.valor}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.cliente.nombre}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.fecha}}</td>
 
                             </tr>
                         </ng-container>
@@ -132,11 +132,11 @@
                         <ng-container *ngFor="let boleta of boletas">
                             <tr *ngFor="let orden of boleta.ordenes">
                                 <ng-container *ngIf="orden.TrabajadoraNombre == trabajadoraSeleccionada.name">
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.ServicioDescripcion}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.TrabajadoraNombre}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.ValorServicio}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.nombreCliente}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.fechaPago}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.servicio.descripcion}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.trabajadora.nombre}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.servicio.valor}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.cliente.nombre}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.fecha}}</td>
                                 </ng-container>
                             </tr>
                         </ng-container>

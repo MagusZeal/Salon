@@ -29,15 +29,15 @@
 <div class="container">
         <div class="row">
             <div *ngFor="let boleta of boletas" class="font-weight-bold col">
-                <div class="font-weight-bold"> Cliente : <b class="text-success">{{boleta.nombreCliente }} </b></div>
+                <div class="font-weight-bold"> Cliente : <b class="text-success">{{boleta.cliente.nombre }} </b></div>
                 <div class="font-weight-bold">Total: <b class="text-danger">{{boleta.montoCobrado |
                         currency:'CLP':'symbol-narrow'}}</b>
     
     
                     <div class="text-primary font-weight-bold" *ngFor="let orden of boleta.ordenes">
-                        {{orden.TrabajadoraNombre}} <b class="text-danger"> {{orden.ValorServicio |
+                        {{orden.trabajadora.nombre}} <b class="text-danger"> {{orden.servicio.valor |
                             currency:'CLP':'symbol-narrow'}}</b>
-                        <div class="text-dark">-> {{orden.ServicioDescripcion}}</div>
+                        <div class="text-dark">-> {{orden.servicio.descripcion}}</div>
                     </div>
                     <div class="container pull-right ">
     
@@ -62,15 +62,15 @@
        
             <div class="card col-sm" *ngFor="let boleta of boletas" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title font-weight-bold">Cliente : {{boleta.nombreCliente }}</h5>
+                    <h5 class="card-title font-weight-bold">Cliente : {{boleta.cliente.nombre }}</h5>
                     <h6 class="card-subtitle mb-2 font-weight-bold">Total: {{boleta.montoCobrado |
                         currency:'CLP':'symbol-narrow'}}</h6>
                     <ng-container *ngFor="let orden of boleta.ordenes">
-                        <div class="card-text font-weight-bold text-primary" > {{orden.TrabajadoraNombre}}<b class="text-danger">
-                             {{orden.ValorServicio
+                        <div class="card-text font-weight-bold text-primary" > {{orden.trabajadora.nombre}}<b class="text-danger">
+                             {{orden.servicio.valor
                                 |
                                 currency:'CLP':'symbol-narrow'}}</b></div>
-                        <div class="card-text font-weight-bold text-secondary" > -> {{orden.ServicioDescripcion}}</div>
+                        <div class="card-text font-weight-bold text-secondary" > -> {{orden.servicio.descripcion}}</div>
 
                     </ng-container>
                     <footer >

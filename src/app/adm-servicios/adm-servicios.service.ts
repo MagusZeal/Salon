@@ -8,14 +8,14 @@ export class AdmServiciosService {
 
   constructor(private http:HttpClient) { }
 
-  async obtenerServicios(){
+ async obtenerServicios(){
 
     return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/servicios.json?').toPromise();
   }
 
-  async obtenerCategorias(){
+  obtenerCategorias(){
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/categorias.json?').toPromise();
+    return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/categorias.json?');
     
   }
 

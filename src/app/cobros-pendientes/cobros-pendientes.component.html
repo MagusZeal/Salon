@@ -7,14 +7,15 @@
 <div class="container">
     <div class="row">
         <div *ngFor="let boleta of boletas;index as i" class="font-weight-bold col">
-            <div class="font-weight-bold"> Cliente : <b class="text-success">{{boleta.nombreCliente }} </b></div>
+           
+            <div class="font-weight-bold"> Cliente : <b class="text-success">{{boleta.cliente.nombre}} </b></div>
             <div class="font-weight-bold">Total: <b class="text-danger">{{boleta.total |
                     currency:'CLP':'symbol-narrow'}}</b>
 
 
                 <div class="text-primary font-weight-bold" *ngFor="let orden of boleta.ordenes">
-                    {{orden.TrabajadoraNombre}}
-                    <div class="text-dark"> {{orden.ServicioDescripcion}}</div>
+                    {{orden.trabajadora.nombre}} - ${{orden.servicio.valor}}
+                    <div class="text-dark"> {{orden.servicio.descripcion}}</div>
                 </div>
                 <div class="container pull-right ">
 
@@ -47,7 +48,7 @@
             <div class="modal-body" *ngIf="boletaSeleccionada">
                 <div class="form-group label-floating">
                     <label class="control-label">Nombre Cliente</label>
-                    <input required type="text" [(ngModel)]="boletaSeleccionada['nombreCliente']" readonly="true" class="form-control">
+                    <input required type="text" [(ngModel)]="boletaSeleccionada.cliente.nombre" readonly="true" class="form-control">
 
 
                 </div>
@@ -55,7 +56,7 @@
 
                 <div class="form-group label-floating">
                     <label class="control-label">Total a Pagar </label>
-                    <input required type="text" [(ngModel)]="boletaSeleccionada['total']" readonly="true" class="form-control">
+                    <input required type="text" [(ngModel)]="boletaSeleccionada.total" readonly="true" class="form-control">
 
                 </div>
 
@@ -142,13 +143,13 @@
                     <b>Desea eliminar esta orden?</b>
                     <hr>
                     <div *ngIf="boletaSeleccionada">
-                        <div class="font-weight-bold"> Cliente : <b class="text-success">{{boletaSeleccionada.nombreCliente
+                        <div class="font-weight-bold"> Cliente : <b class="text-success">{{boletaSeleccionada.cliente.nombre
                                 }} </b></div>
                         <div class="font-weight-bold">Total: <b class="text-danger">{{boletaSeleccionada.total |
                                 currency:'CLP':'symbol-narrow'}}</b>
                             <div class="text-primary font-weight-bold" *ngFor="let orden of boletaSeleccionada.ordenes">
-                                {{orden.TrabajadoraNombre}}
-                                <div class="text-dark"> {{orden.ServicioDescripcion}}</div>
+                                    {{orden.trabajadora.nombre}} - ${{orden.servicio.valor}}
+                                    <div class="text-dark"> {{orden.servicio.descripcion}}</div>
                             </div>
                         </div>
                     </div>

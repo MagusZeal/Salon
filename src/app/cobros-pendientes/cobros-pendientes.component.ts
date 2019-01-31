@@ -8,9 +8,9 @@ import { log } from 'util';
 })
 export class CobrosPendientesComponent implements OnInit {
 
-  boletas: any[] = [];
+  boletas: IBoleta[] = [];
   botones: any[] = [];
-  boletaSeleccionada: any;
+  boletaSeleccionada:IBoleta;
   checkboxes: any[] = [];
   botonSeleccionado: string;
   montoPrincipal: number;
@@ -37,10 +37,15 @@ export class CobrosPendientesComponent implements OnInit {
       { "nombre": "Gift Card", "enabled": false, "valor":false },
       { "nombre": "Efectivo", "enabled": false, "valor":false }
     ]
-    this.CobroPendiente.obtenerBoletas().subscribe(o => this.mapearObjetosArray(o));
+   await this.CobroPendiente.obtenerBoletas().subscribe(o => {
+   
+      this.mapearObjetosArray(o)
+      
+    });
 
+
+  
   }
-
  
   mapearObjetosArray(objeto) {
 
@@ -80,11 +85,10 @@ this.modalDescripcionError="";
       return;
   }
   
-   var jornada ={
+   var jornada:IJornada ={
     
-    pagado:true,
-    nombreCliente:this.boletaSeleccionada.nombreCliente,
-    fechaPago:new Date().toLocaleString(),
+    
+    fecha:this.boletaSeleccionada.fecha,
     formaDePagoPrincipal:this.botonSeleccionado,
     montoPrincipal:this.montoPrincipal,
     montoDescuento:this.montoDescuento,
@@ -92,7 +96,8 @@ this.modalDescripcionError="";
     montoGiftCard:this.montoGiftCard,
     montoCobrado:this.boletaSeleccionada.total,
     ordenes:this.boletaSeleccionada.ordenes,
-    montoVuelto:this.montoVuelto
+    montoVuelto:this.montoVuelto,
+    cliente:this.boletaSeleccionada.cliente
       };
       document.getElementById("cerrarModal").click();
       document.getElementById("LinkServicios").click();
@@ -113,6 +118,7 @@ this.CobroPendiente.eliminarBoleta(this.boletaSeleccionada['idBoleta']).subscrib
 
 }
   calcularVuelto(){
+    
     this.montoDescuento = this.checkboxes[0].valor ? this.montoDescuento : NaN;
     this.montoGiftCard = this.checkboxes[1].valor ? this.montoGiftCard : NaN;
     this.montoEfectivo = this.checkboxes[2].valor ? this.montoEfectivo : NaN;
@@ -126,7 +132,7 @@ this.CobroPendiente.eliminarBoleta(this.boletaSeleccionada['idBoleta']).subscrib
   }
 
   seleccionarBoletaBorrar(boleta) {
-
+     
     this.boletaSeleccionada = boleta;
   }
 

@@ -1,6 +1,6 @@
 interface IBoleta {
     cliente: ICliente;
     total: number;
-    fecha: Date;
-    ordenes: IOrden;
+    fecha: string;
+    ordenes: IOrden[];
 }
