@@ -6,6 +6,8 @@ export function forbiddenNameValidator(servicios :IServicio[]): ValidatorFn {
       let forbidden=[];  
       if(servicios && servicios.length >0){
       forbidden = servicios.filter(o=>o.descripcion==control.value);
+     
+      
       return forbidden.length >0 ? {'forbiddenName': {value: control.value}} : null;}
     };
   }
