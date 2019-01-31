@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ListaServiciosService } from '../lista-servicios/lista-servicios.service';
 import { NgForm } from '@angular/forms';
+import { AsignarServiciosService } from '../componentes/modal-asignar-servicios/asignar-servicios.service';
 
 @Component({
   selector: 'app-lista-servicios',
@@ -12,18 +13,18 @@ export class ListaServiciosComponent implements OnInit {
   categorias: ICategoria[] = [];
   servicios: IServicio[] = [];
   serviciosSeleccionados: IServicio[] = [];
-  precioTotal: number = 0;
+  precioTotal = 0;
   trabajadoras: ITrabajadora[] = [];
   clientes: ICliente[] = [];
   clienteFiltrado: string;
   nombresClientes: string[] = [];
   serviciosNuevos: any[] = [];
-  trabajadoraSeleccionada:ITrabajadora[]=[];
+  trabajadoraSeleccionada: ITrabajadora[] = [];
   ordenes: IOrden[] = [];
   dias: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
   meses: any[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-  constructor(private ListaServicio: ListaServiciosService) { }
+  constructor(private ListaServicio: ListaServiciosService, private asignarServiciosService: AsignarServiciosService) { }
 
   async ngOnInit() {
     this.ListaServicio.obtenerCategorias().subscribe(o => this.categorias = o)
@@ -73,22 +74,6 @@ export class ListaServiciosComponent implements OnInit {
     }
   }
 
-  async asignarServicios() {
-
-
-
-    var boleta:IBoleta = {
-      cliente: this.filtrarCliente(),
-      total: this.precioTotal,
-      fecha: (new Date().toLocaleString()).toString(),
-      ordenes: this.ordenes
-    }
-
-    await this.ListaServicio.agregarBoleta(boleta);
-
-    document.getElementById("LinkCobros").click();
-
-  }
 
 
   async agregarCliente(f: NgForm) {
@@ -112,19 +97,16 @@ export class ListaServiciosComponent implements OnInit {
   // }
   //   }}
 
-  asignarServicioTrabajadora(servicio, i) {
 
-    this.ordenes[i] = {
-      'servicio':{ descripcion: servicio.descripcion,
-        categoria: servicio.categoria,
-        valor: servicio.valor},
-      'trabajadora': this.trabajadoraSeleccionada[i]
-    }
 
-  }
 
-  filtrarCliente(): ICliente {
 
-    return this.clientes.find(o => o.nombre.includes(this.clienteFiltrado.trim()));
+  abrirModalServicios() {
+    this.asignarServiciosService.show({
+      trabajadoras: this.trabajadoras,
+      servicios: this.serviciosSeleccionados,
+      nombresClientes: this.nombresClientes,
+      clientes: this.clientes
+    });
   }
 }

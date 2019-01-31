@@ -1,0 +1,59 @@
+<!-- Modal -->
+<button hidden type="button" class="btn btn-primary" id="showModalButton" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+  </button>
+<div *ngIf="trabajadoras">
+
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+
+
+
+      <div class="modal-body">
+        <div class="row">
+
+          <div class="col" [ngStyle]="{'font-weight': 'bold'}">Servicio</div>
+          <div class="col" [ngStyle]="{'font-weight': 'bold'}">Profesional</div>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <hr>
+        <ng-container *ngFor="let servicio of servicios; let i = index">
+          <div class="row">
+            <div class="col" [ngStyle]="{'font-weight': 'bold'}"> {{servicio.descripcion}} </div>
+            <select [(ngModel)]="trabajadoraSeleccionada[i]" #trabajadora class="form-control col" id="exampleFormControlSelect2" (change)="asignarServicioTrabajadora(servicio, i)" >
+              <ng-container *ngFor="let trabajadora of trabajadoras" >
+                <ng-container *ngFor="let categoriatrabajadora of trabajadora.categoriaTrabajadora">
+                <option  *ngIf="categoriatrabajadora.categoria==servicio.categoria"
+                  [ngValue]="trabajadora">{{trabajadora.nombre}}</option>
+                </ng-container>
+              </ng-container>
+
+            </select>
+
+          </div>
+          <hr>
+
+        </ng-container>
+        <div class="col" [ngStyle]="{'font-weight': 'bold'}">
+          Asignar Cliente:
+          <input list="clientes"  [(ngModel)]="clienteFiltrado" [typeahead]="nombresClientes">
+
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" [ngStyle]="{'font-weight': 'bold'}" class="btn btn-primary col" (click)="asignarServicios()"
+            data-dismiss="modal">Asignar Servicios</button>
+          <nav>
+            <a routerLink="/CobrosPendientes" id="LinkCobros" routerLinkActive="active" hidden></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
