@@ -9,6 +9,7 @@ import { CajaService } from '../caja/caja.service';
 export class CajaComponent implements OnInit {
 
   boletas: any[] =[];
+  boletasFiltradas : any[]=[];
   boletaSeleccionada: any;
   resumenDia = {
 
@@ -54,7 +55,7 @@ export class CajaComponent implements OnInit {
 
 console.log(this.boletas);
 
-let d = 1;
+this.boletasFiltradas = this.boletas;
     
   }
 
@@ -124,6 +125,11 @@ let d = 1;
   }
 
  
-
+  filtrarNombre(filtro: string){
+    console.log(filtro);
+    
+        this.boletasFiltradas = this.boletas.filter(o=>o.cliente.nombre.toLocaleLowerCase().includes(filtro.toLocaleLowerCase( )))
+    
+      }
 
 }

@@ -25,6 +25,9 @@
         <ng-template ngbTabTitle><b>Ventas totales</b></ng-template>
         <ng-template ngbTabContent>
             <br>
+
+            <div>Ganancia en serivicios: {{resumenDia.totalConBase}}</div>
+
             <div class="row">
                 <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Total</div>
                 <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Servicios</div>
@@ -131,7 +134,7 @@
 
                         <ng-container *ngFor="let boleta of boletas">
                             <tr *ngFor="let orden of boleta.ordenes">
-                                <ng-container *ngIf="orden.TrabajadoraNombre == trabajadoraSeleccionada.name">
+                                <ng-container *ngIf="orden.trabajadora.nombre == trabajadoraSeleccionada.nombre">
                                     <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.servicio.descripcion}}</td>
                                     <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.trabajadora.nombre}}</td>
                                     <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.servicio.valor}}</td>
@@ -158,6 +161,7 @@
                         <tr>
                             <td class="text-center bg-primary font-weight-bold border border-dark text-white">Fecha</td>
                             <th class="text-center bg-primary font-weight-bold border border-dark text-white">Ganancia</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Sin SueldoBase</th>
                             <th class="text-center bg-primary font-weight-bold border border-dark text-white">N°Serv</th>
                         </tr>
                     </thead>
@@ -167,6 +171,7 @@
                             <tr>
                                 <ng-container>
                                     <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.fecha}}</td>
+                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.valorDia}}</td>
                                     <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.valor}}</td>
                                     <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.cantidadServicios}}</td>
 

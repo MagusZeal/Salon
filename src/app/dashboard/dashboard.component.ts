@@ -49,13 +49,13 @@ export class DashboardComponent implements OnInit {
 
 
   trabajadorasDropdown(objeto) {
-    this.trabajadoraDrop.push({  nombre: "TODAS LAS TRABAJADORAS" })
+    this.trabajadoraDrop.push({ nombre: "TODAS LAS TRABAJADORAS" })
     for (var i in objeto) {
 
-      
 
-        this.trabajadoraDrop.push(objeto[i]);
-     
+
+      this.trabajadoraDrop.push(objeto[i]);
+
 
     }
   }
@@ -110,65 +110,73 @@ export class DashboardComponent implements OnInit {
     } else {
       this.tablaSueldoCheckbox = true;
       this.dineroGanado(this.boletas);
-     
-      for (var k in this.sueldo2) {
 
-     
+      for (var k in this.sueldo2) {
+        this.sueldo.ganancia += this.sueldo2[k].valorDia;
       }
-    console.log(this.sueldo2);
 
     }
+    console.log(this.sueldo.ganancia);
+
   }
 
 
   dineroGanado(objeto) {
 
-    console.log(this.trabajadoraSeleccionada['nombre']);
-    
     if (this.trabajadoraSeleccionada['nombre'] != 'TODAS LAS TRABAJADORAS') {
       for (var i in objeto) {
 
 
-      
-        console.log(objeto[i]);
+
+
         for (var z in objeto[i].ordenes) {
-          console.log(objeto[i].ordenes[z].trabajadora.nombre);
-          console.log(objeto[i].ordenes[z].trabajadora.categoriaTrabajadora.find(o=>o.categoria === objeto[i].ordenes[z].servicio.categoria).porcentaje);
-          
+
+
+
           if (this.trabajadoraSeleccionada['nombre'] == objeto[i].ordenes[z].trabajadora.nombre) {
+
+
             if (!this.sueldo2.find(o => o.fecha === objeto[i].fecha.substring(0, 10))) {
-              this.sueldo2.push({ fecha: objeto[i].fecha.substring(0, 10), valor: 0, cantidadServicios:0 });
+              this.sueldo2.push({ fecha: objeto[i].fecha.substring(0, 10), valor: 0, cantidadServicios: 0, valorDia: 0 });
             }
+
+
             this.serviciosRealizados.push(objeto[i].ordenes[z]);
+
             this.sueldo.total += objeto[i].ordenes[z].servicio.valor;
+
             this.sueldo.cantidadServicios += + 1;
-            console.log(objeto[i].ordenes[z]);
-            
+
+
             for (var k in this.sueldo2) {
 
-              
-              if (this.sueldo2[k].valor <= objeto[i].ordenes[z].trabajadora.sueldoBase) {
-
-                this.sueldo2[k].valor= objeto[i].ordenes[z].trabajadora.sueldoBase;
-                this.sueldo.ganancia +=this.sueldo2[k].valor;
-              }else {
-                this.sueldo.ganancia +=this.sueldo2[k].valor;
-              }
-
-
               if (this.sueldo2[k].fecha == objeto[i].fecha.substring(0, 10)) {
-                this.sueldo2[k].cantidadServicios +=  +1;
-                this.sueldo2[k].valor += objeto[i].ordenes[z].servicio.valor * 
-                (objeto[i].ordenes[z].trabajadora.categoriaTrabajadora.find(o=>o.categoria === objeto[i].ordenes[z].servicio.categoria).porcentaje) * 0.01;
-                console.log(this.sueldo2[k].valor);
-                
+                this.sueldo2[k].cantidadServicios += +1;
+                this.sueldo2[k].valor += objeto[i].ordenes[z].servicio.valor *
+                  (objeto[i].ordenes[z].trabajadora.categoriaTrabajadora.find(o => o.categoria === objeto[i].ordenes[z].servicio.categoria).porcentaje) * 0.01;
+
+                if (this.sueldo2[k].valor <= objeto[i].ordenes[z].trabajadora.sueldoBase) {
+
+                  this.sueldo2[k].valorDia = objeto[i].ordenes[z].trabajadora.sueldoBase;
+
+
+                }else{
+
+                  this.sueldo2[k].valorDia= this.sueldo2[k].valor;
+                }
+
               }
+
+
+
+
+
             }
 
           }
         }
       }
-      
+
 
     }
   }
@@ -220,6 +228,9 @@ export class DashboardComponent implements OnInit {
       }
       for (var z in boleta[i].ordenes) {
         this.resumenDia.serviciosRealizados += + 1;
+       this.resumenDia.totalConBase += boleta[i].ordenes[z].servicio.valor * 
+       (((boleta[i].ordenes[z].trabajadora.categoriaTrabajadora.find(o => o.categoria === boleta[i].ordenes[z].servicio.categoria).porcentaje)-100)*(-0.01));
+      
       }
     }
   }

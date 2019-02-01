@@ -24,11 +24,16 @@
         </tbody>
     </table>
 </div>
-
+<div class="container">
+<input type="text" class="form-control" placeholder="Buscar Clientes..." (keyup)="filtrarNombre(inputFiltro.value)"
+          #inputFiltro>
+        </div>
+        <br>
 <!-- div boletas -->
+<!-- 
 <div class="container">
         <div class="row">
-            <div *ngFor="let boleta of boletas" class="font-weight-bold col">
+            <div *ngFor="let boleta of boletas" class="font-weight-bold">
                 <div class="font-weight-bold"> Cliente : <b class="text-success">{{boleta.cliente.nombre }} </b></div>
                 <div class="font-weight-bold">Total: <b class="text-danger">{{boleta.montoCobrado |
                         currency:'CLP':'symbol-narrow'}}</b>
@@ -44,9 +49,9 @@
                         <div class="btn-group btn-group-sm  ">
                             <button type="button" class="btn btn-danger font-weight-bold" (click)="seleccionarBoleta(boleta)"
                                 data-toggle="modal" data-target="#BorrarModal">Borrar</button>
-                            <!-- <button type="button" class="btn btn-primary font-weight-bold" (click)="seleccionarBoleta(boleta)"
+                            <button type="button" class="btn btn-primary font-weight-bold" (click)="seleccionarBoleta(boleta)"
                                 data-toggle="modal" data-target="#VerBoletaModal">Ver Boleta</button>
-                            -->
+                           
     
                         </div>
                     </div>
@@ -56,11 +61,12 @@
             </div>
         </div>
     </div>
+      -->
 <!-- Card -->
 <div class="container">
-    <div class="row">
+    <div class="row col">
        
-            <div class="card col-sm" *ngFor="let boleta of boletas" style="width: 18rem;">
+            <div class="card" *ngFor="let boleta of boletasFiltradas" style="width: 15rem;">
                 <div class="card-body">
                     <h5 class="card-title font-weight-bold">Cliente : {{boleta.cliente.nombre }}</h5>
                     <h6 class="card-subtitle mb-2 font-weight-bold">Total: {{boleta.montoCobrado |
@@ -99,52 +105,13 @@
                     <b>Desea eliminar esta boleta?</b>
                     <hr>
                     <div *ngIf="boletaSeleccionada">
-                        <div class="font-weight-bold"> Cliente : <b class="text-success">{{boletaSeleccionada.nombreCliente
+                        <div class="font-weight-bold"> Cliente : <b class="text-success">{{boletaSeleccionada.cliente.nombre
                                 }} </b></div>
                         <div class="font-weight-bold">Total: <b class="text-danger">{{boletaSeleccionada.montoCobrado |
                                 currency:'CLP':'symbol-narrow'}}</b>
                             <div class="text-primary font-weight-bold" *ngFor="let orden of boletaSeleccionada.ordenes">
-                                {{orden.TrabajadoraNombre}}
-                                <div class="text-dark"> {{orden.ServicioDescripcion}}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger" (click)="borrarBoleta(boletaSeleccionada)"
-                            data-dismiss="modal">Borrar</button>
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal Ver Boleta -->
-<div class="modal fade bd-example-modal-lg" id="VerBoletaModal" tabindex="-1" role="dialog" aria-labelledby="VerBoletaModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="VerBoletaModalLabel">Ver boleta</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <b>Desea eliminar esta orden?</b>
-                    <hr>
-                    <div *ngIf="boletaSeleccionada">
-                        <div class="font-weight-bold"> Cliente : <b class="text-success">{{boletaSeleccionada.nombreCliente
-                                }} </b></div>
-                        <div class="font-weight-bold">Total: <b class="text-danger">{{boletaSeleccionada.montoCobrado
-                                |
-                                currency:'CLP':'symbol-narrow'}}</b>
-                            <div class="text-primary font-weight-bold" *ngFor="let orden of boletaSeleccionada.ordenes">
-                                {{orden.TrabajadoraNombre}}
-                                <div class="text-dark"> {{orden.ServicioDescripcion}}</div>
+                                {{orden.trabajadora.nombre}}
+                                <div class="text-dark">  {{orden.servicio.descripcion}}</div>
                             </div>
                         </div>
                     </div>
