@@ -23,7 +23,7 @@ export class CobrosPendientesComponent implements OnInit {
   constructor(private CobroPendiente: CobrosPendientesService) { }
 
   async ngOnInit() {
- 
+
     this.boletas = [];
     this.botones = [
       { "nombre": "Efectivo" },
@@ -102,7 +102,11 @@ this.modalDescripcionError="";
       document.getElementById("cerrarModal").click();
       document.getElementById("LinkServicios").click();
       
-this.CobroPendiente.agregarJornada(new Date().toLocaleString().substring(0,10),jornada);
+     
+
+     var a =this.boletaSeleccionada.fecha.substring(6 ,10) + this.boletaSeleccionada.fecha.substring(3,5)+this.boletaSeleccionada.fecha.substring(0,2)  ;
+      
+this.CobroPendiente.agregarJornada(a,jornada);
 this.CobroPendiente.eliminarBoleta(this.boletaSeleccionada['idBoleta']).subscribe();
 
 

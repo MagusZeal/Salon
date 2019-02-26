@@ -68,20 +68,33 @@
         <form *ngIf="clienteForm" [formGroup]="clienteForm">
           <div class="form-group">
             <label for="nombre">Nombre (*Requerido)</label>
-            <input type="text" class="form-control is-invalid" id="nombre" placeholder="Ingrese Nombre" formControlName="nombre">
-          </div>
-          <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="alert alert-danger">
-
-            <div *ngIf="nombre.errors.required">
+            <input type="text" class="form-control is-invalid" id="nombre" placeholder="Ingrese Nombre" formControlName="nombre"
+            [ngClass]="{ 'is-invalid':  clienteForm.get('nombre').invalid && (clienteForm.get('nombre').dirty || clienteForm.get('nombre').touched)
+            ,'is-valid':(clienteForm.get('nombre').dirty || clienteForm.get('nombre').touched) && clienteForm.get('nombre').valid }">
+         
+          <div class="invalid-feedback" >
+            <div *ngIf="clienteForm.get('nombre').errors?.required">
               Nombre es requerido.
             </div>
-            <div *ngIf="nombre.errors.minlength">
-              Nombre debe tener al menos 2 letras.
+          </div>
+          <div class="invalid-feedback">
+            <div *ngIf="clienteForm.get('nombre').errors?.minlength">
+              Nombre debe tener al menos 2 caracteres.
             </div>
-            <div *ngIf="nombre.errors.forbiddenName">
+          </div>
+          <div class="invalid-feedback">
+            <div *ngIf="clienteForm.get('nombre').errors?.forbiddenName">
               Nombre ocupado.
             </div>
           </div>
+
+          <div  class="valid-feedback">
+            <div >
+              Nombre de servicio válido !</div>
+          </div>
+        </div>  
+
+
           <div class="form-group">
             <label for="exampleInputEmail1">Email</label>
             <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="ejemplo@salon.cl"
@@ -137,21 +150,31 @@
         <form *ngIf="clienteForm" [formGroup]="clienteForm">
           <div class="form-group">
             <label for="nombre">Nombre (*Requerido)</label>
-            <input type="text" class="form-control" id="nombre" placeholder="Ingrese Nombre" formControlName="nombre"
-              [ngClass]="{ 'is-invalid':nombre.invalid && (nombre.dirty || nombre.touched)}">
-          </div>
-          <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback">
-
-            <div *ngIf="nombre.errors.required">
+            <input type="text" class="form-control is-invalid" id="nombre" placeholder="Ingrese Nombre" formControlName="nombre"
+            [ngClass]="{ 'is-invalid':  clienteForm.get('nombre').invalid && (clienteForm.get('nombre').dirty || clienteForm.get('nombre').touched)
+            ,'is-valid':(clienteForm.get('nombre').dirty || clienteForm.get('nombre').touched) && clienteForm.get('nombre').valid }">
+         
+          <div class="invalid-feedback" >
+            <div *ngIf="clienteForm.get('nombre').errors?.required">
               Nombre es requerido.
             </div>
-            <div *ngIf="nombre.errors.minlength">
-              Nombre debe tener al menos 2 letras.
+          </div>
+          <div class="invalid-feedback">
+            <div *ngIf="clienteForm.get('nombre').errors?.minlength">
+              Nombre debe tener al menos 2 caracteres.
             </div>
-            <div *ngIf="nombre.errors.forbiddenName">
+          </div>
+          <div class="invalid-feedback">
+            <div *ngIf="clienteForm.get('nombre').errors?.forbiddenName">
               Nombre ocupado.
             </div>
           </div>
+
+          <div  class="valid-feedback">
+            <div >
+              Nombre de servicio válido !</div>
+          </div>
+        </div>  
           <div class="form-group">
             <label for="exampleInputEmail1">Telefono</label>
             <input type="number" class="form-control" id="numero" placeholder="56987187361" formControlName="numero">

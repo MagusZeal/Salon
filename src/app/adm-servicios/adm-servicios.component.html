@@ -8,7 +8,7 @@
 
       <div class="row">
 
-        <input type="text" class="form-control" placeholder="Buscar Clientes..." (keyup)="filtrarNombre(inputFiltro.value)"
+        <input type="text" class="form-control" placeholder="Buscar Servicios..." (keyup)="filtrarNombre(inputFiltro.value)"
           #inputFiltro>
 
         <div class=" table-responsive">
@@ -43,8 +43,9 @@
                   <td>
                     <div>
                       <button type="button" class="btn-sm btn-primary " data-toggle="modal" data-target="#EditarModal"
-                        (click)="seleccionarCliente(cliente)">Editar</button>
-                      <button type="button" class="btn-sm btn-warning " (click)="borrarServicio(servicio)">Eliminar</button>
+                        (click)="editarServicio(servicio)">Editar</button>
+                      <button type="button" class="btn-sm btn-warning " data-toggle="modal" data-target="#BorrarModal"
+                        (click)="seleccionarServicioBorrar(servicio)">Eliminar</button>
                     </div>
                   </td>
                 </tr>
@@ -66,7 +67,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="AgregarServicioModalLabel">Agregar Servicio</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" id="closeAgregar" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -80,7 +81,7 @@
               formControlName="descripcion" [ngClass]="{ 'is-invalid':  servicioForm.get('descripcion').invalid && (servicioForm.get('descripcion').dirty || servicioForm.get('descripcion').touched)
             ,'is-valid':(servicioForm.get('descripcion').dirty || servicioForm.get('descripcion').touched) && servicioForm.get('descripcion').valid }">
 
-            <div class="invalid-feedback" >
+            <div class="invalid-feedback">
               <div *ngIf="servicioForm.get('descripcion').errors?.required">
                 Nombre de servicio es requerido.
               </div>
@@ -96,8 +97,8 @@
               </div>
             </div>
 
-            <div  class="valid-feedback">
-              <div >
+            <div class="valid-feedback">
+              <div>
                 Nombre de servicio válido !</div>
             </div>
           </div>
@@ -129,7 +130,7 @@
           <div class="form-group">
             Categoria
             <div class="form-control ">
-              <select id="categoria"  formControlName="categoria" >
+              <select id="categoria" formControlName="categoria">
                 <ng-container *ngFor="let cat of categorias">
                   <option>{{cat.nombre}}</option>
 
@@ -140,9 +141,9 @@
 
 
           </div>
-       
+
           <button class="btn btn-danger">Agregar</button>
-          <button type="button" class="btn btn-primary"  data-dismiss="modal">Salir</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Salir</button>
 
         </form>
 
@@ -152,3 +153,130 @@
     </div>
   </div>
 </div>
+
+
+<!-- Modal EditarServicio -->
+<div class="modal fade bd-example-modal-lg" id="EditarModal" tabindex="-1" role="dialog" aria-labelledby="EditarModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="EditarModalLabel">Editar Servicio</h5>
+        <button type="button" id="closeEditar" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Form editarServicioForm -->
+        <form *ngIf="editarServicioForm" [formGroup]="editarServicioForm" (ngSubmit)="editarServicioModificado()">
+          <div class="form-group">
+            <label for="descripcion">Nombre del servicio</label>
+            <input type="text" class="form-control is-invalid " id="descripcion" placeholder="Ingrese nombre del servicio"
+              formControlName="descripcion" [ngClass]="{ 'is-invalid':  editarServicioForm.get('descripcion').invalid && (editarServicioForm.get('descripcion').dirty || editarServicioForm.get('descripcion').touched)
+            ,'is-valid':(editarServicioForm.get('descripcion').dirty || editarServicioForm.get('descripcion').touched) && editarServicioForm.get('descripcion').valid }">
+
+            <div class="invalid-feedback">
+              <div *ngIf="editarServicioForm.get('descripcion').errors?.required">
+                Nombre de servicio es requerido.
+              </div>
+            </div>
+            <div class="invalid-feedback">
+              <div *ngIf="editarServicioForm.get('descripcion').errors?.minlength">
+                Nombre debe tener al menos 2 caracteres.
+              </div>
+            </div>
+            <div class="invalid-feedback">
+              <div *ngIf="editarServicioForm.get('descripcion').errors?.forbiddenName">
+                Nombre ocupado.
+              </div>
+            </div>
+
+            <div class="valid-feedback">
+              <div>
+                Nombre de servicio válido !</div>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="exampleInputEmail1">Precio del servicio</label>
+            <input type="number" class="form-control is-invalid " id="valor" placeholder="Numeros sin putos ni signos"
+              formControlName="valor" [ngClass]="{ 'is-invalid':  editarServicioForm.get('valor').invalid && (editarServicioForm.get('valor').dirty || editarServicioForm.get('valor').touched)
+              ,'is-valid':(editarServicioForm.get('valor').dirty || editarServicioForm.get('valor').touched) && editarServicioForm.get('valor').valid }">
+            <div class="invalid-feedback">
+              <div *ngIf="editarServicioForm.get('valor').errors?.required">
+                Precio de servicio es requerido.
+              </div>
+            </div>
+            <div class="invalid-feedback">
+              <div *ngIf="editarServicioForm.get('valor').errors?.min">
+                Precio debe ser mayor a 99 pesos.
+              </div>
+            </div>
+            <div class="valid-feedback">
+              <div>
+                Precio válido !</div>
+            </div>
+          </div>
+
+
+
+          <div class="form-group">
+            Categoria
+            <div class="form-control ">
+              <select id="categoria" formControlName="categoria">
+
+                <option *ngFor="let cat of categorias" [ngValue]="cat.nombre">{{cat.nombre}}</option>
+
+              </select>
+
+            </div>
+
+
+          </div>
+
+          <button class="btn btn-danger">Editar Servicio</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Salir</button>
+
+        </form>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Borrar -->
+<div class="modal fade bd-example-modal-lg" id="BorrarModal" tabindex="-1" role="dialog" aria-labelledby="BorrarModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="BorrarModalLabel">Borrar Servicio</h5>
+        <button type="button" id="closeBorrar" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <b>Desea eliminar este servicio?</b>
+          <hr>
+          <div *ngIf="servicioSeleccionado">
+            <div class="font-weight-bold">Descripcion: <b class="text-primary">{{servicioSeleccionado.descripcion}} </b></div>
+            <div class="font-weight-bold">Valor: <b class="text-danger">{{servicioSeleccionado.valor |
+                currency:'CLP':'symbol-narrow'}}</b>
+                <div class="font-weight-bold">Categoría : <b class="text-success">{{servicioSeleccionado.categoria}} </b></div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger" (click)="borrarServicio(servicioSeleccionado)" data-dismiss="modal">Borrar</button>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>

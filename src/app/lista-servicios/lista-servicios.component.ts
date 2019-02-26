@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ListaServiciosService } from '../lista-servicios/lista-servicios.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormControl } from '@angular/forms';
 import { AsignarServiciosService } from '../componentes/modal-asignar-servicios/asignar-servicios.service';
 
 @Component({
@@ -23,10 +23,11 @@ export class ListaServiciosComponent implements OnInit {
   ordenes: IOrden[] = [];
   dias: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
   meses: any[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-
+  categoriaSeleccion = new FormControl('TODAS LAS CATEGORIAS');
   constructor(private ListaServicio: ListaServiciosService, private asignarServiciosService: AsignarServiciosService) { }
 
   async ngOnInit() {
+   
     this.ListaServicio.obtenerCategorias().subscribe(o => this.categorias = o)
     this.ListaServicio.obtenerServicios().subscribe(o => {
       this.servicios = Object.values(o);
@@ -102,6 +103,8 @@ export class ListaServiciosComponent implements OnInit {
 
 
   abrirModalServicios() {
+ 
+
     this.asignarServiciosService.show({
       trabajadoras: this.trabajadoras,
       servicios: this.serviciosSeleccionados,

@@ -3,9 +3,11 @@
     Total {{precioTotal | currency:'CLP':'symbol-narrow'}}
   </div>
   Filtrar por categoría:
-  <select class="form-control" id="exampleFormControlSelect1">
+  <select class="form-control" id="exampleFormControlSelect1" [formControl]="categoriaSeleccion">
+    <option>TODAS LAS CATEGORIAS</option>
     <ng-container *ngFor="let categoria of categorias">
-      <option value="">{{categoria.nombre}}</option>
+
+      <option >{{categoria.nombre}}</option>
     </ng-container>
 
   </select>
@@ -14,7 +16,7 @@
     Precio Variable
   </button>
 
-  <button type="button" class="btn btn-primary"  (click)="abrirModalServicios()">
+  <button type="button" class="btn btn-primary" (click)="abrirModalServicios()">
     Asignar Servicios
   </button>
   <button type="button" class="btn btn-success" data-toggle="modal" data-target="#clientesModal">
@@ -28,8 +30,8 @@
   <div class="row">
     <ng-container *ngFor="let servicio of servicios">
 
-      <div [ngStyle]="{'color':'#d84343' ,  'font-weight': 'bold','background-color':servicio.seleccionado}" class="col-sm-4 float-right"
-        (click)="seleccionarServicio(servicio)">
+      <div *ngIf="categoriaSeleccion.value == servicio.categoria || categoriaSeleccion.value == 'TODAS LAS CATEGORIAS' " [ngStyle]="{'color':'#d84343' ,  'font-weight': 'bold','background-color':servicio.seleccionado}"
+        class="col-sm-4 float-right" (click)="seleccionarServicio(servicio)">
         ${{servicio.valor}} <b [ngStyle]="{'color':servicio.seleccionado2,'text-overflow': 'ellipsis','width': '230px','overflow':'hidden', 'white-space': 'nowrap'}"
           class="float-left"> {{servicio.descripcion}} </b>
 

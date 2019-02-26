@@ -91,13 +91,18 @@ export class DashboardComponent implements OnInit {
 
     console.log(this.trabajadoraSeleccionada);
 
-    this.fechaInicio = this.lena((this.inicio['day'].toString())) + "-" +
-      this.lena((this.inicio['month'].toString())) + "-" +
-      this.inicio['year'].toString();
-    this.fechaTermino = this.lena((this.termino['day'].toString())) + "-" +
-      this.lena((this.termino['month'].toString())) + "-" +
-      this.termino['year'].toString();
+    console.log(this.inicio);
+    
+    this.fechaInicio =this.inicio['year'].toString()   +
+      this.lena((this.inicio['month'].toString()))  +
+      this.lena((this.inicio['day'].toString()));
+    this.fechaTermino = this.termino['year'].toString()   +
+    this.lena((this.termino['month'].toString()))  +
+    this.lena((this.termino['day'].toString()));
 
+      console.log(this.fechaInicio, "inicio");
+      console.log(this.fechaTermino, "termino");
+     
     this.jornadas = await Object.values(await this.Dashboard.obtenerJornadas(this.fechaInicio, this.fechaTermino));
     this.mapearObjetosArray(this.jornadas);
 
