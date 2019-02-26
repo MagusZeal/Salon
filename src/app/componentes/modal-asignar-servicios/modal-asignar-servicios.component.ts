@@ -38,7 +38,7 @@ export class ModalAsignarServiciosComponent implements OnInit {
     const boleta: IBoleta = {
       cliente: this.filtrarCliente(),
       total: this.ordenes.map(o => o.servicio.valor).reduce((a, b) => a + b),
-      fecha: (new Date().toLocaleString()).toString(),
+      fecha: (new Date().toLocaleString('es-CL')).toString(),
       ordenes: this.ordenes
     };
 

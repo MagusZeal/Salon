@@ -104,7 +104,7 @@ this.modalDescripcionError="";
       
      
 
-     var a =this.boletaSeleccionada.fecha.substring(6 ,10) + this.boletaSeleccionada.fecha.substring(3,5)+this.boletaSeleccionada.fecha.substring(0,2)  ;
+     var a =this.boletaSeleccionada.fecha.substring(6 ,10) + this.boletaSeleccionada.fecha.substring(3,5)+this.boletaSeleccionada.fecha.substring(0,2);
       
 this.CobroPendiente.agregarJornada(a,jornada);
 this.CobroPendiente.eliminarBoleta(this.boletaSeleccionada['idBoleta']).subscribe();
