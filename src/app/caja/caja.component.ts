@@ -47,7 +47,7 @@ export class CajaComponent implements OnInit {
 
     };
 
-    let c = new Date().toLocaleString();
+    let c = new Date().toLocaleString('es-CL');
     c = c.substring(6, 10) + c.substring(3, 5) + c.substring(0, 2);
 
 
