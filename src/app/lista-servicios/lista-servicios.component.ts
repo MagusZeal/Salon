@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ListaServiciosService } from '../lista-servicios/lista-servicios.service';
-import { NgForm, FormControl } from '@angular/forms';
-import { AsignarServiciosService } from '../componentes/modal-asignar-servicios/asignar-servicios.service';
+import { NgForm, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { ModalAsignarServiciosComponent } from '../componentes/modal-asignar-servicios/modal-asignar-servicios.component';
+import { ModalCambiarPrecioComponent } from '../componentes/modal-cambiar-precio/modal-cambiar-precio.component';
 
 @Component({
   selector: 'app-lista-servicios',
@@ -14,50 +16,66 @@ export class ListaServiciosComponent implements OnInit {
   servicios: IServicio[] = [];
   serviciosSeleccionados: IServicio[] = [];
   precioTotal = 0;
-  trabajadoras: ITrabajadora[] = [];
+
   clientes: ICliente[] = [];
   clienteFiltrado: string;
-  nombresClientes: string[] = [];
+  serviciosOriginales = [];
   serviciosNuevos: any[] = [];
-  trabajadoraSeleccionada: ITrabajadora[] = [];
+
   ordenes: IOrden[] = [];
   dias: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
   meses: any[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-  categoriaSeleccion = new FormControl('TODAS LAS CATEGORIAS');
-  constructor(private ListaServicio: ListaServiciosService, private asignarServiciosService: AsignarServiciosService) { }
+  categoriaSeleccion = 'TODAS LAS CATEGORIAS';
+  constructor(private ListaServicio: ListaServiciosService, public dialog: MatDialog) { }
 
   async ngOnInit() {
-   
+
     this.ListaServicio.obtenerCategorias().subscribe(o => this.categorias = o)
     this.ListaServicio.obtenerServicios().subscribe(o => {
       this.servicios = Object.values(o);
       this.cargarServicios();
     })
 
-    this.ListaServicio.obtenerTrabajadoras().subscribe(o => this.trabajadoras = Object.values(o));
-    this.ListaServicio.obtenerClientes().subscribe(o => {
-      this.clientes = Object.values(o);
-      this.nombresClientes = this.clientes.map(o => o.nombre);
-    });
+
+
   }
 
   seleccionarServicio(servicio) {
+  
+
     let existe = this.serviciosSeleccionados.find(o => o.descripcion == servicio.descripcion);
     if (existe) {
       this.serviciosSeleccionados = this.serviciosSeleccionados.filter(o => o.descripcion != servicio.descripcion);
+
+
+      for (var i = 0; i < this.serviciosOriginales.length; i++) {
+        for (var z = 0; z < this.servicios.length; z++) {
+          if (this.servicios[z].descripcion == this.serviciosOriginales[i].descripcion && this.serviciosOriginales[i].descripcion == servicio.descripcion) {
+            this.servicios[z].valor = this.serviciosOriginales[i].valor;
+          }
+        }
+      }
+      this.serviciosOriginales = this.serviciosOriginales.filter(o => o.descripcion != servicio.descripcion);
       servicio['seleccionado'] = "white";
       servicio['seleccionado2'] = "black";
     } else {
       this.serviciosSeleccionados.push(servicio);
+      this.serviciosOriginales.push(JSON.parse(JSON.stringify(servicio)));
+
       servicio['seleccionado'] = "#5f97ef";
       servicio['seleccionado2'] = 'white';
+
     }
 
     this.calcularPrecio();
 
+
   }
 
   calcularPrecio() {
+
+
+
     if (this.serviciosSeleccionados.length == 0) {
       this.precioTotal = 0;
     } else {
@@ -65,7 +83,10 @@ export class ListaServiciosComponent implements OnInit {
     }
 
 
+
   }
+
+
   cargarServicios() {
 
     for (let item of this.servicios) {
@@ -77,39 +98,61 @@ export class ListaServiciosComponent implements OnInit {
 
 
 
-  async agregarCliente(f: NgForm) {
-
-    for (var i in this.clientes) {
-
-      if (this.clientes[i].nombre.toLowerCase() == f.value.nombre.toLowerCase()) {
-        console.log("Nombre ya existe, por favor use otro");
-
-      }
+  seleccionarCategoria(categoria) {
+    if (categoria.value) {
+      this.categoriaSeleccion = categoria.value.nombre;
+    } else {
+      this.categoriaSeleccion = 'TODAS LAS CATEGORIAS';
     }
   }
 
-  //   filtrarCliente() {
-
-  //    for(var i in this.clientes){
-
-  // if(this.clientes[i].nombre.toLowerCase() == f.value.nombre.toLowerCase()){
-  //   console.log("Nombre ya existe, por favor use otro");
-
-  // }
-  //   }}
+  abrirModalPrecioVariable() {
 
 
 
+    const dialogRef = this.dialog.open(ModalCambiarPrecioComponent, {
+      width: "600px",
+      maxWidth: "600px",
+      hasBackdrop: true,
+      data: { servicios: this.serviciosSeleccionados, serviciosOriginales:this.serviciosOriginales }
+    }
+    );
+
+    dialogRef.afterClosed().subscribe(o => {
+      console.log('The dialog was closed');
+      console.log(o);
+      if (o) {
+        this.serviciosSeleccionados = o;
+        this.calcularPrecio();
+
+        for (var i = 0; i < this.serviciosSeleccionados.length; i++) {
+          for (var z = 0; z < this.servicios.length; z++) {
+            if (this.servicios[z].descripcion == this.serviciosSeleccionados[i].descripcion) {
+              this.servicios[z].valor = this.serviciosSeleccionados[i].valor;
+            }
+          }
+        }
+      }
+
+    });
+
+
+
+  }
 
 
   abrirModalServicios() {
- 
 
-    this.asignarServiciosService.show({
-      trabajadoras: this.trabajadoras,
-      servicios: this.serviciosSeleccionados,
-      nombresClientes: this.nombresClientes,
-      clientes: this.clientes
-    });
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = "600px";
+    dialogConfig.maxWidth = "600px";
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      servicios: this.serviciosSeleccionados
+    };
+    console.log(dialogConfig);
+
+    this.dialog.open(ModalAsignarServiciosComponent, dialogConfig);
+
   }
 }

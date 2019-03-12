@@ -1,4 +1,85 @@
-<!-- Modal -->
+<mat-grid-list cols="2" rowHeight="20">
+  <mat-grid-tile>
+    <div style="position: absolute;left: 5px;font-weight:bold">
+      Servicios
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div style="position: absolute;left: 5px; font-weight:bold">
+      Trabajadoras
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+<hr>
+<!-- sadasd -->
+
+<mat-grid-list cols="2" rowHeight="65">
+  <ng-container *ngFor="let servicio of servicios; let i = index">
+    <mat-grid-tile>
+
+      <div style="position: absolute;left: 5px;font-weight:bold">
+        {{servicio.descripcion}}
+      </div>
+
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-select placeholder="Trabajadora" [(ngModel)]="trabajadoraSeleccionada[i]" #trabajadora
+          (selectionChange)="asignarServicioTrabajadora(servicio, i)">
+          <ng-container *ngFor="let trabajadora of trabajadoras">
+            <ng-container *ngFor="let categoriatrabajadora of trabajadora.categoriaTrabajadora">
+              <mat-option *ngIf="categoriatrabajadora.categoria==servicio.categoria" [value]="trabajadora">
+                {{trabajadora.nombre}}</mat-option>
+
+            </ng-container>
+
+          </ng-container>
+
+        </mat-select>
+
+      </mat-form-field>
+
+    </mat-grid-tile>
+
+
+  </ng-container>
+
+</mat-grid-list>
+
+
+<!---->
+<mat-grid-list cols="2" rowHeight="65">
+  <mat-grid-tile style="font-weight:bold">Asignar Cliente :</mat-grid-tile>
+  <mat-grid-tile>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Cliente" aria-label="Number" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<mat-grid-list cols="2" rowHeight="65">
+  <mat-grid-tile style="font-weight:bold">
+    <button mat-raised-button (click)="asignarServicios()" color="primary" style=" margin-right: 8px;">Asignar Servicios</button>
+  </mat-grid-tile>
+  <mat-grid-tile style="font-weight:bold">
+   
+    
+      <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+      <button mat-raised-button color="warn" [mat-dialog-close]="true">Cerrar</button>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<a routerLink="/CobrosPendientes" id="LinkCobros" routerLinkActive="active" hidden></a>
+<!-- Modal 
 <button hidden type="button" class="btn btn-primary" id="showModalButton" data-toggle="modal" data-target="#exampleModal">
     Launch demo modal
   </button>
@@ -56,4 +137,4 @@
     </div>
   </div>
 </div>
-</div>
+</div> -->

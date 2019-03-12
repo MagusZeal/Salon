@@ -1,36 +1,45 @@
-<div class="container" [ngStyle]="{'font-weight': 'bold'}">
-  <div class="text-right">
+<mat-grid-list cols="1" rowHeight="40">
+  <mat-grid-tile >
+ <div class="spacer" style=" text-align: right;font-weight:bold">
     Total {{precioTotal | currency:'CLP':'symbol-narrow'}}
-  </div>
-  Filtrar por categoría:
-  <select class="form-control" id="exampleFormControlSelect1" [formControl]="categoriaSeleccion">
-    <option>TODAS LAS CATEGORIAS</option>
-    <ng-container *ngFor="let categoria of categorias">
-
-      <option >{{categoria.nombre}}</option>
-    </ng-container>
-
-  </select>
-
-  <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#PrecioVariableModal">
-    Precio Variable
-  </button>
-
-  <button type="button" class="btn btn-primary" (click)="abrirModalServicios()">
-    Asignar Servicios
-  </button>
-  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#clientesModal">
-    A+ Cliente
-  </button>
-</div>
-
+ </div>
+</mat-grid-tile>
+  <mat-grid-tile>
+      <mat-form-field >
+          <mat-select placeholder="TODAS LAS CATEGORIAS" (selectionChange)="seleccionarCategoria($event)">
+            <mat-option >TODAS LAS CATEGORIAS</mat-option>
+            <ng-container *ngFor="let categoria of categorias">
+        
+              <mat-option  [value]="categoria" >{{categoria.nombre}}</mat-option>
+            </ng-container>
+        
+          </mat-select>
+        </mat-form-field>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="spacer2" > 
+      <button  color="accent" mat-raised-button style=" margin-right: 8px;" (click)="abrirModalPrecioVariable()">
+          Precio Variable
+        </button>
+      
+        <button  color="primary" mat-raised-button style=" margin-right: 8px;"(click)="abrirModalServicios()">
+          Asignar
+        </button>
+   <button  mat-raised-button    color="primary" (click)="abrirModalServicios()">
+      <mat-icon>person_add</mat-icon>
+      
+        </button>
+     
+      </div>
+  </mat-grid-tile>
+</mat-grid-list>
 
 
 <div class="container">
   <div class="row">
     <ng-container *ngFor="let servicio of servicios">
 
-      <div *ngIf="categoriaSeleccion.value == servicio.categoria || categoriaSeleccion.value == 'TODAS LAS CATEGORIAS' " [ngStyle]="{'color':'#d84343' ,  'font-weight': 'bold','background-color':servicio.seleccionado}"
+      <div *ngIf="categoriaSeleccion == servicio.categoria || categoriaSeleccion == 'TODAS LAS CATEGORIAS' " [ngStyle]="{'color':'#d84343' ,  'font-weight': 'bold','background-color':servicio.seleccionado}"
         class="col-sm-4 float-right" (click)="seleccionarServicio(servicio)">
         ${{servicio.valor}} <b [ngStyle]="{'color':servicio.seleccionado2,'text-overflow': 'ellipsis','width': '230px','overflow':'hidden', 'white-space': 'nowrap'}"
           class="float-left"> {{servicio.descripcion}} </b>
@@ -44,102 +53,5 @@
 
 
 
-<app-modal-asignar-servicios></app-modal-asignar-servicios>
 
 
-
-<!-- Modal Agregar Cliente -->
-<div class="modal fade bd-example-modal-lg" id="clientesModal" tabindex="-1" role="dialog" aria-labelledby="clientesModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="clientesModalLabel">Agregar Cliente</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form #f="ngForm" (ngSubmit)="agregarCliente(f)" validate>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Nombre (*Requerido)</label>
-            <input type="text" class="form-control" id="nombre" placeholder="Ingrese Nombre" name="nombre" ngModel
-              required #nombre="ngModel">
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Numero Contacto</label>
-            <input type="number" class="form-control" id="numero" placeholder="56987187361" name="numero" ngModel
-              required #numero="ngModel">
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email</label>
-            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="ejemplo@salon.cl"
-              name="mail" ngModel required #mail="ngModel">
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" name="cumpleCheck" id="customCheck1" ngModel required
-              #cumpleCheck="ngModel">
-            <label class="custom-control-label" for="customCheck1">Cliente quiere dar su cumpleños? (solo Día y Mes)</label>
-          </div>
-
-          <div class="form-group" *ngIf="f.value.cumpleCheck">
-            <label for="">Fecha cumpleaños</label>
-            <div class="form-control ">
-              Día
-              <select id="exampleFormControlSelect2" name="dia" ngModel required #dia="ngModel">
-
-                <ng-container *ngFor="let dia of dias">
-
-                  <option>{{dia}}</option>
-
-                </ng-container>
-              </select>
-              Mes
-
-              <select id="exampleFormControlSelect2" name="mes" ngModel required #mes="ngModel">
-
-                <ng-container *ngFor="let mes of meses">
-
-                  <option>{{mes}}</option>
-
-                </ng-container>
-              </select>
-            </div>
-          </div>
-
-
-
-
-          <button class="btn btn-primary">Agregar Cliente</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-        </form>
-
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal -->
-<div class="modal fade bd-example-modal-lg" id="PrecioVariableModal" tabindex="-1" role="dialog" aria-labelledby="PrecioVariableModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="PrecioVariableModalLabel">Modificar precio</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <ng-container *ngFor="let servicio of serviciosSeleccionados;index as i">
-          <div class="row">
-            <div class="col form-group"> <label for="exampleInputEmail1" [ngStyle]="{'font-weight': 'bold'}">{{servicio.descripcion}}</label>
-              <input [ngStyle]="{'font-weight': 'bold'}" (change)="calcularPrecio()" class="float-right" type="number"
-                value="{{servicio.valor}}" [(ngModel)]="serviciosSeleccionados[i].valor">
-            </div>
-          </div>
-        </ng-container>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
-      </div>
-    </div>
-  </div>
-</div>

@@ -102,15 +102,15 @@ export class AdmServiciosComponent implements OnInit {
 
   async seleccionarServicioBorrar(servicio) {
     this.servicioSeleccionado = servicio;
-  console.log(servicio);
-  
+    console.log(servicio);
+
   }
 
 
   async borrarServicio(servicio) {
 
-     await this.AdmServicios.eliminarServicio(servicio.idServicio);
-     document.getElementById("closeBorrar").click();
-     this.ngOnInit();
+    await this.AdmServicios.eliminarServicio(servicio.idServicio);
+    document.getElementById("closeBorrar").click();
+    this.ngOnInit();
   }
 }

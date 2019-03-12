@@ -1,52 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { CobrosPendientesService } from '../cobros-pendientes/cobros-pendientes.service';
-import { log } from 'util';
+import { MatDialog, MatDialogConfig, MatGridList } from '@angular/material';
+import { ModalBorrarComponent } from '../componentes/cobros/modal-borrar/modal-borrar.component';
+import { ModalPagarComponent } from '../componentes/cobros/modal-pagar/modal-pagar.component';
+
 @Component({
   selector: 'app-cobros-pendientes',
   templateUrl: './cobros-pendientes.component.html',
-  styleUrls: ['./cobros-pendientes.component.scss']
+  styleUrls: ['./cobros-pendientes.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CobrosPendientesComponent implements OnInit {
 
   boletas: IBoleta[] = [];
-  botones: any[] = [];
-  boletaSeleccionada:IBoleta;
-  checkboxes: any[] = [];
-  botonSeleccionado: string;
-  montoPrincipal: number;
-  montoVuelto: number;
-  montoDescuento:number;
-  montoGiftCard: number;
-  montoEfectivo: number;
-  modalDescripcionError: string="";
-  
-  constructor(private CobroPendiente: CobrosPendientesService) { }
+  boletaSeleccionada: IBoleta;
+  breakpoint: number;
+  @ViewChild('grid') grid: MatGridList;
+  gridByBreakpoint = {
+    xl: 8,
+    lg: 6,
+    md: 4,
+    sm: 2,
+    xs: 1
+  }
+  panelOpenState = false;
+  constructor(private CobroPendiente: CobrosPendientesService, public dialog: MatDialog) { }
 
   async ngOnInit() {
-
+    this.breakpoint = (window.innerWidth <= 400) ? 2 : 6;
     this.boletas = [];
-    this.botones = [
-      { "nombre": "Efectivo" },
-      { "nombre": "Tarjeta de Crédito" },
-      { "nombre": "Tarjeta de Débito" },
-      { "nombre": "Transferencia" },
-      { "nombre": "Gift Card" },
-    ]
-    this.checkboxes = [
-      { "nombre": "Descuento", "enabled": false, "valor":false },
-      { "nombre": "Gift Card", "enabled": false, "valor":false },
-      { "nombre": "Efectivo", "enabled": false, "valor":false }
-    ]
-   await this.CobroPendiente.obtenerBoletas().subscribe(o => {
-   
+    await this.CobroPendiente.obtenerBoletas().subscribe(o => {
       this.mapearObjetosArray(o)
-      
     });
-
-
-  
   }
- 
+
   mapearObjetosArray(objeto) {
 
     for (let key in objeto) {
@@ -57,138 +44,42 @@ export class CobrosPendientesComponent implements OnInit {
     }
   }
 
-   pagarBoleta() {
-     
-  
-this.modalDescripcionError="";
+  modalPagarBoleta(boleta) {
 
-    if (isNaN(this.montoPrincipal) || this.montoPrincipal == null ) {
-      this.montoPrincipal = 0;
-
-  }
-
-  if (isNaN(this.montoEfectivo) || this.montoEfectivo == null ) {
-      this.montoEfectivo = 0;
-
-  }
-  if (isNaN(this.montoDescuento) || this.montoDescuento == null ) {
-      this.montoDescuento = 0;
-
-  }
-  if (isNaN(this.montoGiftCard) || this.montoGiftCard == null || this.montoGiftCard <= 0) {
-      this.montoGiftCard = 0;
-  }
-  
-  if (this.boletaSeleccionada.total > (this.montoPrincipal + this.montoDescuento + this.montoGiftCard + this.montoEfectivo)) {
-      this.modalDescripcionError = "Lo sentimos! Monto cancelado debe ser mayor o igual al total a pagar";
-      
-      return;
-  }
-  
-   var jornada:IJornada ={
-    
-    
-    fecha:this.boletaSeleccionada.fecha,
-    formaDePagoPrincipal:this.botonSeleccionado,
-    montoPrincipal:this.montoPrincipal,
-    montoDescuento:this.montoDescuento,
-    montoEfectivo:this.montoEfectivo,
-    montoGiftCard:this.montoGiftCard,
-    montoCobrado:this.boletaSeleccionada.total,
-    ordenes:this.boletaSeleccionada.ordenes,
-    montoVuelto:this.montoVuelto,
-    cliente:this.boletaSeleccionada.cliente
-      };
-      document.getElementById("cerrarModal").click();
-      document.getElementById("LinkServicios").click();
-      
-     
-
-     var a =this.boletaSeleccionada.fecha.substring(6 ,10) + this.boletaSeleccionada.fecha.substring(3,5)+this.boletaSeleccionada.fecha.substring(0,2);
-      
-this.CobroPendiente.agregarJornada(a,jornada);
-this.CobroPendiente.eliminarBoleta(this.boletaSeleccionada['idBoleta']).subscribe();
-
-
-}
-  validarValor(campo) {
-    if (isNaN(campo) ||
-        campo == null ||
-        campo <= 0 ||
-        campo == '') {
-        return 0;
-    }
-    return campo;
-
-}
-  calcularVuelto(){
-    
-    this.montoDescuento = this.checkboxes[0].valor ? this.montoDescuento : NaN;
-    this.montoGiftCard = this.checkboxes[1].valor ? this.montoGiftCard : NaN;
-    this.montoEfectivo = this.checkboxes[2].valor ? this.montoEfectivo : NaN;
-
-    this.montoVuelto = this.boletaSeleccionada.total - this.montoPrincipal -this.montoEfectivo; 
-
-    this.montoVuelto = - this.boletaSeleccionada.total + this.validarValor(this.montoPrincipal)
-    + this.validarValor(this.montoDescuento)
-    + this.validarValor(this.montoGiftCard)
-    + this.validarValor(this.montoEfectivo);
-  }
-
-  seleccionarBoletaBorrar(boleta) {
-     
-    this.boletaSeleccionada = boleta;
-  }
-
-  seleccionarBoletaPagar(boleta) {
-
-    this.botonSeleccionado= "Efectivo";
-    this.radioButtonChange(this.botonSeleccionado);
-    this.boletaSeleccionada = boleta;
-  }
-
-  borrarBoleta(boleta) {
-
-    this.CobroPendiente.eliminarBoleta(boleta['idBoleta']).subscribe(() => this.ngOnInit());
-  }
-
-  radioButtonChange(boton) {
-    
-    switch (boton) {
-      case "Efectivo":
-        this.checkboxes = [
-          { "nombre": "Descuento", "enabled": true, "valor":false },
-          { "nombre": "Gift Card", "enabled": true, "valor":false },
-          { "nombre": "Efectivo", "enabled": false, "valor":false }]
-        break;
-      case "Tarjeta de Crédito":
-        this.checkboxes = [
-          { "nombre": "Descuento", "enabled": true, "valor":false },
-          { "nombre": "Gift Card", "enabled": true, "valor":false },
-          { "nombre": "Efectivo", "enabled": true, "valor":false }]
-        break;
-      case "Tarjeta de Débito":
-        this.checkboxes = [
-          { "nombre": "Descuento", "enabled": true, "valor":false },
-          { "nombre": "Gift Card", "enabled": true, "valor":false },
-          { "nombre": "Efectivo", "enabled": true, "valor":false }]
-        break;
-      case "Transferencia":
-        this.checkboxes = [
-          { "nombre": "Descuento", "enabled": true, "valor":false },
-          { "nombre": "Gift Card", "enabled": true, "valor":false },
-          { "nombre": "Efectivo", "enabled": false, "valor":false }]
-        break;
-      case "Gift Card":
-        this.checkboxes = [
-          { "nombre": "Descuento", "enabled": true, "valor":false },
-          { "nombre": "Gift Card", "enabled": false, "valor":false },
-          { "nombre": "Efectivo", "enabled": false, "valor":false }]
-        break;
-
-
-    }
+    const dialogRef = this.dialog.open(ModalPagarComponent, {
+      width: "600px",
+      maxWidth: "600px",
+      maxHeight: "700px",
+      autoFocus: true,
+      hasBackdrop: true,
+      data: {
+        boleta: boleta,
+      }
+    });
 
   }
 
+  modalBorrarBoleta(boleta) {
+
+
+    const dialogRef = this.dialog.open(ModalBorrarComponent, {
+      width: "600px",
+      maxWidth: "600px",
+      autoFocus: true,
+      hasBackdrop: true,
+      data: {
+        boleta: boleta
+      }
+    });
+    dialogRef.afterClosed().subscribe(o => {
+      if (o == true) {
+        this.CobroPendiente.eliminarBoleta(boleta['idBoleta']).subscribe(() => this.ngOnInit());
+      }
+    })
+
+  }
+
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 400) ? 2 : 6;
+  }
 }

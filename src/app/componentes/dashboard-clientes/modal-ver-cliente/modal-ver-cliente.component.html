@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>{{cliente.nombre}}</h2>
+<mat-dialog-content>Email:</mat-dialog-content>
+<mat-dialog-content>{{cliente.mail}}</mat-dialog-content>
+
+<mat-dialog-content>Numero: </mat-dialog-content>
+<mat-dialog-content>{{cliente.numero}}</mat-dialog-content>
+
+<mat-dialog-content>Cumple:</mat-dialog-content>
+<mat-dialog-content>{{cliente.cumple.dia}}-{{cliente.cumple.mes}}</mat-dialog-content>
+
+<mat-dialog-content>Nota:</mat-dialog-content>
+<mat-dialog-content>{{cliente.nota}}</mat-dialog-content>
+
+
+<mat-dialog-actions>
+  
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-button [mat-dialog-close]="true">Cerrar</button>
+</mat-dialog-actions>

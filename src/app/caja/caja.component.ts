@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CajaService } from '../caja/caja.service';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
+import { BorrarBoletaComponent } from '../componentes/caja/borrar-boleta/borrar-boleta.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-caja',
@@ -7,10 +12,14 @@ import { CajaService } from '../caja/caja.service';
   styleUrls: ['./caja.component.scss']
 })
 export class CajaComponent implements OnInit {
-
+  breakpoint: number;
   boletas: any[] = [];
   boletasFiltradas: any[] = [];
   boletaSeleccionada: any;
+  myControl = new FormControl();
+  options: any[] = [];
+  filteredOptions: Observable<string[]>;
+  nombre;
   resumenDia = {
 
     serviciosRealizados: 0,
@@ -27,10 +36,27 @@ export class CajaComponent implements OnInit {
 
   };
 
-  constructor(private Caja: CajaService) { }
+  constructor(private Caja: CajaService, public dialog: MatDialog) { }
+
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 400) ? 4 : 7;
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    // this.boletasFiltradas = this.boletas.filter(o => o.cliente.nombre.toLocaleLowerCase().includes(value.toLocaleLowerCase()))
+
+    return this.options.filter(o => o.toLowerCase().includes(filterValue));
+  }
 
   async ngOnInit() {
     this.boletas = [];
+    this.boletasFiltradas = [];
+    this.options= [];
+
+    this.breakpoint = (window.innerWidth <= 400) ? 4 : 7;
+  
     this.resumenDia = {
 
       serviciosRealizados: 0,
@@ -51,17 +77,32 @@ export class CajaComponent implements OnInit {
     c = c.substring(6, 10) + c.substring(3, 5) + c.substring(0, 2);
 
 
-    this.Caja.obtenerJornada(c).subscribe(o => this.mapearObjetosArray(o));
-    
+    // this.Caja.obtenerJornada(c).subscribe(o => this.mapearObjetosArray(o));
+
+    await this.Caja.obtenerJornada(c).subscribe(o => {
+      this.mapearObjetosArray(o)
+      console.log(o);
+    });
+
+    this.options = this.boletas.map(o => o.cliente.nombre);
 
 
     this.boletasFiltradas = this.boletas;
 
+    this.filteredOptions = this.myControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+
   }
+
+
 
   mapearObjetosArray(objeto) {
 
     for (let key in objeto) {
+
 
       let boleta = objeto[key];
       boleta['idBoleta'] = key;
@@ -116,20 +157,35 @@ export class CajaComponent implements OnInit {
     console.log(this.boletaSeleccionada);
   }
 
-  borrarBoleta(boleta) {
+ 
 
-    let a = new Date().toLocaleString().substring(0, 10);
-    console.log(a);
-    this.Caja.eliminarBoleta(a, boleta['idBoleta']).subscribe(() => this.ngOnInit());
+  modalBorrarBoleta(boleta) {
+    let c = new Date().toLocaleString('es-CL');
+    c = c.substring(6, 10) + c.substring(3, 5) + c.substring(0, 2);
+
+
+    const dialogRef = this.dialog.open(BorrarBoletaComponent, {
+      width: "600px",
+      maxWidth: "600px",
+      autoFocus: true,
+      hasBackdrop: true,
+      data: {
+        boleta: boleta
+      }
+    });
+    dialogRef.afterClosed().subscribe(o => {
+      if (o == true) {
+       console.log(c);
+       
+        console.log(boleta['idBoleta']);
+
+
+        this.Caja.eliminarBoleta(c , boleta['idBoleta']).subscribe(() => this.ngOnInit());
+    
+      }
+    })
 
   }
 
-
-  filtrarNombre(filtro: string) {
-    console.log(filtro);
-
-    this.boletasFiltradas = this.boletas.filter(o => o.cliente.nombre.toLocaleLowerCase().includes(filtro.toLocaleLowerCase()))
-
-  }
 
 }

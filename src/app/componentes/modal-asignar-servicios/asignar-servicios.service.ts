@@ -1,18 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AsignarServiciosService {
-  _loadServicios = new Subject<any>();
-  _openModal = new Subject<any>();
-  constructor() { }
+  
+  
+  constructor(private http:HttpClient) { }
 
-  getAsignarServicios():Observable<any>{
-    return this._openModal.asObservable();
+ async obtenerClientes(){
+
+    return await  this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?').toPromise();
   }
-  show(trabajadoras) {
-    this._openModal.next(trabajadoras);
-  }
+
+ obtenerTrabajadoras() {
+
+  return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/trabajadoras.json?');
+}
+
+async agregarBoleta(boletaGuardar) {
+
+  return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?', boletaGuardar).toPromise();
+}
+
+
 }

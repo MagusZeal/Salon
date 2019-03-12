@@ -19,25 +19,25 @@ export class ListaServiciosService {
   }
 
 
-  obtenerTrabajadoras() {
+  // obtenerTrabajadoras() {
 
-    return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/trabajadoras.json?');
-  }
+  //   return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/trabajadoras.json?');
+  // }
 
-  obtenerClientes(criteria = '') {
+  // obtenerClientes(criteria = '') {
 
-    return this.http.get<any[]>(`https://devs-c9cdc.firebaseio.com/clientes.json?${criteria}`);
-  }
+  //   return this.http.get<any[]>(`https://devs-c9cdc.firebaseio.com/clientes.json?${criteria}`);
+  // }
 
-  async agregarBoleta(boletaGuardar) {
+  // async agregarBoleta(boletaGuardar) {
 
-    return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?', boletaGuardar).toPromise();
-  }
+  //   return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?', boletaGuardar).toPromise();
+  // }
 
-  async agregarCliente(cliente) {
+  // async agregarCliente(cliente) {
 
-    return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?', cliente).toPromise();
+  //   return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?', cliente).toPromise();
 
-  }
+  // }
 
 }

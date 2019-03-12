@@ -6,7 +6,7 @@ import { CajaComponent } from './caja/caja.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdmClientesComponent } from './adm-clientes/adm-clientes.component'
 import { AdmServiciosComponent} from './adm-servicios/adm-servicios.component'
-
+import { DashboardClientesComponent } from'./dashboard-clientes/dashboard-clientes.component'
 const routes: Routes = [
   {path:'Servicios', component:ListaServiciosComponent},
   {path:'CobrosPendientes', component:CobrosPendientesComponent},
@@ -14,6 +14,7 @@ const routes: Routes = [
   {path:'Dashboard', component:DashboardComponent},
   {path:'AdministrarClientes', component:AdmClientesComponent},
   {path:'AdministrarServicios', component:AdmServiciosComponent},
+  {path:'DashboardClientes', component:DashboardClientesComponent},
   {path:'**', component:ListaServiciosComponent}
  
 ];

@@ -1,0 +1,71 @@
+
+
+<div class="container">
+    <ngb-datepicker [(ngModel)]="inicio"></ngb-datepicker>
+    <ngb-datepicker [(ngModel)]="termino"></ngb-datepicker>
+</div>
+<br>
+<div class="container">
+    <div class="row">
+
+        <div class="col" [ngStyle]="{'font-weight': 'bold'}">
+            Buscar cliente especifico:
+            <input list="clientes" [(ngModel)]="clienteFiltrado" [typeahead]="nombresClientes">
+            <br>
+            <button type="submit" class="btn btn-primary" (click)="buscar()">Buscar cliente</button>
+            <button type="submit" class="btn btn-success" (click)="buscarTodos()">Todos los clientes</button>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<ngb-tabset type="pills" >
+    <ngb-tab>
+        <ng-template ngbTabTitle><b>Ventas totales</b></ng-template>
+        <ng-template ngbTabContent>
+            <br>
+        
+            <app-table-sorting-example></app-table-sorting-example>
+
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Servicios Realizados">
+        <ng-template ngbTabContent>
+            <br>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td class="text-center bg-primary font-weight-bold border border-dark text-white">Servicio
+                            </td>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">
+                                Trabajadora</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Precio
+                            </th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Cliente
+                            </th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <ng-container>
+                            <tr>
+
+                                <td class=" text-center bg-light font-weight-bold border border-dark"></td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark"></td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark"></td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark"></td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark"></td>
+
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>

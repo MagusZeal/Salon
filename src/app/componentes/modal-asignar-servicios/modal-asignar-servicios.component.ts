@@ -1,56 +1,84 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { AsignarServiciosService } from './asignar-servicios.service';
-import { TouchSequence } from 'selenium-webdriver';
-import { ListaServiciosService } from 'src/app/lista-servicios/lista-servicios.service';
-
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
+import { ListaServiciosComponent } from 'src/app/lista-servicios/lista-servicios.component';
 
 @Component({
   selector: 'app-modal-asignar-servicios',
   templateUrl: './modal-asignar-servicios.component.html',
-  styleUrls: ['./modal-asignar-servicios.component.scss']
+  styleUrls: ['./modal-asignar-servicios.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class ModalAsignarServiciosComponent implements OnInit {
+export class ModalAsignarServiciosComponent {
   trabajadoras: ITrabajadora[] = [];
   trabajadoraSeleccionada = [];
   servicios: IServicio[] = [];
   clienteFiltrado = '';
   clientes: ICliente[] = [];
   ordenes = [];
-  nombresClientes: string;
-  constructor(private service: AsignarServiciosService, private ListaServicio: ListaServiciosService) { }
+  nombresClientes: string[];
+  filteredOptions: Observable<string[]>;
+  options: string[] = ['One', 'Two', 'Three'];
+  myControl = new FormControl();
 
-  ngOnInit() {
-    this.service.getAsignarServicios().subscribe(o => {
+  constructor(public dialogRef: MatDialogRef<ListaServiciosComponent>, private service: AsignarServiciosService, @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.servicios = data.servicios
+  }
 
-      this.trabajadoras = o.trabajadoras;
-      this.servicios = o.servicios;
-      this.nombresClientes = o.nombresClientes;
-      this.clientes = o.clientes;
-      if (this.servicios && this.servicios.length > 0) {
-        document.getElementById('showModalButton').click();
-      }
+  async ngOnInit() {
+
+    this.service.obtenerTrabajadoras().subscribe(o => {
+      this.trabajadoras = Object.values(o);
 
     });
+
+    this.clientes = await Object.values(await this.service.obtenerClientes());
+
+    this.nombresClientes = this.clientes.map(o => o.nombre)
+
+    console.log(this.nombresClientes);
+
+
+
+
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+
+  }
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.nombresClientes.filter(o => o.toLowerCase().includes(filterValue));
+    
   }
 
   async asignarServicios() {
 
     const boleta: IBoleta = {
-      cliente: this.filtrarCliente(),
+      cliente: this.filtrarCliente(this.myControl.value),
       total: this.ordenes.map(o => o.servicio.valor).reduce((a, b) => a + b),
       fecha: (new Date().toLocaleString('es-CL')).toString(),
       ordenes: this.ordenes
     };
+    console.log(boleta);
 
-    await this.ListaServicio.agregarBoleta(boleta);
 
+    await this.service.agregarBoleta(boleta);
+    this.dialogRef.close();
     document.getElementById('LinkCobros').click();
 
   }
 
-  filtrarCliente(): ICliente {
+  filtrarCliente(nombre): ICliente {
 
-    return this.clientes.find(o => o.nombre.includes(this.clienteFiltrado.trim()));
+    return this.clientes.find(o => o.nombre.includes(nombre.trim()));
   }
 
   asignarServicioTrabajadora(servicio, i) {
@@ -63,6 +91,7 @@ export class ModalAsignarServiciosComponent implements OnInit {
       },
       'trabajadora': this.trabajadoraSeleccionada[i]
     };
+
 
   }
 }

@@ -1,129 +1,166 @@
-<div class="table-responsive">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Total día</th>
-                <th>Efectivo</th>
-                <th>Credito</th>
-                <th>Debito</th>
-                <th>Transferencia</th>
-                <th>Gift Card</th>
-                <th>Descuento</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{resumenDia.totalDia | currency:'CLP':'symbol-narrow'}}</td>
-                <td>{{resumenDia.totalEfectivo | currency:'CLP':'symbol-narrow'}}</td>
-                <td>{{resumenDia.totalCredito | currency:'CLP':'symbol-narrow'}}</td>
-                <td>{{resumenDia.totalDebito | currency:'CLP':'symbol-narrow'}}</td>
-                <td>{{resumenDia.totalTransferencia | currency:'CLP':'symbol-narrow'}}</td>
-                <td>{{resumenDia.totalGiftCard | currency:'CLP':'symbol-narrow'}}</td>
-                <td>{{resumenDia.totalDescuento | currency:'CLP':'symbol-narrow'}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div class="container">
-<input type="text" class="form-control" placeholder="Buscar Clientes..." (keyup)="filtrarNombre(inputFiltro.value)"
-          #inputFiltro>
-        </div>
-        <br>
-<!-- div boletas -->
-<!-- 
-<div class="container">
-        <div class="row">
-            <div *ngFor="let boleta of boletas" class="font-weight-bold">
-                <div class="font-weight-bold"> Cliente : <b class="text-success">{{boleta.cliente.nombre }} </b></div>
-                <div class="font-weight-bold">Total: <b class="text-danger">{{boleta.montoCobrado |
-                        currency:'CLP':'symbol-narrow'}}</b>
-    
-    
-                    <div class="text-primary font-weight-bold" *ngFor="let orden of boleta.ordenes">
-                        {{orden.trabajadora.nombre}} <b class="text-danger"> {{orden.servicio.valor |
-                            currency:'CLP':'symbol-narrow'}}</b>
-                        <div class="text-dark">-> {{orden.servicio.descripcion}}</div>
-                    </div>
-                    <div class="container pull-right ">
-    
-                        <div class="btn-group btn-group-sm  ">
-                            <button type="button" class="btn btn-danger font-weight-bold" (click)="seleccionarBoleta(boleta)"
-                                data-toggle="modal" data-target="#BorrarModal">Borrar</button>
-                            <button type="button" class="btn btn-primary font-weight-bold" (click)="seleccionarBoleta(boleta)"
-                                data-toggle="modal" data-target="#VerBoletaModal">Ver Boleta</button>
-                           
-    
-                        </div>
-                    </div>
-                    <br>
-                    <hr>
-                </div>
-            </div>
-        </div>
-    </div>
-      -->
-<!-- Card -->
-<div class="container">
-    <div class="row col">
-       
-            <div class="card" *ngFor="let boleta of boletasFiltradas" style="width: 15rem;">
-                <div class="card-body">
-                    <h5 class="card-title font-weight-bold">Cliente : {{boleta.cliente.nombre }}</h5>
-                    <h6 class="card-subtitle mb-2 font-weight-bold">Total: {{boleta.montoCobrado |
-                        currency:'CLP':'symbol-narrow'}}</h6>
-                    <ng-container *ngFor="let orden of boleta.ordenes">
-                        <div class="card-text font-weight-bold text-primary" > {{orden.trabajadora.nombre}}<b class="text-danger">
-                             {{orden.servicio.valor
-                                |
-                                currency:'CLP':'symbol-narrow'}}</b></div>
-                        <div class="card-text font-weight-bold text-secondary" > -> {{orden.servicio.descripcion}}</div>
+<mat-toolbar style=" background-color: #aa00ff; color: white">
+    <mat-toolbar-row>
+        <span>Caja</span>
+    </mat-toolbar-row>
+</mat-toolbar>
 
-                    </ng-container>
-                    <footer >
-                            <button type="button" class="btn btn-danger font-weight-bold" (click)="seleccionarBoleta(boleta)"
-                            data-toggle="modal" data-target="#BorrarModal">Borrar</button>
-                    </footer>
-                    
-                </div>
+<mat-grid-list [cols]="breakpoint" rowHeight="50px" (window:resize)="onResize($event)" style="white-space: pre;">
+    <mat-grid-tile>
+
+        <div style="white-space: pre; font-weight: bold">
+            <div>Total día</div>
+            <div style=" font-weight: normal ">{{resumenDia.totalDia | currency:'CLP':'symbol-narrow'}}</div>
+
+        </div>
+
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        <div style="white-space: pre; font-weight: bold">
+            <div>Efectivo</div>
+
+            <div style=" font-weight: normal ">{{resumenDia.totalEfectivo | currency:'CLP':'symbol-narrow'}}</div>
+        </div>
+
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <div style="white-space: pre; font-weight: bold">
+            <div>Crédito</div>
+
+            <div style=" font-weight: normal ">{{resumenDia.totalCredito | currency:'CLP':'symbol-narrow'}}</div>
+        </div>
+
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <div style="white-space: pre; font-weight: bold">
+            <div>Débito</div>
+
+
+            <div style=" font-weight: normal ">{{resumenDia.totalDebito | currency:'CLP':'symbol-narrow'}}</div>
+        </div>
+
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        <div style="white-space: pre; font-weight: bold">
+            <div>Transfer</div>
+
+
+            <div style=" font-weight: normal ">{{resumenDia.totalTransferencia | currency:'CLP':'symbol-narrow'}}</div>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <div style="white-space: pre; font-weight: bold">
+            <div>Gift Card</div>
+
+
+            <div style=" font-weight: normal ">{{resumenDia.totalGiftCard | currency:'CLP':'symbol-narrow'}}</div>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <div style="white-space: pre; font-weight: bold">
+            <div>Descuento</div>
+
+
+            <div style=" font-weight: normal ">{{resumenDia.totalDescuento | currency:'CLP':'symbol-narrow'}}</div>
+        </div>
+    </mat-grid-tile>
+
+
+</mat-grid-list>
+
+
+
+<mat-grid-list cols="1" rowHeight="60px">
+    <mat-grid-tile>
+
+
+        <form class="example-form">
+            <mat-form-field class="example-full-width">
+                <input type="text" placeholder="Filtrar Clientes" aria-label="Number" matInput [formControl]="myControl"
+                    [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </form>
+
+    </mat-grid-tile>
+</mat-grid-list>
+
+<mat-accordion class="example-headers-align">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title style="font-weight:bold">
+                Cliente
+            </mat-panel-title>
+            <mat-panel-description style="font-weight:bold;">
+                Total
+            </mat-panel-description>
+            <mat-panel-description style="font-weight:bold;">
+                Borrar
+            </mat-panel-description>
+
+        </mat-expansion-panel-header>
+        <div style="white-space: pre;">
+            <div style="font-weight:bold"> En cobros pendientes estan todas las boletas por cobrar en las cuales estan:
             </div>
-       
-    </div>
-</div>
-<!-- Modal Borrar -->
-<div class="modal fade bd-example-modal-lg" id="BorrarModal" tabindex="-1" role="dialog" aria-labelledby="BorrarModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="BorrarModalLabel">Borrar boleta</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+            <br>
+            <div style="font-weight:bold"> Nombre Cliente : nombre del cliente del cual se hizo la boleta</div>
+            <div style="font-weight:bold"> Total : cantidad de dinero registrado en la boleta</div>
+
+            <div style="font-weight:bold"> ---> boton borrar: borra la boleta por si hubo errores por ejemplo</div>
+
+            <div style="font-weight:bold"> Click en boleta : detalles de la boleta
+            </div>
+        </div>
+
+    </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion class="example-headers-align">
+    <ng-container *ngFor="let boleta of boletasFiltradas;index as i">
+
+
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title style="font-weight:bold;">
+                    {{ (boleta.cliente.nombre.length>14)? (boleta.cliente.nombre | slice:0:14)+'..':(boleta.cliente.nombre)}}
+                </mat-panel-title>
+                <mat-panel-description style="font-weight:bold;color: red">
+                    {{boleta.montoCobrado | currency:'CLP':'symbol-narrow'}}
+                </mat-panel-description>
+                <mat-panel-description>
+                    <button mat-icon-button (click)="modalBorrarBoleta(boleta)" color="warn">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+
+                </mat-panel-description>
+
+            </mat-expansion-panel-header>
+
+            <div style="font-weight:bold;"> Cliente: {{boleta.cliente.nombre}} </div>
+            <div style="font-weight:bold">Total: {{boleta.montoCobrado |
+                                            currency:'CLP':'symbol-narrow'}}</div>
+            <ng-container *ngFor="let orden of boleta.ordenes">
+                <div style="font-weight:bold;color:blue"> {{orden.trabajadora.nombre}}<b style="color:red">
+                        {{orden.servicio.valor
+                                                   |
+                                                   currency:'CLP':'symbol-narrow'}}</b></div>
+                <div style="font-weight:bold; color:darkslategray"> -> {{orden.servicio.descripcion}}</div>
+
+
+            </ng-container>
+            <div style="font-weight:bold;color:darkviolet">Fecha boleta : {{boleta.fecha}}</div>
+            <mat-action-row>
+                <button mat-raised-button (click)="modalBorrarBoleta(boleta)" color="warn">
+                    <mat-icon>delete_forever</mat-icon>Borrar
                 </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <b>Desea eliminar esta boleta?</b>
-                    <hr>
-                    <div *ngIf="boletaSeleccionada">
-                        <div class="font-weight-bold"> Cliente : <b class="text-success">{{boletaSeleccionada.cliente.nombre
-                                }} </b></div>
-                        <div class="font-weight-bold">Total: <b class="text-danger">{{boletaSeleccionada.montoCobrado |
-                                currency:'CLP':'symbol-narrow'}}</b>
-                            <div class="text-primary font-weight-bold" *ngFor="let orden of boletaSeleccionada.ordenes">
-                                {{orden.trabajadora.nombre}}
-                                <div class="text-dark">  {{orden.servicio.descripcion}}</div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger" (click)="borrarBoleta(boletaSeleccionada)"
-                            data-dismiss="modal">Borrar</button>
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                    </div>
+            </mat-action-row>
+        </mat-expansion-panel>
 
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    </ng-container>
+</mat-accordion>
