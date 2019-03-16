@@ -7,9 +7,9 @@ export class CajaService {
 
   constructor(private http:HttpClient) { }
 
- obtenerJornada(fechaActual){
+async obtenerJornada(fechaActual){
 
-    return  this.http.get<any[]>(`https://devs-c9cdc.firebaseio.com/jornadas/${fechaActual}.json?`);
+    return await this.http.get<any[]>(`https://devs-c9cdc.firebaseio.com/jornadas/${fechaActual}.json?`).toPromise();
     
   }
 

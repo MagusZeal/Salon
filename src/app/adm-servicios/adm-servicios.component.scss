@@ -1,0 +1,52 @@
+@media only screen and (max-width: 768px) {
+    .spacerRight{
+   
+        flex: 1 1 auto;
+      
+      flex-basis: 0;
+      }
+
+
+    
+
+    }
+
+
+    table {
+      width: 100%;
+    }
+    .mat-table__wrapper .mat-table {
+      min-width: auto !important;
+      width: 100% !important;
+  }
+  
+  .mat-header-row {
+      width: 100%;
+  }
+  
+  .mat-row {
+      width: 100%;
+  }
+
+.example-form {
+    min-width: 150px;
+    max-width: 90%;
+    width: 90%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+
+  .example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description .mat-expansion-panel-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description .mat-expansion-panel-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+

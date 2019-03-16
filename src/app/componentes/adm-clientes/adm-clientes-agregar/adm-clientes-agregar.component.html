@@ -1,0 +1,88 @@
+<mat-dialog-content  >
+<form [formGroup]="clienteForm" novalidate (ngSubmit)="onSubmit()" >
+  
+      <h4 style="color:darkviolet ">Agregar Cliente</h4>
+
+  
+
+
+      <mat-form-field class="example-full-width" style="font-size:18px">
+        <input matInput placeholder="Nombre cliente" formControlName="nombre">
+        <mat-error *ngIf="clienteForm.controls['nombre'].hasError('required')">
+          Nombre es <strong>requerido</strong>
+        </mat-error>
+        <mat-error *ngIf="clienteForm.get('nombre').errors?.minlength">
+          Nombre debe tener al menos <strong>3 caracteres</strong>
+        </mat-error>
+        <mat-error *ngIf="clienteForm.get('nombre').errors?.forbiddenName">
+          Nombre <strong>ocupado</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <br>
+      <br>
+
+      <mat-grid-list cols="2" rowHeight="70px">
+          <mat-grid-tile>
+              <mat-form-field class="example-full-width"  style="font-size:18px;">
+                  <input matInput placeholder="E-mail" formControlName="mail" type="email">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field class="example-full-width"  style="font-size:18px">
+                    <input matInput placeholder="Telefono" formControlName="numero" type="number">
+                  </mat-form-field>
+              </mat-grid-tile>
+                      
+      </mat-grid-list>
+     
+
+      <br>
+   
+      <br>
+      <div style="font-size: 20px">Cumpleaños</div>
+      <mat-grid-list cols="2" rowHeight="70">
+          <ng-container formGroupName="cumple">
+        <mat-grid-tile>
+          
+            <mat-form-field class="example-full-width"  style="font-size:18px">
+                <mat-select placeholder="Dia" formControlName="dia">
+                  <mat-option *ngFor="let dia of dias" [value]="dia">
+                    {{ dia }}
+                  </mat-option>
+                </mat-select>
+      
+              </mat-form-field>
+      
+        </mat-grid-tile>
+
+      <mat-grid-tile>
+ 
+          <mat-form-field class="example-full-width"  style="font-size:18px">
+              <mat-select placeholder="Mes" formControlName="mes">
+                <mat-option *ngFor="let mes of meses" [value]="mes">
+                  {{ mes }}
+                </mat-option>
+              </mat-select>
+    
+            </mat-form-field>
+       
+
+        </mat-grid-tile>
+
+      </ng-container>
+
+      </mat-grid-list>
+    
+
+  
+      <mat-form-field class="example-full-width" style="font-size:18px"> 
+          <textarea matInput placeholder="Nota sobre cliente" formControlName="nota"></textarea>
+        </mat-form-field>
+
+  
+      <button mat-raised-button color="primary" type="submit" >Agregar Cliente</button>
+      <button mat-raised-button color="accent" [mat-dialog-close]="false" style="margin-left: 10px">Cerrar</button>
+ 
+</form>
+</mat-dialog-content>

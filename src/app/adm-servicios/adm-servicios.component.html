@@ -1,282 +1,49 @@
-<div class="container">
-  <div class="card">
-    <div class="card-header">
-      Administrar Servicios<button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#AgregarServicioModal">Agregar
-        Servicio</button>
-    </div>
-    <div class="card-body">
+<mat-toolbar style=" background-color: #aa00ff; color: white">
+  <mat-toolbar-row>
+    <span>Administrar Servicios</span>
+    <button mat-raised-button color="accent" style="margin-left: 10px" (click)="modalAgregarServicio()">
+      <mat-icon>note_add</mat-icon>Agregar
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
 
-      <div class="row">
+<mat-grid-list cols="1" rowHeight="70px">
+  <mat-grid-tile>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="BUSCAR SERVICIO, CATEGORIA, PRECIO">
+      </mat-form-field>
+    </form>
 
-        <input type="text" class="form-control" placeholder="Buscar Servicios..." (keyup)="filtrarNombre(inputFiltro.value)"
-          #inputFiltro>
+  </mat-grid-tile>
+</mat-grid-list>
 
-        <div class=" table-responsive">
-          <table class="table table-sm">
-            <thead>
-              <tr>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
 
-                <th scope="col">Nombre</th>
-                <th scope="col">Precio</th>
-                <th scope="col">Accion</th>
-              </tr>
-            </thead>
-            <tbody>
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+    </ng-container>
 
-              <ng-container *ngFor="let servicio of serviciosFiltrados">
-                <tr>
+    <ng-container matColumnDef="editar">
+      <th mat-header-cell *matHeaderCellDef> Editar </th>
+      <td mat-cell *matCellDef="let element"> <button mat-icon-button color="primary"
+          (click)="modalEditarServicio(element)">
+          <mat-icon>edit</mat-icon>
+        </button> </td>
+    </ng-container>
+    <ng-container matColumnDef="borrar">
+      <th mat-header-cell *matHeaderCellDef> Borrar </th>
+      <td mat-cell *matCellDef="let element"><button mat-icon-button color="warn"
+          (click)="modalBorrarServicio(element)">
+          <mat-icon>delete_forever</mat-icon>
+        </button> </td>
+    </ng-container>
 
-                  <td>
-                    <div class="col">
-                      {{servicio.descripcion}}
-                    </div>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
 
-                  </td>
-
-                  <td>
-                    <div class="col">
-                      {{servicio.valor}}
-                    </div>
-
-                  </td>
-
-                  <td>
-                    <div>
-                      <button type="button" class="btn-sm btn-primary " data-toggle="modal" data-target="#EditarModal"
-                        (click)="editarServicio(servicio)">Editar</button>
-                      <button type="button" class="btn-sm btn-warning " data-toggle="modal" data-target="#BorrarModal"
-                        (click)="seleccionarServicioBorrar(servicio)">Eliminar</button>
-                    </div>
-                  </td>
-                </tr>
-              </ng-container>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-
-    </div>
-  </div>
+  <mat-paginator [pageSizeOptions]="[20, 40, 60]" showFirstLastButtons></mat-paginator>
 </div>
-
-<!-- Modal AgregarServicio -->
-<div class="modal fade bd-example-modal-lg" id="AgregarServicioModal" tabindex="-1" role="dialog" aria-labelledby="AgregarServicioModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="AgregarServicioModalLabel">Agregar Servicio</h5>
-        <button type="button" id="closeAgregar" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        <!-- Form servicioForm -->
-        <form *ngIf="servicioForm" [formGroup]="servicioForm" (ngSubmit)="agregarServicios()">
-          <div class="form-group">
-            <label for="descripcion">Nombre del servicio</label>
-            <input type="text" class="form-control is-invalid " id="descripcion" placeholder="Ingrese nombre del servicio"
-              formControlName="descripcion" [ngClass]="{ 'is-invalid':  servicioForm.get('descripcion').invalid && (servicioForm.get('descripcion').dirty || servicioForm.get('descripcion').touched)
-            ,'is-valid':(servicioForm.get('descripcion').dirty || servicioForm.get('descripcion').touched) && servicioForm.get('descripcion').valid }">
-
-            <div class="invalid-feedback">
-              <div *ngIf="servicioForm.get('descripcion').errors?.required">
-                Nombre de servicio es requerido.
-              </div>
-            </div>
-            <div class="invalid-feedback">
-              <div *ngIf="servicioForm.get('descripcion').errors?.minlength">
-                Nombre debe tener al menos 2 caracteres.
-              </div>
-            </div>
-            <div class="invalid-feedback">
-              <div *ngIf="servicioForm.get('descripcion').errors?.forbiddenName">
-                Nombre ocupado.
-              </div>
-            </div>
-
-            <div class="valid-feedback">
-              <div>
-                Nombre de servicio válido !</div>
-            </div>
-          </div>
-
-
-          <div class="form-group">
-            <label for="exampleInputEmail1">Precio del servicio</label>
-            <input type="number" class="form-control is-invalid " id="valor" placeholder="Numeros sin putos ni signos"
-              formControlName="valor" [ngClass]="{ 'is-invalid':  servicioForm.get('valor').invalid && (servicioForm.get('valor').dirty || servicioForm.get('valor').touched)
-              ,'is-valid':(servicioForm.get('valor').dirty || servicioForm.get('valor').touched) && servicioForm.get('valor').valid }">
-            <div class="invalid-feedback">
-              <div *ngIf="servicioForm.get('valor').errors?.required">
-                Precio de servicio es requerido.
-              </div>
-            </div>
-            <div class="invalid-feedback">
-              <div *ngIf="servicioForm.get('valor').errors?.min">
-                Precio debe ser mayor a 99 pesos.
-              </div>
-            </div>
-            <div class="valid-feedback">
-              <div>
-                Precio válido !</div>
-            </div>
-          </div>
-
-
-
-          <div class="form-group">
-            Categoria
-            <div class="form-control ">
-              <select id="categoria" formControlName="categoria">
-                <ng-container *ngFor="let cat of categorias">
-                  <option>{{cat.nombre}}</option>
-
-                </ng-container>
-              </select>
-
-            </div>
-
-
-          </div>
-
-          <button class="btn btn-danger">Agregar</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Salir</button>
-
-        </form>
-
-
-
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal EditarServicio -->
-<div class="modal fade bd-example-modal-lg" id="EditarModal" tabindex="-1" role="dialog" aria-labelledby="EditarModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="EditarModalLabel">Editar Servicio</h5>
-        <button type="button" id="closeEditar" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        <!-- Form editarServicioForm -->
-        <form *ngIf="editarServicioForm" [formGroup]="editarServicioForm" (ngSubmit)="editarServicioModificado()">
-          <div class="form-group">
-            <label for="descripcion">Nombre del servicio</label>
-            <input type="text" class="form-control is-invalid " id="descripcion" placeholder="Ingrese nombre del servicio"
-              formControlName="descripcion" [ngClass]="{ 'is-invalid':  editarServicioForm.get('descripcion').invalid && (editarServicioForm.get('descripcion').dirty || editarServicioForm.get('descripcion').touched)
-            ,'is-valid':(editarServicioForm.get('descripcion').dirty || editarServicioForm.get('descripcion').touched) && editarServicioForm.get('descripcion').valid }">
-
-            <div class="invalid-feedback">
-              <div *ngIf="editarServicioForm.get('descripcion').errors?.required">
-                Nombre de servicio es requerido.
-              </div>
-            </div>
-            <div class="invalid-feedback">
-              <div *ngIf="editarServicioForm.get('descripcion').errors?.minlength">
-                Nombre debe tener al menos 2 caracteres.
-              </div>
-            </div>
-            <div class="invalid-feedback">
-              <div *ngIf="editarServicioForm.get('descripcion').errors?.forbiddenName">
-                Nombre ocupado.
-              </div>
-            </div>
-
-            <div class="valid-feedback">
-              <div>
-                Nombre de servicio válido !</div>
-            </div>
-          </div>
-
-
-          <div class="form-group">
-            <label for="exampleInputEmail1">Precio del servicio</label>
-            <input type="number" class="form-control is-invalid " id="valor" placeholder="Numeros sin putos ni signos"
-              formControlName="valor" [ngClass]="{ 'is-invalid':  editarServicioForm.get('valor').invalid && (editarServicioForm.get('valor').dirty || editarServicioForm.get('valor').touched)
-              ,'is-valid':(editarServicioForm.get('valor').dirty || editarServicioForm.get('valor').touched) && editarServicioForm.get('valor').valid }">
-            <div class="invalid-feedback">
-              <div *ngIf="editarServicioForm.get('valor').errors?.required">
-                Precio de servicio es requerido.
-              </div>
-            </div>
-            <div class="invalid-feedback">
-              <div *ngIf="editarServicioForm.get('valor').errors?.min">
-                Precio debe ser mayor a 99 pesos.
-              </div>
-            </div>
-            <div class="valid-feedback">
-              <div>
-                Precio válido !</div>
-            </div>
-          </div>
-
-
-
-          <div class="form-group">
-            Categoria
-            <div class="form-control ">
-              <select id="categoria" formControlName="categoria">
-
-                <option *ngFor="let cat of categorias" [ngValue]="cat.nombre">{{cat.nombre}}</option>
-
-              </select>
-
-            </div>
-
-
-          </div>
-
-          <button class="btn btn-danger">Editar Servicio</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Salir</button>
-
-        </form>
-
-
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Borrar -->
-<div class="modal fade bd-example-modal-lg" id="BorrarModal" tabindex="-1" role="dialog" aria-labelledby="BorrarModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="BorrarModalLabel">Borrar Servicio</h5>
-        <button type="button" id="closeBorrar" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <b>Desea eliminar este servicio?</b>
-          <hr>
-          <div *ngIf="servicioSeleccionado">
-            <div class="font-weight-bold">Descripcion: <b class="text-primary">{{servicioSeleccionado.descripcion}} </b></div>
-            <div class="font-weight-bold">Valor: <b class="text-danger">{{servicioSeleccionado.valor |
-                currency:'CLP':'symbol-narrow'}}</b>
-                <div class="font-weight-bold">Categoría : <b class="text-success">{{servicioSeleccionado.categoria}} </b></div>
-            </div>
-          </div>
-
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-danger" (click)="borrarServicio(servicioSeleccionado)" data-dismiss="modal">Borrar</button>
-            <button type="submit" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>

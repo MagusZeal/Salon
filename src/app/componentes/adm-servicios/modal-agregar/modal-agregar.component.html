@@ -1,0 +1,56 @@
+<form [formGroup]="servicioForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card >
+    <mat-card-header>
+      <mat-card-title style="color:darkviolet ">Agregar Servicio</mat-card-title>
+ 
+    </mat-card-header>
+   
+    <mat-card-content>
+
+
+      <mat-form-field class="example-full-width" style="font-size:18px">
+        <input matInput placeholder="Nombre servicio" formControlName="descripcion">
+        <mat-error *ngIf="servicioForm.controls['descripcion'].hasError('required')">
+          Nombre es <strong>requerido</strong>
+        </mat-error>
+        <mat-error *ngIf="servicioForm.get('descripcion').errors?.minlength">
+            Nombre debe tener al menos <strong>3 caracteres</strong>
+          </mat-error>
+          <mat-error *ngIf="servicioForm.get('descripcion').errors?.forbiddenName">
+              Nombre <strong>ocupado</strong>
+            </mat-error>
+      </mat-form-field>
+
+      <br>
+      <br>
+      <mat-form-field class="example-full-width" style="font-size:18px">
+        <input matInput placeholder="Precio" formControlName="valor" type="number">
+        <mat-error *ngIf="servicioForm.controls['valor'].hasError('required')">
+          Precio es <strong>requerido</strong>
+        </mat-error>
+        <mat-error *ngIf="servicioForm.get('valor').errors?.min">
+            Precio debe ser mayor a <strong>999 pesos</strong>
+          </mat-error>
+      </mat-form-field>
+
+<br>
+  
+          <mat-form-field class="example-full-width" style="font-size:18px">
+            <mat-select placeholder="Categoria" formControlName="categoria">
+              <mat-option *ngFor="let categoria of categorias" [value]="categoria.nombre">
+                {{ categoria.nombre }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="servicioForm.controls['categoria'].hasError('required')">
+                Categoria es <strong>requerida</strong>
+            </mat-error>
+          </mat-form-field>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Agregar Servicio</button>
+      <button mat-raised-button color="accent" [mat-dialog-close]="false">Cerrar</button>
+    </mat-card-actions>
+   
+  </mat-card>
+</form>

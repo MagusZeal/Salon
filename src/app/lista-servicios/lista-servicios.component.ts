@@ -11,7 +11,7 @@ import { ModalCambiarPrecioComponent } from '../componentes/modal-cambiar-precio
   styleUrls: ['./lista-servicios.component.scss']
 })
 export class ListaServiciosComponent implements OnInit {
-
+  breakpoint: number;
   categorias: ICategoria[] = [];
   servicios: IServicio[] = [];
   serviciosSeleccionados: IServicio[] = [];
@@ -36,10 +36,12 @@ export class ListaServiciosComponent implements OnInit {
       this.cargarServicios();
     })
 
-
+    this.breakpoint = (window.innerWidth <= 400) ? 1 : 4;
 
   }
-
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 4;
+  }
   seleccionarServicio(servicio) {
   
 
@@ -56,14 +58,14 @@ export class ListaServiciosComponent implements OnInit {
         }
       }
       this.serviciosOriginales = this.serviciosOriginales.filter(o => o.descripcion != servicio.descripcion);
-      servicio['seleccionado'] = "white";
+      servicio['seleccionado'] = "#FAFAFA";
       servicio['seleccionado2'] = "black";
     } else {
       this.serviciosSeleccionados.push(servicio);
       this.serviciosOriginales.push(JSON.parse(JSON.stringify(servicio)));
 
       servicio['seleccionado'] = "#5f97ef";
-      servicio['seleccionado2'] = 'white';
+      servicio['seleccionado2'] = '#FAFAFA';
 
     }
 
@@ -91,7 +93,7 @@ export class ListaServiciosComponent implements OnInit {
 
     for (let item of this.servicios) {
 
-      item['seleccionado'] = "white";
+      item['seleccionado'] = "#FAFAFA";
       item['seleccionado2'] = "black";
     }
   }

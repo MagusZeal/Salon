@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdmClientesService } from '../adm-clientes/adm-clientes.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { forbiddenNameValidator } from './validaciones';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { AdmClientesAgregarComponent } from '../componentes/adm-clientes/adm-clientes-agregar/adm-clientes-agregar.component';
+import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { AdmClientesEditarComponent } from '../componentes/adm-clientes/adm-clientes-editar/adm-clientes-editar.component';
+import { AdmClientesBorrarComponent } from '../componentes/adm-clientes/adm-clientes-borrar/adm-clientes-borrar.component';
 
 
 @Component({
@@ -12,83 +15,127 @@ import { forbiddenNameValidator } from './validaciones';
 export class AdmClientesComponent implements OnInit {
   clienteForm: FormGroup;
   clientes: ICliente[] = [];
-  clientesFiltrados: ICliente[] = [];
-  clienteFiltrado: {};
-  nombresClientes: string[] = [];
-  dias: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-  meses: any[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  customCollapsedHeight;
+  customExpandedHeight;
+  dataSource;
+  displayedColumns: string[] = ['nombre', 'editar', 'borrar'];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private AdmClientes: AdmClientesService, private fb: FormBuilder) { }
+  constructor(private AdmClientes: AdmClientesService, public dialog: MatDialog) { }
 
   async ngOnInit() {
-    this.clientes = await Object.values(await this.AdmClientes.obtenerClientes());
-    this.clientesFiltrados = this.clientes;
-    this.nombresClientes = this.clientes.map(o => o.nombre);
-    this.clienteForm = this.fb.group({
-      nombre:['', [Validators.required, Validators.minLength(2),forbiddenNameValidator(this.clientes) ]],
-      numero:[''],
-      mail:[''],
-      cumple:this.fb.group({
-        dia:[''],
-        mes:[''],
-      }),
-      nota:['']
-    })
-    // this.clienteForm.get('cumple').get('mes').setValue(2);
+    this.clientes = [];
+
+    this.dataSource = [];
 
 
 
-    
+    this.mapearObjetosArray(await this.AdmClientes.obtenerClientes());
+
+
+    this.dataSource = new MatTableDataSource<any>(this.clientes);
+    this.dataSource.paginator = this.paginator;
+
+    this.customCollapsedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
+    this.customExpandedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
+
+    console.log(this.clientes);
+
   }
 
-  get nombre() { return this.clienteForm.get('nombre'); }
+  applyFilter(filterValue: string) {
+    console.log(this.dataSource);
+
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  onResize(event) {
+
+    this.customCollapsedHeight = (event.target.innerWidth <= 400) ? '100px' : '40px';
+    this.customExpandedHeight = (event.target.innerWidth <= 400) ? '100px' : '40px';
+  }
 
 
-  async agregarCliente() {
-  
-    await this.AdmClientes.agregarCliente(this.clienteForm.value);
-console.log(this.clienteForm.value);
 
+  mapearObjetosArray(objeto) {
+
+    for (let key in objeto) {
+
+      let cliente = objeto[key];
+      cliente['idCliente'] = key;
+      this.clientes.push(cliente);
     }
+  }
 
-  
 
-  seleccionarCliente(cliente : ICliente){
-    var cli:ICliente;
-    // if(cliente.cumple){
-    //  cli = {cumple:{dia:'01',mes:'2'},mail:cliente.mail,nombre:cliente.nombre,nota:cliente.nota,numero:cliente.numero}
-    //  this.clienteForm.setValue(cli);
-    // }else{
-      this.clienteForm.setValue(cliente);
-    // }
-  
-    // this.clienteForm.get('nombre').setValue(cliente.nombre);
-    // this.clienteForm.get('mail').setValue(cliente.mail);
-    // this.clienteForm.get('numero').setValue(cliente.numero);
-    // this.clienteForm.get('dia').setValue(cliente.cumple.substring(0,cliente.cumple.indexOf('/')));
-    // this.clienteForm.get('mes').setValue(this.conseguirMes(cliente.cumple.substring(cliente.cumple.lastIndexOf('/')+1)));
+  modalAgregarCliente() {
+
+    const dialogRef = this.dialog.open(AdmClientesAgregarComponent, {
+      width: "600px",
+      maxWidth: "600px",
+      autoFocus: true,
+      hasBackdrop: true,
+      data: { clientes: this.clientes }
+
+    });
+
+    dialogRef.afterClosed().subscribe(o => {
+      console.log(o);
+
+      if (o == true) {
+        this.ngOnInit();
+      }
+    });
 
   }
 
-  conseguirMes(mes) {
-    if (mes == 1) { return mes = "Enero" }
-    if (mes == 2) { return mes = "Febrero" }
-    if (mes == 3) { return mes = "Marzo" }
-    if (mes == 4) { return mes = "Abril" }
-    if (mes == 5) { return mes = "Mayo" }
-    if (mes == 6) { return mes = "Junio" }
-    if (mes == 7) { return mes = "Julio" }
-    if (mes == 8) { return mes = "Agosto" }
-    if (mes == 9) { return mes = "Septiembre" }
-    if (mes == 10) { return mes = "Octubre" }
-    if (mes == 11) { return mes = "Noviembre" }
-    if (mes == 12) { return mes = "Diciembre" }
+  modalEditarCliente(cliente) {
+
+    const dialogRef = this.dialog.open(AdmClientesEditarComponent, {
+      width: "600px",
+      maxWidth: "600px",
+      autoFocus: true,
+      hasBackdrop: true,
+      data: {
+        clientes: this.clientes,
+        clienteSeleccionado: cliente
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(o => {
+      console.log(o);
+
+      if (o == true) {
+        this.ngOnInit();
+      }
+    });
+
   }
 
-  filtrarNombre(filtro: string){
+  modalBorrarCliente(cliente) {
 
-    this.clientesFiltrados = this.clientes.filter(o=>o.nombre.includes(filtro))
+    const dialogRef = this.dialog.open(AdmClientesBorrarComponent, {
+      width: "600px",
+      maxWidth: "600px",
+      autoFocus: true,
+      hasBackdrop: true,
+      data: {
+        clientes: this.clientes,
+        clienteSeleccionado: cliente
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(o => {
+      console.log(o);
+
+      if (o == true) {
+        this.ngOnInit();
+      }
+    });
 
   }
+
 
 }

@@ -12,11 +12,7 @@ export class AdmClientesService {
     return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?').toPromise();
   }
 
-  async agregarCliente(cliente){
-
-    return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?',cliente).toPromise();
-     
-   }
+ 
 
   
 

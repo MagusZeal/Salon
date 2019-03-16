@@ -1,42 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdmServiciosService } from '../adm-servicios/adm-servicios.service'
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { forbiddenNameValidator } from './validaciones';
+
+import { MatDialog, MatTableDataSource, MatPaginator } from '@angular/material';
+import { ModalAgregarComponent } from '../componentes/adm-servicios/modal-agregar/modal-agregar.component';
+import { ModalEditarComponent } from '../componentes/adm-servicios/modal-editar/modal-editar.component';
+import { ModalBorrarServicioComponent } from '../componentes/adm-servicios/modal-borrar-servicio/modal-borrar-servicio.component';
+
 @Component({
   selector: 'app-adm-servicios',
   templateUrl: './adm-servicios.component.html',
-  styleUrls: ['./adm-servicios.component.scss']
+  styleUrls: ['./adm-servicios.component.scss'],
+
 })
 export class AdmServiciosComponent implements OnInit {
-  constructor(private AdmServicios: AdmServiciosService, private fb: FormBuilder) { }
+  constructor(private AdmServicios: AdmServiciosService, public dialog: MatDialog) { }
 
-  servicioForm: FormGroup;
-  editarServicioForm: FormGroup;
+
   servicios: IServicio[] = [];
-  serviciosFiltrados: IServicio[] = [];
-  categorias: ICategoria[] = [];
-  serviciosX: IServicio[] = [];
-  servicioSeleccionado;
+  customCollapsedHeight;
+  customExpandedHeight;
+  dataSource;
+  displayedColumns: string[] = ['descripcion', 'editar', 'borrar'];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  applyFilter(filterValue: string) {
+
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
   async ngOnInit() {
+
     this.servicios = [];
+    this.mapearObjetosArray(await this.AdmServicios.obtenerServicios());
 
-    await this.AdmServicios.obtenerServicios().subscribe(o => {
+    this.dataSource = new MatTableDataSource<any>(this.servicios);
+    this.dataSource.paginator = this.paginator;
 
-      this.mapearObjetosArray(o)
-
-    });
-
-
-
-    this.AdmServicios.obtenerCategorias().subscribe(o => this.categorias = o)
-    this.serviciosFiltrados = this.servicios;
-    this.servicioForm = this.fb.group({
-      descripcion: ['', [Validators.required, Validators.minLength(2), forbiddenNameValidator(this.servicios)]],
-      valor: ['', [Validators.required, Validators.min(99)]],
-      categoria: ['Manicure', [Validators.required]]
-    })
+    this.customCollapsedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
+    this.customExpandedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
 
 
+  }
+
+  onResize(event) {
+
+    this.customCollapsedHeight = (event.target.innerWidth <= 400) ? '100px' : '40px';
+    this.customExpandedHeight = (event.target.innerWidth <= 400) ? '100px' : '40px';
   }
 
 
@@ -50,67 +59,71 @@ export class AdmServiciosComponent implements OnInit {
     }
   }
 
-  async agregarServicios() {
+  modalAgregarServicio() {
+    console.log("asdas");
 
-    if (this.servicioForm.valid == true) {
+    const dialogRef = this.dialog.open(ModalAgregarComponent, {
+      width: "340px",
+      maxWidth: "600px",
+      autoFocus: true,
+      hasBackdrop: true,
+      data: { servicios: this.servicios }
 
-      await this.AdmServicios.agregarServicio(this.servicioForm.value);
-      document.getElementById("closeAgregar").click();
-      this.ngOnInit();
-    }
-  }
-  async editarServicio(servicio) {
+    });
 
+    dialogRef.afterClosed().subscribe(o => {
+      console.log(o);
 
-
-    this.editarServicioForm = this.fb.group({
-      descripcion: [servicio.descripcion, [Validators.required, Validators.minLength(2), forbiddenNameValidator(this.serviciosX)]],
-      valor: [servicio.valor, [Validators.required, Validators.min(99)]],
-      categoria: [servicio.categoria, [Validators.required]]
-    })
-    this.servicioSeleccionado = servicio;
-    console.log(this.servicioSeleccionado);
-    console.log(this.editarServicioForm.value);
-
-    this.serviciosX = Object.assign([], this.servicios);
-
-    var index = this.serviciosX.indexOf(servicio);
-    if (index !== -1) this.serviciosX.splice(index, 1);
-
-
+      if (o == true) {
+        this.ngOnInit();
+      }
+    });
 
   }
 
+  modalEditarServicio(servicio) {
+    const dialogRef2 = this.dialog.open(ModalEditarComponent, {
+      width: "340px",
+      maxWidth: "600px",
+      autoFocus: true,
+      hasBackdrop: true,
+      data: {
+        servicios: this.servicios,
+        servicioSeleccionado: servicio
+      }
 
-  async editarServicioModificado() {
-    console.log(this.editarServicioForm.value);
-    console.log(this.editarServicioForm.valid);
+    });
 
-    if (this.editarServicioForm.valid == true) {
+    dialogRef2.afterClosed().subscribe(o => {
 
-      await this.AdmServicios.editarServicio(this.editarServicioForm.value, this.servicioSeleccionado.idServicio);
-      document.getElementById("closeEditar").click();
-      this.ngOnInit();
 
-    }
-  }
-  filtrarNombre(filtro: string) {
+      if (o == true) {
 
-    this.serviciosFiltrados = this.servicios.filter(o => o.descripcion.toLocaleLowerCase().includes(filtro.toLocaleLowerCase()))
-
-  }
-
-  async seleccionarServicioBorrar(servicio) {
-    this.servicioSeleccionado = servicio;
-    console.log(servicio);
-
+        this.ngOnInit();
+      }
+    });
   }
 
+  modalBorrarServicio(servicio) {
+    const dialogRef2 = this.dialog.open(ModalBorrarServicioComponent, {
+      width: "340px",
+      maxWidth: "600px",
+      autoFocus: true,
+      hasBackdrop: true,
+      data: {
+        servicioSeleccionado: servicio
+      }
 
-  async borrarServicio(servicio) {
+    });
 
-    await this.AdmServicios.eliminarServicio(servicio.idServicio);
-    document.getElementById("closeBorrar").click();
-    this.ngOnInit();
+    dialogRef2.afterClosed().subscribe(o => {
+
+      if (o == true) {
+
+        this.ngOnInit();
+      }
+    });
   }
+
+
 }

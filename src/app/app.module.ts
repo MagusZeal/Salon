@@ -42,6 +42,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { BorrarBoletaComponent } from './componentes/caja/borrar-boleta/borrar-boleta.component';
+import { ModalAgregarComponent } from './componentes/adm-servicios/modal-agregar/modal-agregar.component';
+import { ModalEditarComponent } from './componentes/adm-servicios/modal-editar/modal-editar.component';
+import { ModalBorrarServicioComponent } from './componentes/adm-servicios/modal-borrar-servicio/modal-borrar-servicio.component';
+import { AdmClientesAgregarComponent } from './componentes/adm-clientes/adm-clientes-agregar/adm-clientes-agregar.component';
+import { AdmClientesEditarComponent } from './componentes/adm-clientes/adm-clientes-editar/adm-clientes-editar.component';
+import { AdmClientesBorrarComponent } from './componentes/adm-clientes/adm-clientes-borrar/adm-clientes-borrar.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 registerLocaleData(LocaleCL);
 
 @NgModule({
@@ -63,7 +70,13 @@ registerLocaleData(LocaleCL);
     ModalCambiarPrecioComponent,
     ModalPagarComponent,
     ModalBorrarComponent,
-    BorrarBoletaComponent
+    BorrarBoletaComponent,
+    ModalAgregarComponent,
+    ModalEditarComponent,
+    ModalBorrarServicioComponent,
+    AdmClientesAgregarComponent,
+    AdmClientesEditarComponent,
+    AdmClientesBorrarComponent
 
   ],
   imports: [
@@ -94,7 +107,8 @@ registerLocaleData(LocaleCL);
     MatRadioModule,
     MatSnackBarModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatPaginatorModule
 
   ],
   providers: [ListaServiciosService,
@@ -111,7 +125,13 @@ registerLocaleData(LocaleCL);
     ModalCambiarPrecioComponent,
     ModalPagarComponent,
     ModalBorrarComponent,
-    BorrarBoletaComponent
+    BorrarBoletaComponent,
+    ModalAgregarComponent,
+    ModalEditarComponent,
+    ModalBorrarServicioComponent,
+    AdmClientesAgregarComponent,
+    AdmClientesEditarComponent,
+    AdmClientesBorrarComponent
   ]
 })
 export class AppModule { }

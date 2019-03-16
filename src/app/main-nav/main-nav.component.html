@@ -2,15 +2,21 @@
   <mat-sidenav #drawer class="sidenav" [ngClass]="{hidden : !(isHandset$ | async)}" fixedInViewport="false"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar >Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="Servicios">Servicios</a>
       <a mat-list-item routerLink="CobrosPendientes">CobrosPendientes</a>
       <a mat-list-item routerLink="Caja">Caja</a>
-      <a mat-list-item routerLink="Dashboard">Dashboard</a>
-      <a mat-list-item routerLink="DashboardClientes">Dashboard Clientes</a>
-
+    
     </mat-nav-list>
+    <button  mat-button [matMenuTriggerFor]="menuDashboards" style="font-size: 16px;font-weight: normal">Dashboards</button>
+    <mat-menu #menu="matMenu">
+  
+    </mat-menu>
+    <button  mat-button [matMenuTriggerFor]="menuAdministrar" style="font-size: 16px;font-weight: normal">Administrar</button>
+    <mat-menu #menu="matMenu">
+     
+    </mat-menu>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
@@ -24,9 +30,18 @@
       <a *ngIf="!(isHandset$ | async)" routerLink="Servicios">Servicios</a>
       <a *ngIf="!(isHandset$ | async)" routerLink="CobrosPendientes">Cobros</a>
       <a *ngIf="!(isHandset$ | async)" routerLink="Caja">Caja</a>
-      <a *ngIf="!(isHandset$ | async)" routerLink="Dashboard">Dashboard</a>
-      <a *ngIf="!(isHandset$ | async)" routerLink="DashboardClientes">Dashboard Clientes</a>
-
+   
+      <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuDashboards" style="font-size: 20px">Dashboards</button>
+      <mat-menu #menuDashboards="matMenu">
+        <button mat-menu-item routerLink="Dashboard">Dashboard</button>
+        <button mat-menu-item routerLink="DashboardClientes">Dashboard Clientes</button>
+      </mat-menu>
+      <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuAdministrar" style="font-size: 20px">Administrar</button>
+      <mat-menu #menuAdministrar="matMenu">
+        <button mat-menu-item routerLink="AdministrarServicios">Servicios</button>
+        <button mat-menu-item routerLink="AdministrarClientes">Clientes</button>
+      </mat-menu>
+      
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

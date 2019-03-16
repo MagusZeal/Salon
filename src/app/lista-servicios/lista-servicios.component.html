@@ -1,41 +1,77 @@
 <mat-grid-list cols="1" rowHeight="40">
-  <mat-grid-tile >
- <div class="spacer" style=" text-align: right;font-weight:bold">
-    Total {{precioTotal | currency:'CLP':'symbol-narrow'}}
- </div>
-</mat-grid-tile>
   <mat-grid-tile>
-      <mat-form-field >
-          <mat-select placeholder="TODAS LAS CATEGORIAS" (selectionChange)="seleccionarCategoria($event)">
-            <mat-option >TODAS LAS CATEGORIAS</mat-option>
-            <ng-container *ngFor="let categoria of categorias">
-        
-              <mat-option  [value]="categoria" >{{categoria.nombre}}</mat-option>
-            </ng-container>
-        
-          </mat-select>
-        </mat-form-field>
+    <div class="spacer" style=" text-align: right;font-weight:bold">
+      Total {{precioTotal | currency:'CLP':'symbol-narrow'}}
+    </div>
   </mat-grid-tile>
   <mat-grid-tile>
-    <div class="spacer2" > 
-      <button  color="accent" mat-raised-button style=" margin-right: 8px;" (click)="abrirModalPrecioVariable()">
-          Precio Variable
-        </button>
-      
-        <button  color="primary" mat-raised-button style=" margin-right: 8px;"(click)="abrirModalServicios()">
-          Asignar
-        </button>
-   <button  mat-raised-button    color="primary" (click)="abrirModalServicios()">
-      <mat-icon>person_add</mat-icon>
-      
-        </button>
-     
-      </div>
+    <mat-form-field>
+      <mat-select placeholder="TODAS LAS CATEGORIAS" (selectionChange)="seleccionarCategoria($event)">
+        <mat-option>TODAS LAS CATEGORIAS</mat-option>
+        <ng-container *ngFor="let categoria of categorias">
+
+          <mat-option [value]="categoria">{{categoria.nombre}}</mat-option>
+        </ng-container>
+
+      </mat-select>
+    </mat-form-field>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="spacer2">
+      <button color="accent" mat-raised-button style=" margin-right: 8px;" (click)="abrirModalPrecioVariable()">
+        Precio Variable
+      </button>
+
+      <button color="primary" mat-raised-button style=" margin-right: 8px;" (click)="abrirModalServicios()">
+        Asignar
+      </button>
+      <button mat-raised-button color="primary" (click)="abrirModalServicios()">
+
+
+      </button>
+
+    </div>
   </mat-grid-tile>
 </mat-grid-list>
 
+<mat-grid-list [cols]="breakpoint"  rowHeight="30px" (window:resize)="onResize($event)" >
+    <ng-container *ngFor="let servicio of servicios">
 
-<div class="container">
+    <mat-grid-tile *ngIf="categoriaSeleccion == servicio.categoria || categoriaSeleccion == 'TODAS LAS CATEGORIAS' "
+    [ngStyle]="{'color':servicio.seleccionado2, 'background-color':servicio.seleccionado}"
+    (click)="seleccionarServicio(servicio)" style=" font-weight: bold" >
+ 
+   
+
+<!-- <div *ngIf="categoriaSeleccion == servicio.categoria || categoriaSeleccion == 'TODAS LAS CATEGORIAS' " style="white-space: pre; font-weight: bold">
+         <a 
+         [ngStyle]="{'color':'#d84343' ,  'font-weight': 'bold','background-color':servicio.seleccionado}"
+        class="col-sm-4 float-right" (click)="seleccionarServicio(servicio)">
+        ${{servicio.valor}} <div [ngStyle]="{'color':servicio.seleccionado2,'text-overflow': 'ellipsis','width': '230px','overflow':'hidden', 'white-space': 'nowrap'}"
+          class="float-left"> {{servicio.descripcion}} </div>  </a>
+        </div> -->
+        <div  
+          
+           >
+<div  [ngStyle]="{'text-overflow': 'ellipsis','width': '300px','overflow':'hidden', 'white-space': 'nowrap'}">
+    {{  (servicio.descripcion.length>19)? (servicio.descripcion | slice:0:19)+'..':(servicio.descripcion)}}
+  <a  style="float:right; color:#d84343" >
+  ${{servicio.valor}}</a></div>
+
+          </div>
+
+
+
+
+
+
+
+        </mat-grid-tile>
+    
+
+  </ng-container>
+</mat-grid-list>
+<!-- <div class="container">
   <div class="row">
     <ng-container *ngFor="let servicio of servicios">
 
@@ -49,9 +85,4 @@
 
     </ng-container>
   </div>
-</div>
-
-
-
-
-
+</div> -->

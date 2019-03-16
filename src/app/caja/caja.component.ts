@@ -32,20 +32,21 @@ export class CajaComponent implements OnInit {
     totalTransferencia: 0,
     totalEfectivo: 0,
     totalGiftCard: 0,
-    totalDescuento: 0
+    totalDescuento: 0,
+    totalVuelto:0
 
   };
 
   constructor(private Caja: CajaService, public dialog: MatDialog) { }
 
   onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 400) ? 4 : 7;
+    this.breakpoint = (event.target.innerWidth <= 400) ? 4 : 8;
   }
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    // this.boletasFiltradas = this.boletas.filter(o => o.cliente.nombre.toLocaleLowerCase().includes(value.toLocaleLowerCase()))
+    this.boletasFiltradas = this.boletas.filter(o => o.cliente.nombre.toLocaleLowerCase().includes(value.toLocaleLowerCase()))
 
     return this.options.filter(o => o.toLowerCase().includes(filterValue));
   }
@@ -53,10 +54,10 @@ export class CajaComponent implements OnInit {
   async ngOnInit() {
     this.boletas = [];
     this.boletasFiltradas = [];
-    this.options= [];
+    this.options = [];
 
-    this.breakpoint = (window.innerWidth <= 400) ? 4 : 7;
-  
+    this.breakpoint = (window.innerWidth <= 400) ? 4 : 8;
+
     this.resumenDia = {
 
       serviciosRealizados: 0,
@@ -69,7 +70,8 @@ export class CajaComponent implements OnInit {
       totalTransferencia: 0,
       totalEfectivo: 0,
       totalGiftCard: 0,
-      totalDescuento: 0
+      totalDescuento: 0,
+      totalVuelto:0
 
     };
 
@@ -78,22 +80,19 @@ export class CajaComponent implements OnInit {
 
 
     // this.Caja.obtenerJornada(c).subscribe(o => this.mapearObjetosArray(o));
+   
 
-    await this.Caja.obtenerJornada(c).subscribe(o => {
-      this.mapearObjetosArray(o)
-      console.log(o);
-    });
+    this.mapearObjetosArray(await this.Caja.obtenerJornada(c));
 
-    this.options = this.boletas.map(o => o.cliente.nombre);
+    this.options = this.boletas.map(o => o.cliente.nombre)
 
 
-    this.boletasFiltradas = this.boletas;
 
     this.filteredOptions = this.myControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
 
   }
 
@@ -109,13 +108,14 @@ export class CajaComponent implements OnInit {
 
       this.resumenDia.totalDia += boleta.montoPrincipal + boleta.montoGiftCard +
         boleta.montoDescuento + boleta.montoEfectivo - boleta.montoVuelto;
-
+      this.resumenDia.totalVuelto += boleta.montoVuelto;
       switch (boleta.formaDePagoPrincipal) {
         case 'Efectivo':
 
           this.resumenDia.totalEfectivo += boleta.montoPrincipal - boleta.montoVuelto;
           this.resumenDia.totalGiftCard += boleta.montoGiftCard;
           this.resumenDia.totalDescuento += boleta.montoDescuento;
+          
           break;
         case 'Tarjeta de Crédito':
           this.resumenDia.totalCredito += boleta.montoPrincipal;
@@ -157,7 +157,7 @@ export class CajaComponent implements OnInit {
     console.log(this.boletaSeleccionada);
   }
 
- 
+
 
   modalBorrarBoleta(boleta) {
     let c = new Date().toLocaleString('es-CL');
@@ -175,13 +175,13 @@ export class CajaComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(o => {
       if (o == true) {
-       console.log(c);
-       
+        console.log(c);
+
         console.log(boleta['idBoleta']);
 
 
-        this.Caja.eliminarBoleta(c , boleta['idBoleta']).subscribe(() => this.ngOnInit());
-    
+        this.Caja.eliminarBoleta(c, boleta['idBoleta']).subscribe(() => this.ngOnInit());
+
       }
     })
 
