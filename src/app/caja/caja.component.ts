@@ -1,25 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CajaService } from '../caja/caja.service';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { BorrarBoletaComponent } from '../componentes/caja/borrar-boleta/borrar-boleta.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { animate, style, transition, state, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-caja',
   templateUrl: './caja.component.html',
-  styleUrls: ['./caja.component.scss']
+  styleUrls: ['./caja.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class CajaComponent implements OnInit {
   breakpoint: number;
   boletas: any[] = [];
-  boletasFiltradas: any[] = [];
-  boletaSeleccionada: any;
-  myControl = new FormControl();
-  options: any[] = [];
-  filteredOptions: Observable<string[]>;
-  nombre;
+
+  dataSource;
+  
+  columnsToDisplay: string[] = ['nombre', 'total', 'borrar'];
+   // displayedColumns
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   resumenDia = {
 
     serviciosRealizados: 0,
@@ -39,23 +48,23 @@ export class CajaComponent implements OnInit {
 
   constructor(private Caja: CajaService, public dialog: MatDialog) { }
 
+  applyFilter(filterValue: string) {
+
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+   
+
+  }
+ 
+
   onResize(event) {
     this.breakpoint = (event.target.innerWidth <= 400) ? 4 : 8;
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
 
-    this.boletasFiltradas = this.boletas.filter(o => o.cliente.nombre.toLocaleLowerCase().includes(value.toLocaleLowerCase()))
-
-    return this.options.filter(o => o.toLowerCase().includes(filterValue));
-  }
 
   async ngOnInit() {
     this.boletas = [];
-    this.boletasFiltradas = [];
-    this.options = [];
-
+ 
     this.breakpoint = (window.innerWidth <= 400) ? 4 : 8;
 
     this.resumenDia = {
@@ -84,18 +93,38 @@ export class CajaComponent implements OnInit {
 
     this.mapearObjetosArray(await this.Caja.obtenerJornada(c));
 
-    this.options = this.boletas.map(o => o.cliente.nombre)
+   
+
+    this.dataSource = new MatTableDataSource<any>(this.boletas);
+    this.dataSource.filterPredicate = (data, filter: string)  => {
+      const accumulator = (currentTerm, key) => {
+        return this.nestedFilterCheck(currentTerm, data, key);
+      };
+      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+      // Transform the filter by converting it to lowercase and removing whitespace.
+      const transformedFilter = filter.trim().toLowerCase();
+      return dataStr.indexOf(transformedFilter) !== -1;
+    };
+    this.dataSource.paginator = this.paginator;
 
 
-
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
-
+ 
+  
   }
 
+
+  nestedFilterCheck(search, data, key) {
+    if (typeof data[key] === 'object') {
+      for (const k in data[key]) {
+        if (data[key][k] !== null) {
+          search = this.nestedFilterCheck(search, data[key], k);
+        }
+      }
+    } else {
+      search += data[key];
+    }
+    return search;
+  }
 
 
   mapearObjetosArray(objeto) {
@@ -151,12 +180,7 @@ export class CajaComponent implements OnInit {
     }
   }
 
-  seleccionarBoleta(boleta) {
-
-    this.boletaSeleccionada = boleta;
-    console.log(this.boletaSeleccionada);
-  }
-
+ 
 
 
   modalBorrarBoleta(boleta) {

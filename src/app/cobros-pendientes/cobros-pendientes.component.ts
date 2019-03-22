@@ -15,6 +15,8 @@ export class CobrosPendientesComponent implements OnInit {
   boletas: IBoleta[] = [];
   boletaSeleccionada: IBoleta;
   breakpoint: number;
+  customCollapsedHeight;
+  customExpandedHeight;
   @ViewChild('grid') grid: MatGridList;
   gridByBreakpoint = {
     xl: 8,
@@ -32,6 +34,14 @@ export class CobrosPendientesComponent implements OnInit {
     await this.CobroPendiente.obtenerBoletas().subscribe(o => {
       this.mapearObjetosArray(o)
     });
+
+    this.customCollapsedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
+    this.customExpandedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
+  }
+  onResizee(event) {
+
+    this.customCollapsedHeight = (event.target.innerWidth <= 400) ? '100px' : '40px';
+    this.customExpandedHeight = (event.target.innerWidth <= 400) ? '100px' : '40px';
   }
 
   mapearObjetosArray(objeto) {

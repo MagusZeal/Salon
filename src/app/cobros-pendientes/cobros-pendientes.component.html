@@ -38,7 +38,7 @@
 
 
         <mat-expansion-panel>
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header (window:resize)="onResizee($event)" [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
                 <mat-panel-title style="font-weight:bold;">
                     {{ (boleta.cliente.nombre.length>14)? (boleta.cliente.nombre | slice:0:14)+'..':(boleta.cliente.nombre)}}
                 </mat-panel-title>

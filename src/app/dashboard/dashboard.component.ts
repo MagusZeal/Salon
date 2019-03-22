@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DashboardService } from '../dashboard/dashboard.service';
-
+import { FormControl } from '@angular/forms';
+import * as moment from 'moment';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -16,12 +18,28 @@ export class DashboardComponent implements OnInit {
   jornadas: any[] = [];
   boletas: any[] = [];
   asd: any[] = [];
+  serviciosRealizadosTrabajadora: any[] = [];
   total: number;
   trabajadoras: any[] = [];
-  trabajadoraSeleccionada: {};
+  trabajadoraSeleccionada = 'TODAS LAS TRABAJADORAS';
   trabajadoraDrop: any[] = [];
   serviciosRealizados: any = [];
+  
   sueldo2: any[] = [];
+  breakpoint: number;
+  dpInicio =  new FormControl(new Date());
+  dpTermino = new FormControl(new Date());
+  dataSource;
+  dataSource2;
+  dataSource3;
+  displayedColumns: string[] = ['total', 'ganancia', 'cantidadServicios'];
+  displayedColumns2: string[] = ['servicio' , 'precio','cliente','fecha'];
+  displayedColumns3: string[] = ['fecha', 'ganancia', 'sinSueldoBase', 'servicios'];
+
+  @ViewChild('paginator2') paginator2: MatPaginator;
+  @ViewChild('paginator3') paginator3: MatPaginator;
+  
+  
   resumenDia = {
     serviciosRealizados: 0,
     total: 0,
@@ -37,38 +55,36 @@ export class DashboardComponent implements OnInit {
   };
 
 
-  sueldo = {
-
-    total: 0,
-    ganancia: 0,
-    cantidadServicios: 0
-
-  }
+  sueldo: ISueldo[] = [
+    { total: 0, ganancia: 0, cantidadServicios: 0 }
+  ];
 
   constructor(private Dashboard: DashboardService) { }
 
 
-  trabajadorasDropdown(objeto) {
-    this.trabajadoraDrop.push({ nombre: "TODAS LAS TRABAJADORAS" })
-    for (var i in objeto) {
 
 
-
-      this.trabajadoraDrop.push(objeto[i]);
-
-
+  seleccionarTrabajadora(event) {
+    if (event.value) {
+      this.trabajadoraSeleccionada = event.value.nombre;
+    } else {
+      this.trabajadoraSeleccionada = 'TODAS LAS TRABAJADORAS';
     }
+
+    console.log(this.trabajadoraSeleccionada);
+    
   }
 
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 2;
+  }
 
   async ngOnInit() {
-
+    this.breakpoint = (window.innerWidth <= 400) ? 1 : 2;
     this.trabajadoras = await Object.values(await this.Dashboard.obtenerTrabajadoras());
+   
+ 
 
-    this.trabajadorasDropdown(this.trabajadoras);
-    console.log(this.trabajadoraDrop);
-
-    this.trabajadoraSeleccionada = this.trabajadoraDrop[0];
 
   }
 
@@ -83,22 +99,33 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  _setDataSource(indexNumber) {
+    setTimeout(() => {
+      switch (indexNumber) {
+          case 1:
+          !this.dataSource2.paginator ? this.dataSource2.paginator = this.paginator2 : null;
+          break;
+        case 2:
+          !this.dataSource3.paginator ? this.dataSource3.paginator = this.paginator3 : null;
+      }
+    });
+  }
 
 
   async buscar() {
 
+
     this.limpiar();
 
-    console.log(this.trabajadoraSeleccionada);
-
-    console.log(this.inicio);
     
-    this.fechaInicio =this.inicio['year'].toString()   +
-      this.lena((this.inicio['month'].toString()))  +
-      this.lena((this.inicio['day'].toString()));
-    this.fechaTermino = this.termino['year'].toString()   +
-    this.lena((this.termino['month'].toString()))  +
-    this.lena((this.termino['day'].toString()));
+    
+    this.fechaInicio = this.dpInicio.value.toLocaleString('es-CL').substring(6, 10) +
+    this.dpInicio.value.toLocaleString('es-CL').substring(3, 5) +
+    this.dpInicio.value.toLocaleString('es-CL').substring(0, 2);
+    this.fechaTermino = this.dpTermino.value.toLocaleString('es-CL').substring(6, 10) +
+    this.dpTermino.value.toLocaleString('es-CL').substring(3, 5) +
+    this.dpTermino.value.toLocaleString('es-CL').substring(0, 2);
+
 
       console.log(this.fechaInicio, "inicio");
       console.log(this.fechaTermino, "termino");
@@ -108,7 +135,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-    if (this.trabajadoraSeleccionada['nombre'] == "TODAS LAS TRABAJADORAS") {
+    if (this.trabajadoraSeleccionada == "TODAS LAS TRABAJADORAS") {
       this.tablaTotalesCheckbox = true;
       this.montos(this.boletas);
 
@@ -117,18 +144,29 @@ export class DashboardComponent implements OnInit {
       this.dineroGanado(this.boletas);
 
       for (var k in this.sueldo2) {
-        this.sueldo.ganancia += this.sueldo2[k].valorDia;
+        this.sueldo[0].ganancia += this.sueldo2[k].valorDia;
       }
 
     }
-    console.log(this.sueldo.ganancia);
+  
+   
 
+
+    
+    this.dataSource = new MatTableDataSource<any>(this.sueldo);
+    this.dataSource2 = new MatTableDataSource<any>(this.serviciosRealizadosTrabajadora);
+    this.dataSource3 = new MatTableDataSource<any>(this.sueldo2);
+
+    this.dataSource2.paginator = this.paginator2;
+    this.dataSource3.paginator = this.paginator3;
+    console.log(this.dataSource3);
+    
   }
 
 
   dineroGanado(objeto) {
 
-    if (this.trabajadoraSeleccionada['nombre'] != 'TODAS LAS TRABAJADORAS') {
+    if (this.trabajadoraSeleccionada != 'TODAS LAS TRABAJADORAS') {
       for (var i in objeto) {
 
 
@@ -138,19 +176,24 @@ export class DashboardComponent implements OnInit {
 
 
 
-          if (this.trabajadoraSeleccionada['nombre'] == objeto[i].ordenes[z].trabajadora.nombre) {
+          if (this.trabajadoraSeleccionada == objeto[i].ordenes[z].trabajadora.nombre) {
 
 
             if (!this.sueldo2.find(o => o.fecha === objeto[i].fecha.substring(0, 10))) {
               this.sueldo2.push({ fecha: objeto[i].fecha.substring(0, 10), valor: 0, cantidadServicios: 0, valorDia: 0 });
             }
-
+            this.serviciosRealizadosTrabajadora.push({
+              servicio:objeto[i].ordenes[z].servicio.descripcion,
+              trabajadora:objeto[i].ordenes[z].trabajadora.nombre,
+            precio:objeto[i].ordenes[z].servicio.valor,
+          cliente:objeto[i].cliente.nombre,
+        fecha:objeto[i].fecha.substring(0, 10)});
 
             this.serviciosRealizados.push(objeto[i].ordenes[z]);
 
-            this.sueldo.total += objeto[i].ordenes[z].servicio.valor;
+            this.sueldo[0].total += objeto[i].ordenes[z].servicio.valor;
 
-            this.sueldo.cantidadServicios += + 1;
+            this.sueldo[0].cantidadServicios += + 1;
 
 
             for (var k in this.sueldo2) {
@@ -270,12 +313,10 @@ export class DashboardComponent implements OnInit {
     };
     this.tablaTotalesCheckbox = false;
     this.tablaSueldoCheckbox = false;
-    this.sueldo = {
-      total: 0,
-      ganancia: 0,
-      cantidadServicios: 0
+    this.sueldo = [
+      { total: 0, ganancia: 0, cantidadServicios: 0 }
+    ];
 
-    };
     this.sueldo2 = [];
     this.serviciosRealizados = [];
     this.boletas = [];

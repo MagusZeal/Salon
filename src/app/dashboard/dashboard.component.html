@@ -1,24 +1,155 @@
-<div class="container">
-    <ngb-datepicker [(ngModel)]="inicio"></ngb-datepicker>
-    <ngb-datepicker [(ngModel)]="termino"></ngb-datepicker>
-</div>
-<div class="container" [ngStyle]="{'font-weight': 'bold'}">
-    <div class="row">
-        <label class="control-label text-center "><u>Seleccione</u></label>
-        <select [(ngModel)]="trabajadoraSeleccionada" class="form-control col"  id="exampleFormControlSelect2">
-       
-            <ng-container *ngFor="let trabajadora of trabajadoraDrop">
+<mat-toolbar style=" background-color: #369159; color: white">
+    <mat-toolbar-row>
+        <span>Dashboard</span>
 
-                <option  [ngValue]="trabajadora">{{trabajadora.nombre}}</option>
-
-            </ng-container>
-        </select></div>
-</div>
+    </mat-toolbar-row>
+</mat-toolbar>
 <br>
-<div class="container">
-    <button type="submit" class="btn btn-success" (click)="buscar()">Buscar</button>
+<mat-grid-list [cols]="breakpoint" rowHeight="70px" (window:resize)="onResize($event)">
+    <mat-grid-tile>
+        <mat-form-field class="full-width">
+            <input matInput [matDatepicker]="picker" placeholder="FECHA INICIO" [formControl]="dpInicio">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
 
-</div>
+
+        <mat-form-field class="full-width">
+            <input matInput [matDatepicker]="picker1" placeholder="FECHA TERMINO" [formControl]="dpTermino">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+    </mat-grid-tile>
+
+</mat-grid-list>
+
+<mat-grid-list cols="1" rowHeight="40px">
+    <mat-grid-tile>
+        <form class="example-form">
+            <mat-form-field class="example-full-width">
+                <mat-select placeholder="TODAS LAS TRABAJADORAS" (selectionChange)="seleccionarTrabajadora($event)">
+                    <mat-option>TODAS LAS TRABAJADORAS</mat-option>
+                    <ng-container *ngFor="let trabajadora of trabajadoras">
+
+                        <mat-option [value]="trabajadora">{{trabajadora.nombre}}</mat-option>
+                    </ng-container>
+
+                </mat-select>
+
+            </mat-form-field>
+
+        </form>
+        <button mat-raised-button color="primary" style="margin-left: 5px" (click)="buscar()">Buscar</button>
+    </mat-grid-tile>
+</mat-grid-list>
+
+
+
+  <mat-tab-group dynamicHeight *ngIf="tablaSueldoCheckbox" (selectedIndexChange)="_setDataSource($event)" >
+    <mat-tab label="Ventas totales">
+      <div >
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource != ''">
+            <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+            <!-- Position Column -->
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef> Total </th>
+              <td mat-cell *matCellDef="let element"> {{element.total |currency:'CLP':'symbol-narrow'}} </td>
+            </ng-container>
+          
+            <!-- Name Column -->
+            <ng-container matColumnDef="ganancia">
+              <th mat-header-cell *matHeaderCellDef> Ganancia </th>
+              <td mat-cell *matCellDef="let element"> {{element.ganancia |currency:'CLP':'symbol-narrow'}} </td>
+            </ng-container>
+          
+            <!-- Weight Column -->
+            <ng-container matColumnDef="cantidadServicios">
+              <th mat-header-cell *matHeaderCellDef> N°Serv </th>
+              <td mat-cell *matCellDef="let element"> {{element.cantidadServicios}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          
+      </div>
+    </mat-tab>
+    <mat-tab label="ServiciosRealizados" >
+      <div class="example-container">
+        <table mat-table  [dataSource]="dataSource2"   >
+            <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+            <!-- Position Column -->
+            <ng-container matColumnDef="servicio" >
+              <th mat-header-cell *matHeaderCellDef > Servicio </th>
+              <td mat-cell *matCellDef="let element"> {{element.servicio}}</td>
+            </ng-container>
+          
+            <!-- Name Column -->
+            <ng-container matColumnDef="precio">
+              <th mat-header-cell *matHeaderCellDef> Precio </th>
+              <td mat-cell *matCellDef="let element">  {{element.precio |currency:'CLP':'symbol-narrow'}} </td>
+            </ng-container>
+          
+            <!-- Weight Column -->
+            <ng-container matColumnDef="cliente">
+              <th mat-header-cell *matHeaderCellDef> Cliente </th>
+              <td mat-cell *matCellDef="let element"> {{element.cliente}}</td>
+            </ng-container>
+        
+            <ng-container matColumnDef="fecha" >
+                <th mat-header-cell *matHeaderCellDef > Fecha </th>
+                <td mat-cell *matCellDef="let element"> {{element.fecha}}</td>
+              </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+            </table> 
+        </div>
+          <mat-paginator #paginator2 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+     
+    </mat-tab>
+
+
+    <mat-tab label="Dias Trabajados">
+        <div class="example-container"class="example-container">
+            <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8" >
+                <!--- Note that these columns can be defined in any order.
+                      The actual rendered columns are set as a property on the row definition" -->
+                <!-- Position Column -->
+                <ng-container matColumnDef="fecha">
+                  <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                  <td mat-cell *matCellDef="let element"> {{element.fecha }} </td>
+                </ng-container>
+              
+                <!-- Name Column -->
+                <ng-container matColumnDef="ganancia">
+                  <th mat-header-cell *matHeaderCellDef> Ganancia </th>
+                  <td mat-cell *matCellDef="let element"> {{element.valorDia |currency:'CLP':'symbol-narrow'}} </td>
+                </ng-container>
+              
+                <!-- Weight Column -->
+                <ng-container matColumnDef="sinSueldoBase">
+                  <th mat-header-cell *matHeaderCellDef> SinSueldoBase </th>
+                  <td mat-cell *matCellDef="let element"> {{element.valor |currency:'CLP':'symbol-narrow'}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="servicios">
+                    <th mat-header-cell *matHeaderCellDef> N°Serv </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cantidadServicios}} </td>
+                  </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+              </table> 
+              <mat-paginator #paginator3 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+        </div>
+      </mat-tab>
+
+  </mat-tab-group>
+
 <br>
 <ngb-tabset type="pills" *ngIf="tablaTotalesCheckbox">
     <ngb-tab>
@@ -36,9 +167,12 @@
             </div>
             <div class="row">
                 <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.total}}</div>
-                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.serviciosRealizados}}</div>
-                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalEfectivo}}</div>
-                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalCredito}}</div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">
+                    {{resumenDia.serviciosRealizados}}</div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalEfectivo}}
+                </div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalCredito}}
+                </div>
             </div>
             <div class="row">
                 <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Débito</div>
@@ -47,10 +181,14 @@
                 <div class="col text-center bg-primary font-weight-bold border border-dark text-white">Descue</div>
             </div>
             <div class="row">
-                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalDebito}}</div>
-                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalTransferencia}}</div>
-                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalGiftCard}}</div>
-                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalDescuento}}</div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalDebito}}
+                </div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">
+                    {{resumenDia.totalTransferencia}}</div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalGiftCard}}
+                </div>
+                <div class="col text-center bg-light font-weight-bold border border-dark">{{resumenDia.totalDescuento}}
+                </div>
             </div>
 
         </ng-template>
@@ -62,10 +200,14 @@
                 <table class="table" *ngIf="tablaTotalesCheckbox">
                     <thead>
                         <tr>
-                            <td class="text-center bg-primary font-weight-bold border border-dark text-white">Servicio</td>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Trabajadora</th>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Precio</th>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Cliente</th>
+                            <td class="text-center bg-primary font-weight-bold border border-dark text-white">Servicio
+                            </td>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">
+                                Trabajadora</th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Precio
+                            </th>
+                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Cliente
+                            </th>
                             <th class="text-center bg-primary font-weight-bold border border-dark text-white">Fecha</th>
                         </tr>
                     </thead>
@@ -74,11 +216,16 @@
                         <ng-container *ngFor="let boleta of boletas">
                             <tr *ngFor="let orden of boleta.ordenes">
 
-                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.servicio.descripcion}}</td>
-                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.trabajadora.nombre}}</td>
-                                <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.servicio.valor}}</td>
-                                <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.cliente.nombre}}</td>
-                                <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.fecha}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">
+                                    {{orden.servicio.descripcion}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">
+                                    {{orden.trabajadora.nombre}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">
+                                    {{orden.servicio.valor}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">
+                                    {{boleta.cliente.nombre}}</td>
+                                <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.fecha}}
+                                </td>
 
                             </tr>
                         </ng-container>
@@ -90,100 +237,4 @@
 </ngb-tabset>
 
 
-<ngb-tabset type="pills" *ngIf="tablaSueldoCheckbox">
-    <ngb-tab>
-        <ng-template ngbTabTitle><b>Ventas totales</b></ng-template>
-        <ng-template ngbTabContent>
-            <br>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <td>Sueldo</td>
-                        <th>Total Generado</th>
-                        <th>Servicios Realizados</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{sueldo.ganancia |currency:'CLP':'symbol-narrow'}}</td>
-                        <td>{{sueldo.total |currency:'CLP':'symbol-narrow'}}</td>
-                        <td>{{sueldo.cantidadServicios}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </ng-template>
-    </ngb-tab>
-    <ngb-tab>
-        <ng-template ngbTabTitle><b>Servicios Realizados</b></ng-template>
-        <ng-template ngbTabContent>
-            <br>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Servicio</th>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Trabajadora</th>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Precio</th>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Cliente</th>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <ng-container *ngFor="let boleta of boletas">
-                            <tr *ngFor="let orden of boleta.ordenes">
-                                <ng-container *ngIf="orden.trabajadora.nombre == trabajadoraSeleccionada.nombre">
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.servicio.descripcion}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.trabajadora.nombre}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{orden.servicio.valor}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.cliente.nombre}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{boleta.fecha}}</td>
-                                </ng-container>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-            </div>
-
-
-            <br>
-        </ng-template>
-    </ngb-tab>
-    <ngb-tab>
-        <ng-template ngbTabTitle><b>Dias Trabajados</b></ng-template>
-        <ng-template ngbTabContent>
-            <br>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <td class="text-center bg-primary font-weight-bold border border-dark text-white">Fecha</td>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Ganancia</th>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">Sin SueldoBase</th>
-                            <th class="text-center bg-primary font-weight-bold border border-dark text-white">N°Serv</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <ng-container *ngFor="let sueldo of sueldo2">
-                            <tr>
-                                <ng-container>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.fecha}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.valorDia}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.valor}}</td>
-                                    <td class=" text-center bg-light font-weight-bold border border-dark">{{sueldo.cantidadServicios}}</td>
-
-                                </ng-container>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-            </div>
-
-
-            <br>
-        </ng-template>
-    </ngb-tab>
-</ngb-tabset>

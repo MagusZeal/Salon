@@ -15,8 +15,6 @@ import { AdmClientesBorrarComponent } from '../componentes/adm-clientes/adm-clie
 export class AdmClientesComponent implements OnInit {
   clienteForm: FormGroup;
   clientes: ICliente[] = [];
-  customCollapsedHeight;
-  customExpandedHeight;
   dataSource;
   displayedColumns: string[] = ['nombre', 'editar', 'borrar'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -36,8 +34,7 @@ export class AdmClientesComponent implements OnInit {
     this.dataSource = new MatTableDataSource<any>(this.clientes);
     this.dataSource.paginator = this.paginator;
 
-    this.customCollapsedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
-    this.customExpandedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
+ 
 
     console.log(this.clientes);
 
@@ -49,12 +46,7 @@ export class AdmClientesComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  onResize(event) {
-
-    this.customCollapsedHeight = (event.target.innerWidth <= 400) ? '100px' : '40px';
-    this.customExpandedHeight = (event.target.innerWidth <= 400) ? '100px' : '40px';
-  }
-
+ 
 
 
   mapearObjetosArray(objeto) {

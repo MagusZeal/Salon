@@ -20,7 +20,7 @@ import { AsignarServiciosService } from './componentes/modal-asignar-servicios/a
 import { ModalAgregarClienteComponent } from './componentes/modal-agregar-cliente/modal-agregar-cliente.component';
 import { DashboardClientesComponent } from './dashboard-clientes/dashboard-clientes.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MAT_DIALOG_DEFAULT_OPTIONS, MatInputModule, MatDialogModule, MatButtonToggleModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MAT_DIALOG_DEFAULT_OPTIONS, MatInputModule, MatDialogModule, MatButtonToggleModule, MatNativeDateModule  } from '@angular/material';
 import { MatTableModule, MatMenuModule, MatIconModule } from '@angular/material';
 import { MatSortModule, MatToolbarModule, MatSidenavModule } from '@angular/material';
 import { TableSortingExampleComponent } from './componentes/table-sorting-example/table-sorting-example.component';
@@ -48,7 +48,11 @@ import { ModalBorrarServicioComponent } from './componentes/adm-servicios/modal-
 import { AdmClientesAgregarComponent } from './componentes/adm-clientes/adm-clientes-agregar/adm-clientes-agregar.component';
 import { AdmClientesEditarComponent } from './componentes/adm-clientes/adm-clientes-editar/adm-clientes-editar.component';
 import { AdmClientesBorrarComponent } from './componentes/adm-clientes/adm-clientes-borrar/adm-clientes-borrar.component';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDatepickerModule,  } from '@angular/material/datepicker';
+import {MatTabsModule} from '@angular/material/tabs';
+
+
 registerLocaleData(LocaleCL);
 
 @NgModule({
@@ -76,7 +80,8 @@ registerLocaleData(LocaleCL);
     ModalBorrarServicioComponent,
     AdmClientesAgregarComponent,
     AdmClientesEditarComponent,
-    AdmClientesBorrarComponent
+    AdmClientesBorrarComponent,
+    
 
   ],
   imports: [
@@ -108,8 +113,10 @@ registerLocaleData(LocaleCL);
     MatSnackBarModule,
     MatCardModule,
     MatExpansionModule,
-    MatPaginatorModule
-
+    MatPaginatorModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTabsModule
   ],
   providers: [ListaServiciosService,
     AsignarServiciosService,
@@ -131,7 +138,8 @@ registerLocaleData(LocaleCL);
     ModalBorrarServicioComponent,
     AdmClientesAgregarComponent,
     AdmClientesEditarComponent,
-    AdmClientesBorrarComponent
+    AdmClientesBorrarComponent,
+
   ]
 })
 export class AppModule { }
