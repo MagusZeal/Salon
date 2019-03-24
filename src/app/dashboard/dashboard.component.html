@@ -1,4 +1,4 @@
-<mat-toolbar style=" background-color: #369159; color: white">
+<mat-toolbar style=" background-color: #c2a266; color: white">
     <mat-toolbar-row>
         <span>Dashboard</span>
 
@@ -47,110 +47,323 @@
 
 
 
-  <mat-tab-group dynamicHeight *ngIf="tablaSueldoCheckbox" (selectedIndexChange)="_setDataSource($event)" >
+<mat-tab-group dynamicHeight *ngIf="tablaSueldoCheckbox" (selectedIndexChange)="_setDataSource($event)">
     <mat-tab label="Ventas totales">
-      <div >
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource != ''">
-            <!--- Note that these columns can be defined in any order.
+        <div>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource != ''">
+                <!--- Note that these columns can be defined in any order.
                   The actual rendered columns are set as a property on the row definition" -->
-            <!-- Position Column -->
-            <ng-container matColumnDef="total">
-              <th mat-header-cell *matHeaderCellDef> Total </th>
-              <td mat-cell *matCellDef="let element"> {{element.total |currency:'CLP':'symbol-narrow'}} </td>
-            </ng-container>
-          
-            <!-- Name Column -->
-            <ng-container matColumnDef="ganancia">
-              <th mat-header-cell *matHeaderCellDef> Ganancia </th>
-              <td mat-cell *matCellDef="let element"> {{element.ganancia |currency:'CLP':'symbol-narrow'}} </td>
-            </ng-container>
-          
-            <!-- Weight Column -->
-            <ng-container matColumnDef="cantidadServicios">
-              <th mat-header-cell *matHeaderCellDef> N°Serv </th>
-              <td mat-cell *matCellDef="let element"> {{element.cantidadServicios}} </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-          
-      </div>
-    </mat-tab>
-    <mat-tab label="ServiciosRealizados" >
-      <div class="example-container">
-        <table mat-table  [dataSource]="dataSource2"   >
-            <!--- Note that these columns can be defined in any order.
-                  The actual rendered columns are set as a property on the row definition" -->
-            <!-- Position Column -->
-            <ng-container matColumnDef="servicio" >
-              <th mat-header-cell *matHeaderCellDef > Servicio </th>
-              <td mat-cell *matCellDef="let element"> {{element.servicio}}</td>
-            </ng-container>
-          
-            <!-- Name Column -->
-            <ng-container matColumnDef="precio">
-              <th mat-header-cell *matHeaderCellDef> Precio </th>
-              <td mat-cell *matCellDef="let element">  {{element.precio |currency:'CLP':'symbol-narrow'}} </td>
-            </ng-container>
-          
-            <!-- Weight Column -->
-            <ng-container matColumnDef="cliente">
-              <th mat-header-cell *matHeaderCellDef> Cliente </th>
-              <td mat-cell *matCellDef="let element"> {{element.cliente}}</td>
-            </ng-container>
-        
-            <ng-container matColumnDef="fecha" >
-                <th mat-header-cell *matHeaderCellDef > Fecha </th>
-                <td mat-cell *matCellDef="let element"> {{element.fecha}}</td>
-              </ng-container>
-        
-            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
-            </table> 
+                <!-- Position Column -->
+                <ng-container matColumnDef="total">
+                    <th mat-header-cell *matHeaderCellDef> Total </th>
+                    <td mat-cell *matCellDef="let element"> {{element.total |currency:'CLP':'symbol-narrow'}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="ganancia">
+                    <th mat-header-cell *matHeaderCellDef> Ganancia </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ganancia |currency:'CLP':'symbol-narrow'}} </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="cantidadServicios">
+                    <th mat-header-cell *matHeaderCellDef> N°Serv </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cantidadServicios}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
         </div>
-          <mat-paginator #paginator2 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
-     
+    </mat-tab>
+    <mat-tab label="ServiciosRealizados">
+        <div class="example-container">
+            <table mat-table [dataSource]="dataSource2" #sort2="matSort" matSort>
+                <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+                <!-- Position Column -->
+                <ng-container matColumnDef="servicio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Servicio </th>
+                    <td mat-cell *matCellDef="let element"> {{element.servicio}}</td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="precio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+                    <td mat-cell *matCellDef="let element"> {{element.precio |currency:'CLP':'symbol-narrow'}} </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="cliente">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cliente}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="fecha">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                    <td mat-cell *matCellDef="let element"> {{element.fecha}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+            </table>
+        </div>
+        <mat-paginator #paginator2 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+
     </mat-tab>
 
 
     <mat-tab label="Dias Trabajados">
-        <div class="example-container"class="example-container">
-            <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8" >
+        <div class="example-container" class="example-container">
+            <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8" #sort3="matSort" matSort>
                 <!--- Note that these columns can be defined in any order.
                       The actual rendered columns are set as a property on the row definition" -->
                 <!-- Position Column -->
                 <ng-container matColumnDef="fecha">
-                  <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                  <td mat-cell *matCellDef="let element"> {{element.fecha }} </td>
-                </ng-container>
-              
-                <!-- Name Column -->
-                <ng-container matColumnDef="ganancia">
-                  <th mat-header-cell *matHeaderCellDef> Ganancia </th>
-                  <td mat-cell *matCellDef="let element"> {{element.valorDia |currency:'CLP':'symbol-narrow'}} </td>
-                </ng-container>
-              
-                <!-- Weight Column -->
-                <ng-container matColumnDef="sinSueldoBase">
-                  <th mat-header-cell *matHeaderCellDef> SinSueldoBase </th>
-                  <td mat-cell *matCellDef="let element"> {{element.valor |currency:'CLP':'symbol-narrow'}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                    <td mat-cell *matCellDef="let element"> {{element.fecha }} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="servicios">
-                    <th mat-header-cell *matHeaderCellDef> N°Serv </th>
+                <!-- Name Column -->
+                <ng-container matColumnDef="valorDia">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ganancia </th>
+                    <td mat-cell *matCellDef="let element"> {{element.valorDia |currency:'CLP':'symbol-narrow'}} </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="valor">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> SinSueldoBase </th>
+                    <td mat-cell *matCellDef="let element"> {{element.valor |currency:'CLP':'symbol-narrow'}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="cantidadServicios">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> N°Serv </th>
                     <td mat-cell *matCellDef="let element"> {{element.cantidadServicios}} </td>
-                  </ng-container>
+                </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
-              </table> 
-              <mat-paginator #paginator3 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+            </table>
+            <mat-paginator #paginator3 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
         </div>
-      </mat-tab>
+    </mat-tab>
+    <mat-tab label="Servicios mas Realizados">
+        <div class="example-container">
 
-  </mat-tab-group>
+            <table mat-table [dataSource]="dataSource4" #sort4="matSort" matSort>
+                <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
+                <!-- Position Column -->
+                <ng-container matColumnDef="servicio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Servicio </th>
+                    <td mat-cell *matCellDef="let element"> {{element.servicio }} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="cantidadServicios">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad Servicios </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cantidadServicios}} </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="valorTotal">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Ganancia </th>
+                    <td mat-cell *matCellDef="let element"> {{element.valorTotal |currency:'CLP':'symbol-narrow'}} </td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns4;"></tr>
+            </table>
+            <mat-paginator #paginator4 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+
+        </div>
+    </mat-tab>
+</mat-tab-group>
 
 <br>
+
+
+
+<mat-tab-group dynamicHeight *ngIf="tablaTotalesCheckbox" (selectedIndexChange)="_setDataSource2($event)">
+  
+    <mat-tab label="Ventas totales">
+            <div class="example-container">
+            <table mat-table [dataSource]="dataSourceTodo" >
+                    <!--- Note that these columns can be defined in any order.
+                                  The actual rendered columns are set as a property on the row definition" -->
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="total"  >
+                        <th mat-header-cell *matHeaderCellDef style=" background-color: lightblue"> Total</th>
+                        <td mat-cell *matCellDef="let element"> {{element.total |currency:'CLP':'symbol-narrow'}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ganancia">
+                            <th mat-header-cell *matHeaderCellDef style=" background-color: lightblue">Ganancia</th>
+                            <td mat-cell *matCellDef="let element"> {{element.ganancia |currency:'CLP':'symbol-narrow'}} </td>
+                        </ng-container>
+        
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="serviciosRealizados" >
+                        <th mat-header-cell *matHeaderCellDef style=" background-color: lightblue">N°Serv</th>
+                        <td mat-cell *matCellDef="let element"> {{element.serviciosRealizados }}
+                        </td>
+                    </ng-container>
+        
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="totalEfectivo">
+                        <th mat-header-cell *matHeaderCellDef style=" background-color: lightblue">Efectivo</th>
+                        <td mat-cell *matCellDef="let element"> {{element.totalEfectivo  |currency:'CLP':'symbol-narrow'}} </td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="totalCredito" >
+                        <th mat-header-cell *matHeaderCellDef style=" background-color: lightblue">Credito</th>
+                        <td mat-cell *matCellDef="let element"> {{element.totalCredito  |currency:'CLP':'symbol-narrow'}} </td>
+                    </ng-container>
+        
+                    <tr mat-header-row *matHeaderRowDef="columnsTodo"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnsTodo;"></tr>
+                </table>
+            </div>
+            <div class="example-container">
+                <table mat-table [dataSource]="dataSourceTodo">
+        
+                        <ng-container matColumnDef="totalDebito">
+                            <th mat-header-cell *matHeaderCellDef style=" background-color: lightblue">Debito</th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalDebito |currency:'CLP':'symbol-narrow'}} </td>
+                        </ng-container>
+            
+                      
+                        <ng-container matColumnDef="totalTransferencia">
+                            <th mat-header-cell *matHeaderCellDef style=" background-color: lightblue">Transferencia</th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalTransferencia |currency:'CLP':'symbol-narrow'}}
+                            </td>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="totalGiftCard">
+                            <th mat-header-cell *matHeaderCellDef style=" background-color: lightblue">GiftCard</th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalGiftCard  |currency:'CLP':'symbol-narrow'}} </td>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="totalDescuento">
+                            <th mat-header-cell *matHeaderCellDef style=" background-color: lightblue">Descuento</th>
+                            <td mat-cell *matCellDef="let element"> {{element.totalDescuento  |currency:'CLP':'symbol-narrow'}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="columnsTodo2"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnsTodo2"></tr>
+                    </table>
+                </div>
+    </mat-tab>
+
+
+    <mat-tab label="ServiciosRealizados">
+
+            <mat-grid-list cols="1" rowHeight="70px">
+                    <mat-grid-tile>
+                        <form class="example-form">
+                            <mat-form-field class="example-full-width">
+                                <input matInput (keyup)="applyFilter($event.target.value, dataSource2)" placeholder="BUSCAR SERVICIO, TRABAJADORA, CLIENTE, ETC">
+                            </mat-form-field>
+                        </form>
+                
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+        <div class="example-container">
+            <table mat-table [dataSource]="dataSource2" #sort2="matSort" matSort>
+                <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+                <!-- Position Column -->
+                <ng-container matColumnDef="servicio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Servicio </th>
+                    <td mat-cell *matCellDef="let element"> {{element.servicio}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="trabajadora">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Trabajadora </th>
+                    <td mat-cell *matCellDef="let element"> {{element.trabajadora}}</td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="precio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+                    <td mat-cell *matCellDef="let element"> {{element.precio |currency:'CLP':'symbol-narrow'}} </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="cliente">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cliente}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="fecha">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                    <td mat-cell *matCellDef="let element"> {{element.fecha }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsTodo3"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsTodo3;"></tr>
+            </table>
+        </div>
+        <mat-paginator #paginator2 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+
+    </mat-tab>
+
+    <mat-tab label="Servicios mas Realizados">
+
+            <mat-grid-list cols="1" rowHeight="70px">
+                    <mat-grid-tile>
+                        <form class="example-form">
+                            <mat-form-field class="example-full-width">
+                                <input matInput (keyup)="applyFilter($event.target.value, dataSource4)" placeholder="BUSCAR SERVICIO, CANTIDAD SERVICIOS, TOTAL">
+                            </mat-form-field>
+                        </form>
+                
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+
+        <div class="example-container">
+
+            <table mat-table [dataSource]="dataSource4" #sort4="matSort" matSort>
+                <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
+                <!-- Position Column -->
+                <ng-container matColumnDef="servicio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Servicio </th>
+                    <td mat-cell *matCellDef="let element"> {{element.servicio }} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="cantidadServicios">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad Servicios </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cantidadServicios}} </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="valorTotal">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Ganancia </th>
+                    <td mat-cell *matCellDef="let element"> {{element.valorTotal |currency:'CLP':'symbol-narrow'}} </td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns4;"></tr>
+            </table>
+            <mat-paginator #paginator4 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+
+        </div>
+    </mat-tab>
+
+
+
+</mat-tab-group>
+
+
+
+
+<!-- 
+
 <ngb-tabset type="pills" *ngIf="tablaTotalesCheckbox">
     <ngb-tab>
         <ng-template ngbTabTitle><b>Ventas totales</b></ng-template>
@@ -234,7 +447,4 @@
             </div>
         </ng-template>
     </ngb-tab>
-</ngb-tabset>
-
-
-
+</ngb-tabset> -->

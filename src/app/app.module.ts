@@ -81,7 +81,7 @@ registerLocaleData(LocaleCL);
     AdmClientesAgregarComponent,
     AdmClientesEditarComponent,
     AdmClientesBorrarComponent,
-    
+   
 
   ],
   imports: [
