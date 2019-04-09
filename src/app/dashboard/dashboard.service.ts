@@ -4,6 +4,8 @@ import {HttpClient} from '@angular/common/http';
   providedIn: 'root'
 })
 export class DashboardService {
+  // this.sort4.direction = 'desc';
+  // this.sort4.active = 'cantidadServicios';
 
   constructor(private http:HttpClient) { }
 

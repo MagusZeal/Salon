@@ -9,9 +9,9 @@ export class DashboardClientesService {
  
   constructor(private http:HttpClient) { }
 
-   obtenerClientes(){
+  async obtenerClientes(){
 
-    return  this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?');
+    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?').toPromise();
   }
 
   async obtenerJornadas(fechaInicio,fechaTermino){

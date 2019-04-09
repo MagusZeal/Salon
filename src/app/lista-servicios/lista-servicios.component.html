@@ -4,8 +4,8 @@
       Total {{precioTotal | currency:'CLP':'symbol-narrow'}}
     </div>
   </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-form-field>
+  <mat-grid-tile >
+    <mat-form-field class="todo">
       <mat-select placeholder="TODAS LAS CATEGORIAS" (selectionChange)="seleccionarCategoria($event)">
         <mat-option>TODAS LAS CATEGORIAS</mat-option>
         <ng-container *ngFor="let categoria of categorias">
@@ -20,6 +20,10 @@
   
   <mat-grid-tile>
     <div class="spacer2">
+      
+          <button mat-raised-button color="warn" style="margin-right: 8px;" (click)="abrirModalAgregarCliente()">
+              <mat-icon>person_add</mat-icon>Cliente
+            </button>
       <button color="accent" mat-raised-button style=" margin-right: 8px;" (click)="abrirModalPrecioVariable()">
         Precio Variable
       </button>
@@ -27,34 +31,20 @@
       <button color="primary" mat-raised-button style=" margin-right: 8px;" (click)="abrirModalServicios()">
         Asignar
       </button>
-      <button mat-raised-button color="primary" (click)="abrirModalServicios()">
-
-
-      </button>
+   
 
     </div>
   </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list [cols]="breakpoint"  rowHeight="30px" (window:resize)="onResize($event)" >
+<!-- <mat-grid-list [cols]="breakpoint"  rowHeight="30px" (window:resize)="onResize($event)" >
     <ng-container *ngFor="let servicio of servicios">
 
-    <mat-grid-tile *ngIf="categoriaSeleccion == servicio.categoria || categoriaSeleccion == 'TODAS LAS CATEGORIAS' "
+    <mat-grid-tile 
     [ngStyle]="{'color':servicio.seleccionado2, 'background-color':servicio.seleccionado}"
     (click)="seleccionarServicio(servicio)" style=" font-weight: bold" >
  
-   
-
-<!-- <div *ngIf="categoriaSeleccion == servicio.categoria || categoriaSeleccion == 'TODAS LAS CATEGORIAS' " style="white-space: pre; font-weight: bold">
-         <a 
-         [ngStyle]="{'color':'#d84343' ,  'font-weight': 'bold','background-color':servicio.seleccionado}"
-        class="col-sm-4 float-right" (click)="seleccionarServicio(servicio)">
-        ${{servicio.valor}} <div [ngStyle]="{'color':servicio.seleccionado2,'text-overflow': 'ellipsis','width': '230px','overflow':'hidden', 'white-space': 'nowrap'}"
-          class="float-left"> {{servicio.descripcion}} </div>  </a>
-        </div> -->
-        <div  
-          
-           >
+        <div>
 <div  [ngStyle]="{'text-overflow': 'ellipsis','width': '300px','overflow':'hidden', 'white-space': 'nowrap'}">
     {{  (servicio.descripcion.length>19)? (servicio.descripcion | slice:0:19)+'..':(servicio.descripcion)}}
   <a  style="float:right; color:#d84343" >
@@ -62,29 +52,33 @@
 
           </div>
 
-
-
-
-
-
-
         </mat-grid-tile>
     
-
   </ng-container>
+</mat-grid-list> -->
+<mat-grid-list [cols]="breakpoint"  rowHeight="35px" (window:resize)="onResize($event)" >
+
+<ng-container *ngFor="let servicio of servicios" >
+  <mat-grid-tile *ngIf="categoriaSeleccion == servicio.categoria || categoriaSeleccion == 'TODAS LAS CATEGORIAS' ">
+ 
+    <mat-nav-list  [ngStyle]="{'width': '100%','background-color':servicio.seleccionado}" (click)="seleccionarServicio(servicio)"   >
+      <mat-list-item    >
+        <div style="font-weight: bold" mat-line>
+          {{ servicio.descripcion}}
+        </div>
+        <div style="color: rgb(216, 19, 19); font-weight: bold" >
+          ${{servicio.valor}}
+        </div>
+      
+      </mat-list-item>
+     
+    </mat-nav-list>
+ 
+</mat-grid-tile>
+</ng-container>
 </mat-grid-list>
-<!-- <div class="container">
-  <div class="row">
-    <ng-container *ngFor="let servicio of servicios">
-
-      <div *ngIf="categoriaSeleccion == servicio.categoria || categoriaSeleccion == 'TODAS LAS CATEGORIAS' " [ngStyle]="{'color':'#d84343' ,  'font-weight': 'bold','background-color':servicio.seleccionado}"
-        class="col-sm-4 float-right" (click)="seleccionarServicio(servicio)">
-        ${{servicio.valor}} <b [ngStyle]="{'color':servicio.seleccionado2,'text-overflow': 'ellipsis','width': '230px','overflow':'hidden', 'white-space': 'nowrap'}"
-          class="float-left"> {{servicio.descripcion}} </b>
 
 
-      </div>
 
-    </ng-container>
-  </div>
-</div> -->
+
+

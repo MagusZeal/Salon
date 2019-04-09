@@ -5,18 +5,20 @@ import { CobrosPendientesComponent } from './cobros-pendientes/cobros-pendientes
 import { CajaComponent } from './caja/caja.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdmClientesComponent } from './adm-clientes/adm-clientes.component'
-import { AdmServiciosComponent} from './adm-servicios/adm-servicios.component'
-import { DashboardClientesComponent } from'./dashboard-clientes/dashboard-clientes.component'
+import { AdmServiciosComponent } from './adm-servicios/adm-servicios.component'
+import { DashboardClientesComponent } from './dashboard-clientes/dashboard-clientes.component'
+import { GraficosComponent } from './graficos/graficos.component';
 const routes: Routes = [
-  {path:'Servicios', component:ListaServiciosComponent},
-  {path:'CobrosPendientes', component:CobrosPendientesComponent},
-  {path:'Caja', component:CajaComponent},
-  {path:'Dashboard', component:DashboardComponent},
-  {path:'AdministrarClientes', component:AdmClientesComponent},
-  {path:'AdministrarServicios', component:AdmServiciosComponent},
-  {path:'DashboardClientes', component:DashboardClientesComponent},
-  {path:'**', component:ListaServiciosComponent}
- 
+  { path: 'Servicios', component: ListaServiciosComponent },
+  { path: 'CobrosPendientes', component: CobrosPendientesComponent },
+  { path: 'Caja', component: CajaComponent },
+  { path: 'Dashboard', component: DashboardComponent },
+  { path: 'AdministrarClientes', component: AdmClientesComponent },
+  { path: 'AdministrarServicios', component: AdmServiciosComponent },
+  { path: 'DashboardClientes', component: DashboardClientesComponent },
+  { path: 'Graficos', component: GraficosComponent },
+  { path: '**', component: ListaServiciosComponent }
+
 ];
 
 @NgModule({

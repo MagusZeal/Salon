@@ -1,0 +1,38 @@
+<mat-toolbar style=" background-color: #d673da; color: white">
+    <mat-toolbar-row>
+        <span>Graficos</span>
+
+    </mat-toolbar-row>
+</mat-toolbar>
+<br>
+<mat-grid-list [cols]="breakpoint" rowHeight="70px" (window:resize)="onResize($event)">
+    <mat-grid-tile>
+        <mat-form-field class="full-width">
+            <input matInput [matDatepicker]="picker" placeholder="FECHA INICIO" [formControl]="dpInicio">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+
+
+        <mat-form-field class="full-width">
+            <input matInput [matDatepicker]="picker1" placeholder="FECHA TERMINO" [formControl]="dpTermino">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+    </mat-grid-tile>
+
+</mat-grid-list>
+<div ><button mat-raised-button (click)="buscar()" color="primary">lechedetoro</button></div>
+
+
+<div style="text-align:center">
+    <h1>
+      Welcome to {{ title }}!
+    </h1>
+    <canvas id="lineChart"></canvas>
+    <canvas id="barChart"></canvas>
+    <canvas id="pieChart"></canvas>
+  </div>
+  

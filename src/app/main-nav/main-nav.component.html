@@ -35,6 +35,7 @@
       <mat-menu #menuDashboards="matMenu">
         <button mat-menu-item routerLink="Dashboard">Dashboard</button>
         <button mat-menu-item routerLink="DashboardClientes">Dashboard Clientes</button>
+        <button mat-menu-item routerLink="Graficos">Graficos</button>
       </mat-menu>
       <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuAdministrar" style="font-size: 20px">Administrar</button>
       <mat-menu #menuAdministrar="matMenu">

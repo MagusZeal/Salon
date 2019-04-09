@@ -17,7 +17,7 @@ import { AdmClientesComponent } from './adm-clientes/adm-clientes.component';
 import { AdmServiciosComponent } from './adm-servicios/adm-servicios.component';
 import { ModalAsignarServiciosComponent } from './componentes/modal-asignar-servicios/modal-asignar-servicios.component';
 import { AsignarServiciosService } from './componentes/modal-asignar-servicios/asignar-servicios.service';
-import { ModalAgregarClienteComponent } from './componentes/modal-agregar-cliente/modal-agregar-cliente.component';
+
 import { DashboardClientesComponent } from './dashboard-clientes/dashboard-clientes.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCheckboxModule, MAT_DIALOG_DEFAULT_OPTIONS, MatInputModule, MatDialogModule, MatButtonToggleModule, MatNativeDateModule  } from '@angular/material';
@@ -51,6 +51,14 @@ import { AdmClientesBorrarComponent } from './componentes/adm-clientes/adm-clien
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDatepickerModule,  } from '@angular/material/datepicker';
 import {MatTabsModule} from '@angular/material/tabs';
+import { VerBoletaComponent } from './componentes/dashboard/ver-boleta/ver-boleta.component';
+import { GraficosComponent } from './graficos/graficos.component';
+import { ModalEditarCobrosComponent } from './componentes/cobros/modal-editar-cobros/modal-editar-cobros.component';
+import { TotalesComponent } from './componentes/dashboard/totales/totales.component';
+import { EspecificoTrabajadoraComponent } from './componentes/dashboard/especifico-trabajadora/especifico-trabajadora.component';
+import { TotalesClientesComponent } from './componentes/dashboard-clientes/totales-clientes/totales-clientes.component';
+import { ModalAgregarClientesListaComponent } from './componentes/lista-servicios/modal-agregar-clientes-lista/modal-agregar-clientes-lista.component';
+
 
 
 registerLocaleData(LocaleCL);
@@ -65,7 +73,6 @@ registerLocaleData(LocaleCL);
     AdmClientesComponent,
     AdmServiciosComponent,
     ModalAsignarServiciosComponent,
-    ModalAgregarClienteComponent,
     DashboardClientesComponent,
     TableSortingExampleComponent,
     ModalVerClienteComponent,
@@ -81,8 +88,14 @@ registerLocaleData(LocaleCL);
     AdmClientesAgregarComponent,
     AdmClientesEditarComponent,
     AdmClientesBorrarComponent,
+    VerBoletaComponent,
+    GraficosComponent,
+    ModalEditarCobrosComponent,
+    TotalesComponent,
+    EspecificoTrabajadoraComponent,
+    TotalesClientesComponent,
+    ModalAgregarClientesListaComponent,
    
-
   ],
   imports: [
     BrowserModule,
@@ -139,6 +152,9 @@ registerLocaleData(LocaleCL);
     AdmClientesAgregarComponent,
     AdmClientesEditarComponent,
     AdmClientesBorrarComponent,
+    VerBoletaComponent,
+    ModalEditarCobrosComponent,
+    ModalAgregarClientesListaComponent
 
   ]
 })

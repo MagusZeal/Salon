@@ -1,104 +1,266 @@
 <mat-toolbar color="accent">
-        <mat-toolbar-row>
-          <span>Cobros Pendientes</span>
-        </mat-toolbar-row>
+    <mat-toolbar-row>
+        <span>Cobros Pendientes</span>
+    </mat-toolbar-row>
 
-        </mat-toolbar>
+</mat-toolbar>
 <mat-accordion class="example-headers-align">
-<mat-expansion-panel>
-    <mat-expansion-panel-header>
-        <mat-panel-title style="font-weight:bold">
-            Cliente
-        </mat-panel-title>
-        <mat-panel-description style="font-weight:bold;">
-            Total
-        </mat-panel-description>
-        <mat-panel-description style="font-weight:bold;">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title style="font-weight:bold">
+                Cliente
+            </mat-panel-title>
+            <mat-panel-description style="font-weight:bold;">
+                Total
+            </mat-panel-description>
+            <mat-panel-description style="font-weight:bold;">
                 Borrar/Pagar
             </mat-panel-description>
-      
-    </mat-expansion-panel-header>
-    <div style="white-space: pre;">
-        <div style="font-weight:bold"> En cobros pendientes estan todas las boletas por cobrar en las cuales estan: </div>
-        <br>
-        <div style="font-weight:bold"> Nombre Cliente : nombre del cliente del cual se hizo la boleta</div>
-        <div style="font-weight:bold"> Total : cantidad de dinero registrado en la boleta</div>
-        <div style="font-weight:bold"> Acciones : contiene dos botones</div>
-        <div style="font-weight:bold"> ---> boton borrar: borra la boleta por si hubo errores por ejemplo</div>
-        <div style="font-weight:bold"> ---> boton pagar : para pagar la boleta se debe oprimir este boton</div>
-        <div style="font-weight:bold"> Click en boleta : detalles de la boleta
+
+        </mat-expansion-panel-header>
+        <div style="white-space: pre;">
+            <div style="font-weight:bold"> En cobros pendientes estan todas las boletas por cobrar en las cuales estan:
+            </div>
+            <br>
+            <div style="font-weight:bold"> Nombre Cliente : nombre del cliente del cual se hizo la boleta</div>
+            <div style="font-weight:bold"> Total : cantidad de dinero registrado en la boleta</div>
+            <div style="font-weight:bold"> Acciones : contiene dos botones</div>
+            <div style="font-weight:bold"> ---> boton borrar: borra la boleta por si hubo errores por ejemplo</div>
+            <div style="font-weight:bold"> ---> boton pagar : para pagar la boleta se debe oprimir este boton</div>
+            <div style="font-weight:bold"> Click en boleta : detalles de la boleta
+            </div>
         </div>
-    </div>
 
-</mat-expansion-panel>
+    </mat-expansion-panel>
 </mat-accordion>
-<mat-accordion class="example-headers-align">
-    <ng-container *ngFor="let boleta of boletas;index as i">
+<mat-tab-group dynamicHeight (selectedIndexChange)="_setDataSource($event)">
+
+    <mat-tab label="Boleta sin reserva">
+
+        <mat-grid-list cols="1" rowHeight="70px">
+            <mat-grid-tile>
+                <form class="example-form">
+                    <mat-form-field class="example-full-width">
+                        <input matInput (keyup)="applyFilter($event.target.value, dataSource)"
+                            placeholder="BUSCAR CLIENTE, TRABAJADORA, SERVICIO, ETC">
+                    </mat-form-field>
+                </form>
+
+            </mat-grid-tile>
+        </mat-grid-list>
 
 
+        <table mat-table [dataSource]="dataSource" multiTemplateDataRows #sortBoletas="matSort" matSort
+            class="mat-elevation-z8">
+            <ng-container matColumnDef="cliente">
+                <th mat-header-cell *matHeaderCellDef> Cliente </th>
+                <td mat-cell *matCellDef="let element" style="font-weight:bold;">{{element.cliente.nombre}} </td>
+            </ng-container>
 
-        <mat-expansion-panel>
-            <mat-expansion-panel-header (window:resize)="onResizee($event)" [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-                <mat-panel-title style="font-weight:bold;">
-                    {{ (boleta.cliente.nombre.length>14)? (boleta.cliente.nombre | slice:0:14)+'..':(boleta.cliente.nombre)}}
-                </mat-panel-title>
-                <mat-panel-description style="font-weight:bold;color: red">
-                    {{boleta.total | currency:'CLP':'symbol-narrow'}}
-                </mat-panel-description>
-            <mat-panel-description>
-                    <button mat-icon-button (click)="modalBorrarBoleta(boleta)" color="warn" >
-                            <mat-icon>delete_forever</mat-icon></button>
-                            <button mat-icon-button (click)="modalPagarBoleta(boleta)" color="primary" >
-                                    <mat-icon>attach_money</mat-icon></button>
-            </mat-panel-description>
-            
-            </mat-expansion-panel-header>
-
-            <div style="font-weight:bold;"> Cliente: {{boleta.cliente.nombre}} </div>
-            <div style="font-weight:bold">Total: {{boleta.total |
-                        currency:'CLP':'symbol-narrow'}}</div>
-            <ng-container *ngFor="let orden of boleta.ordenes">
-                    <div style="font-weight:bold;color:blue" > {{orden.trabajadora.nombre}}<b style="color:red" >
-                            {{orden.servicio.valor
-                               |
-                               currency:'CLP':'symbol-narrow'}}</b></div>
-                       <div style="font-weight:bold; color:darkslategray" > -> {{orden.servicio.descripcion}}</div>
-
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+                <td mat-cell *matCellDef="let element" style="font-weight:bold">{{element.total}}</td>
 
             </ng-container>
-            <div style="font-weight:bold;color:darkviolet">Fecha boleta : {{boleta.fecha}}</div>
-            <mat-action-row>
-                    <button mat-raised-button (click)="modalBorrarBoleta(boleta)" color="warn" >
-                            <mat-icon>delete_forever</mat-icon>Borrar</button>
-                            <button mat-raised-button (click)="modalPagarBoleta(boleta)" color="primary" >
-                                    <mat-icon>attach_money</mat-icon>Pagar</button>
-                  </mat-action-row>
-        </mat-expansion-panel>
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="primary" (click)="modalPagarBoleta(element)">
+                        <mat-icon>attach_money</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="modalEditarBoleta(element)" >
+                            <mat-icon>edit</mat-icon>
+                          </button> 
+                    <button mat-icon-button color="warn" (click)="modalBorrarBoleta(element)">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplaytab1.length">
+                    <div class="example-element-detail"
+                        [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                        <div style="font-weight:bold;"> Cliente: {{element.cliente.nombre}} </div>
+                        <div style="font-weight:bold">Total: {{element.total | currency:'CLP':'symbol-narrow'}}</div>
+                        <ng-container *ngFor="let orden of element.ordenes">
+                            <div style="font-weight:bold;color:blue"> {{orden.trabajadora.nombre}}<b style="color:red">
+                                    {{orden.servicio.valor | currency:'CLP':'symbol-narrow'}}</b></div>
+                            <div style="font-weight:bold; color:darkslategray"> ->
+                                {{orden.servicio.descripcion}}</div>
 
-    </ng-container>
-</mat-accordion>
+
+                        </ng-container>
+                        <div style="font-weight:bold;color:darkviolet">Fecha boleta : {{element.fecha}}</div>
+
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplaytab1"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplaytab1;" class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+
+        <mat-paginator #paginatorBoletas [pageSizeOptions]="[20, 30, 40]" showFirstLastButtons></mat-paginator>
 
 
 
-<!-- 
+    </mat-tab>
 
-<mat-grid-list [cols]="2" class="myGridList" rowHeight="fit"  >
-    <ng-container *ngFor="let boleta of boletas;index as i">
-        <mat-grid-tile class="myGridList">
-          <div>
-                <div style="font-weight:bold;"> Cliente: {{boleta.cliente.nombre}} </div>
-                <div style="font-weight:bold">Total: {{boleta.total |
-                            currency:'CLP':'symbol-narrow'}}</div>
+    <mat-tab label="Citas Reservadas Dia">
 
-                    
-                <div style="font-weight:bold" *ngFor="let orden of boleta.ordenes">
-                    {{orden.trabajadora.nombre}} - ${{orden.servicio.valor}}
-                    <div> {{orden.servicio.descripcion}}</div>
-                </div>
-              
-                    <button mat-raised-button (click)="modalBorrarBoleta(boleta)" color="warn">Borrar</button>
-                    <button mat-raised-button (click)="modalPagarBoleta(boleta)" color="primary">Pagar</button>
-                </div>
-        </mat-grid-tile>
-    </ng-container>
-</mat-grid-list> -->
+        <mat-grid-list cols="1" rowHeight="70px">
+            <mat-grid-tile>
+                <form class="example-form">
+                    <mat-form-field class="example-full-width">
+                        <input matInput (keyup)="applyFilter($event.target.value, dataSourceReserva)"
+                            placeholder="BUSCAR CLIENTE, TRABAJADORA, SERVICIO, ETC">
+                    </mat-form-field>
+                </form>
+
+            </mat-grid-tile>
+        </mat-grid-list>
+
+
+        <table mat-table [dataSource]="dataSourceReserva" multiTemplateDataRows #sortReserva="matSort" matSort
+            class="mat-elevation-z8">
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Hora </th>
+                <td mat-cell *matCellDef="let element" style="font-weight:bold;">{{element.fecha.substring(11,16)}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cliente">
+                <th mat-header-cell *matHeaderCellDef> Cliente </th>
+                <td mat-cell *matCellDef="let element" style="font-weight:bold">{{element.cliente.nombre}}</td>
+
+            </ng-container>
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="primary" (click)="modalPagarBoleta(element)">
+                        <mat-icon>attach_money</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="modalEditarBoleta(element)" >
+                        <mat-icon>edit</mat-icon>
+                      </button> 
+                    <button mat-icon-button color="warn" (click)="modalBorrarBoleta(element)">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplaytab2.length">
+                    <div class="example-element-detail"
+                        [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                        <div style="font-weight:bold;"> Cliente: {{element.cliente.nombre}} </div>
+                        <div style="font-weight:bold">Total: {{element.total | currency:'CLP':'symbol-narrow'}}</div>
+                        <ng-container *ngFor="let orden of element.ordenes">
+                            <div style="font-weight:bold;color:blue"> {{orden.trabajadora.nombre}}<b style="color:red">
+                                    {{orden.servicio.valor | currency:'CLP':'symbol-narrow'}}</b></div>
+                            <div style="font-weight:bold; color:darkslategray"> ->
+                                {{orden.servicio.descripcion}}</div>
+
+
+                        </ng-container>
+                        <div style="font-weight:bold;color:darkviolet">Fecha boleta : {{element.fecha}}</div>
+
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplaytab2"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplaytab2;" class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+
+        <mat-paginator #paginatorReserva [pageSizeOptions]="[20, 30, 40]" showFirstLastButtons></mat-paginator>
+
+    </mat-tab>
+
+
+
+
+    <mat-tab label="Reservas Futuras">
+
+        <mat-grid-list cols="1" rowHeight="70px">
+            <mat-grid-tile>
+                <form class="example-form">
+                    <mat-form-field class="example-full-width">
+                        <input matInput (keyup)="applyFilter($event.target.value, dataSourceFuturas)"
+                            placeholder="BUSCAR CLIENTE, TRABAJADORA, SERVICIO, ETC">
+                    </mat-form-field>
+                </form>
+
+            </mat-grid-tile>
+        </mat-grid-list>
+
+
+
+        <table mat-table [dataSource]="dataSourceFuturas" multiTemplateDataRows #sortFuturas="matSort" matSort
+            class="mat-elevation-z8">
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Hora </th>
+                <td mat-cell *matCellDef="let element" style="font-weight:bold;">{{element.fecha}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cliente">
+                <th mat-header-cell *matHeaderCellDef> Cliente </th>
+                <td mat-cell *matCellDef="let element" style="font-weight:bold">{{element.cliente.nombre}}</td>
+
+            </ng-container>
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="primary" (click)="modalEditarBoleta(element)" >
+                        <mat-icon>edit</mat-icon>
+                      </button> 
+                    <button mat-icon-button color="warn" (click)="modalBorrarBoleta(element)">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplaytab3.length">
+                    <div class="example-element-detail"
+                        [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                        <div style="font-weight:bold;"> Cliente: {{element.cliente.nombre}} </div>
+                        <div style="font-weight:bold">Total: {{element.total | currency:'CLP':'symbol-narrow'}}</div>
+                        <ng-container *ngFor="let orden of element.ordenes">
+                            <div style="font-weight:bold;color:blue"> {{orden.trabajadora.nombre}}<b style="color:red">
+                                    {{orden.servicio.valor | currency:'CLP':'symbol-narrow'}}</b></div>
+                            <div style="font-weight:bold; color:darkslategray"> ->
+                                {{orden.servicio.descripcion}}</div>
+
+
+                        </ng-container>
+                        <div style="font-weight:bold;color:darkviolet">Fecha boleta : {{element.fecha}}</div>
+
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplaytab3"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplaytab3;" class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+
+        <mat-paginator #paginatorFuturas [pageSizeOptions]="[20, 30, 40]" showFirstLastButtons></mat-paginator>
+
+
+
+
+    </mat-tab>
+</mat-tab-group>

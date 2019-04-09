@@ -1,28 +1,40 @@
+<mat-toolbar style=" background-color: #5456cc; color: white">
+        <mat-toolbar-row>
+            <span>Dashboard Clientes</span>
+    
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <br>
+    <mat-grid-list [cols]="breakpoint" rowHeight="70px" (window:resize)="onResize($event)">
+        <mat-grid-tile>
+            <mat-form-field class="full-width">
+                <input matInput [matDatepicker]="picker" placeholder="FECHA INICIO" [formControl]="dpInicio">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+    
+    
+            <mat-form-field class="full-width">
+                <input matInput [matDatepicker]="picker1" placeholder="FECHA TERMINO" [formControl]="dpTermino">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+    
+    </mat-grid-list>
 
 
-<div class="container">
-    <ngb-datepicker [(ngModel)]="inicio"></ngb-datepicker>
-    <ngb-datepicker [(ngModel)]="termino"></ngb-datepicker>
-</div>
-<br>
-<div class="container">
-    <div class="row">
-
-        <div class="col" [ngStyle]="{'font-weight': 'bold'}">
-            Buscar cliente especifico:
-            <input list="clientes" [(ngModel)]="clienteFiltrado" [typeahead]="nombresClientes">
-            <br>
-            <button type="submit" class="btn btn-primary" (click)="buscarTodos()">Buscar cliente</button>
-            <button type="submit" class="btn btn-success" (click)="buscarTodos()">Todos los clientes</button>
-        </div>
-
-    </div>
-</div>
+<button mat-raised-button color="primary" style="margin-left: 5px" (click)="buscar()">Buscar</button>
 
 
 
+<app-totales-clientes *ngIf="flag == true"></app-totales-clientes>
 
-<ngb-tabset type="pills" >
+
+
+<!-- <ngb-tabset type="pills" >
     <ngb-tab>
         <ng-template ngbTabTitle><b>Ventas totales</b></ng-template>
         <ng-template ngbTabContent>
@@ -68,4 +80,4 @@
             </div>
         </ng-template>
     </ngb-tab>
-</ngb-tabset>
+</ngb-tabset> -->

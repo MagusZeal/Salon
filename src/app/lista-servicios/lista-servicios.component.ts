@@ -4,6 +4,8 @@ import { NgForm, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ModalAsignarServiciosComponent } from '../componentes/modal-asignar-servicios/modal-asignar-servicios.component';
 import { ModalCambiarPrecioComponent } from '../componentes/modal-cambiar-precio/modal-cambiar-precio.component';
+import { AdmClientesAgregarComponent } from '../componentes/adm-clientes/adm-clientes-agregar/adm-clientes-agregar.component';
+import { ModalAgregarClientesListaComponent } from '../componentes/lista-servicios/modal-agregar-clientes-lista/modal-agregar-clientes-lista.component';
 
 @Component({
   selector: 'app-lista-servicios',
@@ -16,11 +18,12 @@ export class ListaServiciosComponent implements OnInit {
   servicios: IServicio[] = [];
   serviciosSeleccionados: IServicio[] = [];
   precioTotal = 0;
-
+  data: any[] = [];
   clientes: ICliente[] = [];
   clienteFiltrado: string;
   serviciosOriginales = [];
   serviciosNuevos: any[] = [];
+  color;
 
   ordenes: IOrden[] = [];
   dias: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
@@ -28,22 +31,56 @@ export class ListaServiciosComponent implements OnInit {
   categoriaSeleccion = 'TODAS LAS CATEGORIAS';
   constructor(private ListaServicio: ListaServiciosService, public dialog: MatDialog) { }
 
+
+  onOpenMenu(menu: any): void {
+    console.log(menu);
+  }
+
   async ngOnInit() {
 
     this.ListaServicio.obtenerCategorias().subscribe(o => this.categorias = o)
     this.ListaServicio.obtenerServicios().subscribe(o => {
-      this.servicios = Object.values(o);
-      this.cargarServicios();
+      this.mapearServiciosArray(o);
+
     })
 
-    this.breakpoint = (window.innerWidth <= 400) ? 1 : 4;
+    if (window.innerWidth <= 500) {
+      this.breakpoint = 1
+    } else if (window.innerWidth >= 501 && window.innerWidth <= 1000) {
+      this.breakpoint = 2;
+    } else if (window.innerWidth >= 1001 && window.innerWidth <= 1400) {
+      this.breakpoint = 3;
+    }
+    else
+      this.breakpoint = 4;
+  }
+  mapearServiciosArray(objeto) {
+
+    for (let key in objeto) {
+
+
+      let boleta = objeto[key];
+      boleta['idServicio'] = key;
+      this.servicios.push(boleta);
+    }
+  }
+
+
+  onResize(event) {
+
+    if (event.target.innerWidth <= 500) {
+      this.breakpoint = 1
+    } else if (event.target.innerWidth >= 501 && event.target.innerWidth <= 1000) {
+      this.breakpoint = 2;
+    } else if (event.target.innerWidth >= 1001 && event.target.innerWidth <= 1400) {
+      this.breakpoint = 3;
+    }
+    else
+      this.breakpoint = 4;
 
   }
-  onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 4;
-  }
   seleccionarServicio(servicio) {
-  
+
 
     let existe = this.serviciosSeleccionados.find(o => o.descripcion == servicio.descripcion);
     if (existe) {
@@ -59,13 +96,14 @@ export class ListaServiciosComponent implements OnInit {
       }
       this.serviciosOriginales = this.serviciosOriginales.filter(o => o.descripcion != servicio.descripcion);
       servicio['seleccionado'] = "#FAFAFA";
-      servicio['seleccionado2'] = "black";
+
+
     } else {
       this.serviciosSeleccionados.push(servicio);
       this.serviciosOriginales.push(JSON.parse(JSON.stringify(servicio)));
 
-      servicio['seleccionado'] = "#5f97ef";
-      servicio['seleccionado2'] = '#FAFAFA';
+      servicio['seleccionado'] = "#65DFDD";
+
 
     }
 
@@ -73,6 +111,8 @@ export class ListaServiciosComponent implements OnInit {
 
 
   }
+
+
 
   calcularPrecio() {
 
@@ -89,14 +129,6 @@ export class ListaServiciosComponent implements OnInit {
   }
 
 
-  cargarServicios() {
-
-    for (let item of this.servicios) {
-
-      item['seleccionado'] = "#FAFAFA";
-      item['seleccionado2'] = "black";
-    }
-  }
 
 
 
@@ -116,7 +148,7 @@ export class ListaServiciosComponent implements OnInit {
       width: "600px",
       maxWidth: "600px",
       hasBackdrop: true,
-      data: { servicios: this.serviciosSeleccionados, serviciosOriginales:this.serviciosOriginales }
+      data: { servicios: this.serviciosSeleccionados, serviciosOriginales: this.serviciosOriginales }
     }
     );
 
@@ -143,18 +175,32 @@ export class ListaServiciosComponent implements OnInit {
   }
 
 
+  abrirModalAgregarCliente() {
+
+    this.dialog.open(ModalAgregarClientesListaComponent, {
+      width: "600px",
+      maxWidth: "600px",
+      autoFocus: true,
+      hasBackdrop: true,
+    });
+
+  }
+
   abrirModalServicios() {
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = "600px";
-    dialogConfig.maxWidth = "600px";
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      servicios: this.serviciosSeleccionados
-    };
-    console.log(dialogConfig);
+    if (this.serviciosSeleccionados.length > 0) {
 
-    this.dialog.open(ModalAsignarServiciosComponent, dialogConfig);
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.width = "600px";
+      dialogConfig.maxWidth = "600px";
+      dialogConfig.autoFocus = true;
+      dialogConfig.data = {
+        servicios: this.serviciosSeleccionados
+      };
+      console.log(dialogConfig);
 
+      this.dialog.open(ModalAsignarServiciosComponent, dialogConfig);
+
+    }
   }
 }

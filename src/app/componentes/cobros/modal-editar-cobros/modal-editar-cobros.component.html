@@ -1,0 +1,178 @@
+<mat-dialog-content>
+
+  <button color="primary" mat-raised-button style=" margin-right: 8px;" (click)="lechedetoro()">dasdsadsd</button>
+
+  <mat-grid-list cols="2" rowHeight="20px">
+    <mat-grid-tile>
+      <div style="position: absolute;left: 5px;font-weight:bold">
+        Servicios
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div style="position: absolute;left: 5px; font-weight:bold">
+        Trabajadoras
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <hr>
+  <!-- sadasd -->
+
+  <mat-grid-list cols="2" rowHeight="65px">
+    <ng-container *ngFor="let orden of boletaEditar.ordenes; let i = index">
+      <mat-grid-tile>
+
+        <div style="position: absolute;left: 5px;font-weight:bold">
+          {{orden.servicio.descripcion}}
+        </div>
+
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-select placeholder="Trabajadora" [compareWith]="compareObjects"
+            [(ngModel)]="boletaEditar.ordenes[i].trabajadora" #trabajadora
+            (selectionChange)="asignarServicioTrabajadora(orden.servicio, i)">
+            <ng-container *ngFor="let trabajadora of trabajadoras">
+              <ng-container *ngFor="let categoriatrabajadora of trabajadora.categoriaTrabajadora">
+                <mat-option *ngIf="categoriatrabajadora.categoria==orden.servicio.categoria" [value]="trabajadora">
+                  {{trabajadora.nombre}}</mat-option>
+
+              </ng-container>
+
+            </ng-container>
+
+          </mat-select>
+
+        </mat-form-field>
+
+      </mat-grid-tile>
+
+
+    </ng-container>
+
+  </mat-grid-list>
+
+
+
+  <mat-grid-list cols="1" rowHeight="65px">
+    <mat-grid-tile>
+      <mat-form-field class="todo" style="font-weight:bold">
+        <input style="font-weight:bold" type="text" placeholder="Cliente (no se puede modificar)" matInput
+          value="{{boletaEditar.cliente.nombre}}" readonly>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="1" rowHeight="65px">
+    <mat-grid-tile>
+      <mat-checkbox [(ngModel)]="reservaHora" style="font-weight:bold">Reserva de Hora</mat-checkbox>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+  <mat-grid-list cols="1" rowHeight="70px" *ngIf="reservaHora == true">
+    <mat-grid-tile>
+      <mat-form-field class="full-width">
+        <input matInput [matDatepicker]="picker" placeholder="FECHA RESERVA" [formControl]="dpReserva">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+  
+  <mat-grid-list cols="2" rowHeight="70px" *ngIf="reservaHora == true">
+    <mat-grid-tile>
+      <mat-form-field class="full-width">
+        <mat-label>Hora 0-24</mat-label>
+        <mat-select [formControl]="horaReserva">
+          <mat-option *ngFor="let hora of horas" [value]="hora" placeholder="Hora">
+            {{hora}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+  
+  
+    <mat-grid-tile>
+      <mat-form-field class="full-width">
+        <mat-label>Minutos</mat-label>
+        <mat-select [formControl]="minutoReserva">
+          <mat-option *ngFor="let minuto of minutos" [value]="minuto" placeholder="Minutos">
+            {{minuto}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+  
+
+
+  <mat-grid-list cols="1" rowHeight="40">
+    <mat-grid-tile>
+      <div class="spacer" style=" text-align: right;font-weight:bold">
+        Total {{precioTotal | currency:'CLP':'symbol-narrow'}}
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile>
+      <mat-form-field class="todo">
+        <mat-select placeholder="TODAS LAS CATEGORIAS" (selectionChange)="seleccionarCategoria($event)">
+          <mat-option>TODAS LAS CATEGORIAS</mat-option>
+          <ng-container *ngFor="let categoria of categorias">
+
+            <mat-option [value]="categoria">{{categoria.nombre}}</mat-option>
+          </ng-container>
+
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile>
+      <div class="spacer2">
+        <button color="accent" mat-raised-button style=" margin-right: 8px;" (click)="abrirModalPrecioVariable()">
+          Precio Variable
+        </button>
+
+        <button color="primary" mat-raised-button style=" margin-right: 8px;" (click)="asignarServicios(botonCuliao)" id="botonCuliao">
+          Asignar
+        </button>
+        
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+
+
+
+  <mat-grid-list [cols]="breakpoint" rowHeight="35px" (window:resize)="onResize($event)">
+
+    <ng-container *ngFor="let servicio of servicios">
+      <mat-grid-tile *ngIf="categoriaSeleccion == servicio.categoria || categoriaSeleccion == 'TODAS LAS CATEGORIAS' ">
+
+        <mat-nav-list (click)="seleccionarServicio(servicio)"
+          [ngStyle]="{'width': '100%','background-color': servicio.seleccionado}">
+          <mat-list-item>
+            <div style="font-weight: bold" mat-line>
+              {{ servicio.descripcion}}
+            </div>
+            <div style="color: rgb(216, 19, 19); font-weight: bold">
+              ${{servicio.valor}}
+            </div>
+
+          </mat-list-item>
+
+        </mat-nav-list>
+
+      </mat-grid-tile>
+    </ng-container>
+  </mat-grid-list>
+
+
+
+
+
+
+</mat-dialog-content>

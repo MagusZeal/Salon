@@ -7,9 +7,9 @@ export class CobrosPendientesService {
 
   constructor(private http: HttpClient) { }
 
-  obtenerBoletas() {
+ async obtenerBoletas() {
 
-    return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?');
+    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?').toPromise();
   }
 
   eliminarBoleta(boletaBorrar) {

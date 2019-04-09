@@ -1,0 +1,17 @@
+<mat-dialog-content>
+  <mat-list>
+    <h3 mat-header style="font-size: 20px">Ver Boleta</h3>
+    <mat-divider></mat-divider>
+    <mat-list-item style="font-weight: bold; color:darkslateblue">Cliente: {{boletaSeleccionada.cliente.nombre}} </mat-list-item>
+    <mat-list-item style="font-weight: bold; color:darkred">Total: {{boletaSeleccionada.montoCobrado | currency:'CLP':'symbol-narrow'}}</mat-list-item>
+    <ng-container *ngFor="let orden of boletaSeleccionada.ordenes">
+    <mat-list-item style="font-weight: bold; color:darkviolet"> {{orden.trabajadora.nombre}} - ${{orden.servicio.valor}} </mat-list-item>
+    <mat-list-item style="font-weight: bold; color:saddlebrown"> => {{orden.servicio.descripcion}} </mat-list-item>
+  </ng-container>
+  </mat-list>
+  
+ 
+      <button mat-raised-button color="primary" mat-dialog-close >Salir</button>
+      
+  
+    </mat-dialog-content>

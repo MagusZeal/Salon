@@ -17,6 +17,9 @@ export class ModalCambiarPrecioComponent implements OnInit {
   serviciosOriginales = [];
 
   constructor(public dialogRef: MatDialogRef<ListaServiciosComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    console.log(data.servicios);
+    console.log(data.serviciosOriginales);
+    
     this.servicios = data.servicios;
     this.serviciosOriginales = data.serviciosOriginales
   }

@@ -50,9 +50,9 @@ export class AdmServiciosComponent implements OnInit {
 
 
   mapearObjetosArray(objeto) {
-
+    console.log(objeto);
     for (let key in objeto) {
-
+      console.log(key);
       let servicio = objeto[key];
       servicio['idServicio'] = key;
       this.servicios.push(servicio);

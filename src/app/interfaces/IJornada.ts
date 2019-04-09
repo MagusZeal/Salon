@@ -9,4 +9,5 @@ interface IJornada {
     montoVuelto: number,
     cliente: ICliente,
     ordenes: IOrden[];
+    horaReservada: boolean
 }

@@ -1,17 +1,17 @@
-import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { AsignarServiciosService } from './asignar-servicios.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { ListaServiciosComponent } from 'src/app/lista-servicios/lista-servicios.component';
+import { forbiddenNameValidator } from './validaciones';
 
 @Component({
   selector: 'app-modal-asignar-servicios',
   templateUrl: './modal-asignar-servicios.component.html',
-  styleUrls: ['./modal-asignar-servicios.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./modal-asignar-servicios.component.scss']
 })
 export class ModalAsignarServiciosComponent {
   trabajadoras: ITrabajadora[] = [];
@@ -23,57 +23,114 @@ export class ModalAsignarServiciosComponent {
   nombresClientes: string[];
   filteredOptions: Observable<string[]>;
   options: string[] = ['One', 'Two', 'Three'];
-  myControl = new FormControl();
-
-  constructor(public dialogRef: MatDialogRef<ListaServiciosComponent>, private service: AsignarServiciosService, @Inject(MAT_DIALOG_DATA) public data: any) {
+  myControl = new FormControl('',[Validators.required,forbiddenNameValidator(this.clientes)]);
+  dpReserva = new FormControl(new Date(), [Validators.required]);
+  horaReserva = new FormControl('',[Validators.required]);
+  minutoReserva = new FormControl('',[Validators.required]);
+  horas = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
+  minutos = ['00', '15', '30', '45'];
+  reservaHora = false;
+  constructor(public dialogRef: MatDialogRef<ListaServiciosComponent>, private service: AsignarServiciosService, @Inject(MAT_DIALOG_DATA) public data: any, private snackBar: MatSnackBar) {
     this.servicios = data.servicios
   }
 
   async ngOnInit() {
 
+
     this.service.obtenerTrabajadoras().subscribe(o => {
-      this.trabajadoras = Object.values(o);
+      this.mapearTrabajadorasArray(o);
 
     });
-
-    this.clientes = await Object.values(await this.service.obtenerClientes());
-
+    this.mapearClientesArray(await this.service.obtenerClientes());
     this.nombresClientes = this.clientes.map(o => o.nombre)
-
-    console.log(this.nombresClientes);
-
-
-
-
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
         map(value => this._filter(value))
       );
-
   }
+
+  mapearTrabajadorasArray(objeto) {
+
+    for (let key in objeto) {
+
+
+      let boleta = objeto[key];
+      boleta['idTrabajadora'] = key;
+      this.trabajadoras.push(boleta);
+    }
+  }
+
+  mapearClientesArray(objeto) {
+
+    for (let key in objeto) {
+
+
+      let boleta = objeto[key];
+      boleta['idCliente'] = key;
+      this.clientes.push(boleta);
+    }
+  }
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.nombresClientes.filter(o => o.toLowerCase().includes(filterValue));
-    
+
   }
 
-  async asignarServicios() {
+  async asignarServicios(botonCuliao) {
 
-    const boleta: IBoleta = {
-      cliente: this.filtrarCliente(this.myControl.value),
-      total: this.ordenes.map(o => o.servicio.valor).reduce((a, b) => a + b),
-      fecha: (new Date().toLocaleString('es-CL')).toString(),
-      ordenes: this.ordenes
-    };
-    console.log(boleta);
+    if(this.ordenes.length == this.servicios.length && this.myControl.valid && this.ordenes.findIndex(o=> o == undefined) == -1){
+    console.log(this.minutoReserva.value);
+    // botonCuliao.disabled = true;
+    console.log(this.reservaHora);
+
+    if (this.reservaHora == true) {
+
+if(this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid){
+      const boleta = {
+        cliente: this.filtrarCliente(this.myControl.value),
+        total: this.ordenes.map(o => o.servicio.valor).reduce((a, b) => a + b),
+        fecha: (this.dpReserva.value.toLocaleString('es-CL').substring(0, 11) + this.horaReserva.value + ':' + this.minutoReserva.value + ':' + '01'),
+        ordenes: this.ordenes,
+        horaReservada: this.reservaHora,
+        hora: this.horaReserva.value,
+        minuto: this.minutoReserva.value
+
+      };
+      await this.service.agregarBoleta(boleta);
+      this.dialogRef.close();
+      document.getElementById('LinkCobros').click();
+    }else{
+      this.openSnackBar("Error! Debe asignar Fecha Reserva, hora y minutos validos ✋🏻", "Ok");
+    }
+
+    } else {
+      const boleta = {
+        cliente: this.filtrarCliente(this.myControl.value),
+        total: this.ordenes.map(o => o.servicio.valor).reduce((a, b) => a + b),
+        fecha: (new Date().toLocaleString('es-CL')).toString(),
+        ordenes: this.ordenes,
 
 
-    await this.service.agregarBoleta(boleta);
-    this.dialogRef.close();
-    document.getElementById('LinkCobros').click();
+      };
+      await this.service.agregarBoleta(boleta);
+      this.dialogRef.close();
+      document.getElementById('LinkCobros').click();
+    }
+  }else{
+    this.openSnackBar("Error! Debe asignar trabajadora/s y cliente primero ✋🏻", "Ok");
+  }
 
+
+
+      // botonCuliao.disabled = false;
+  }
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+    });
   }
 
   filtrarCliente(nombre): ICliente {
@@ -87,7 +144,8 @@ export class ModalAsignarServiciosComponent {
       'servicio': {
         descripcion: servicio.descripcion,
         categoria: servicio.categoria,
-        valor: servicio.valor
+        valor: servicio.valor,
+        idServicio:servicio.idServicio
       },
       'trabajadora': this.trabajadoraSeleccionada[i]
     };

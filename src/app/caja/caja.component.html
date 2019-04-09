@@ -4,12 +4,12 @@
     </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-grid-list [cols]="breakpoint" rowHeight="50px" (window:resize)="onResize($event)" style="white-space: pre;">
+<mat-grid-list [cols]="CajaComponentClass.getBreakpoint()" rowHeight="50px" (window:resize)="onResize($event)" style="white-space: pre;">
     <mat-grid-tile>
 
         <div style="white-space: pre; font-weight: bold">
             <div>Total día</div>
-            <div style=" font-weight: normal ">{{resumenDia.totalDia | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalDia | currency:'CLP':'symbol-narrow'}}</div>
 
         </div>
 
@@ -19,7 +19,7 @@
         <div style="white-space: pre; font-weight: bold">
             <div>Efectivo</div>
 
-            <div style=" font-weight: normal ">{{resumenDia.totalEfectivo | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalEfectivo | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -27,7 +27,7 @@
         <div style="white-space: pre; font-weight: bold">
             <div>Crédito</div>
 
-            <div style=" font-weight: normal ">{{resumenDia.totalCredito | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalCredito | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -36,7 +36,7 @@
             <div>Débito</div>
 
 
-            <div style=" font-weight: normal ">{{resumenDia.totalDebito | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalDebito | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -46,7 +46,7 @@
             <div>Vuelto</div>
 
 
-            <div style=" font-weight: normal ">{{resumenDia.totalVuelto | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalVuelto | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -56,7 +56,7 @@
             <div>Transfer</div>
 
 
-            <div style=" font-weight: normal ">{{resumenDia.totalTransferencia | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalTransferencia | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -64,7 +64,7 @@
             <div>Gift Card</div>
 
 
-            <div style=" font-weight: normal ">{{resumenDia.totalGiftCard | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalGiftCard | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -72,7 +72,7 @@
             <div>Descuento</div>
 
 
-            <div style=" font-weight: normal ">{{resumenDia.totalDescuento | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalDescuento | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
 
@@ -83,7 +83,7 @@
     <mat-grid-tile>
         <form class="example-form">
             <mat-form-field class="example-full-width">
-                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="BUSCAR CLIENTE, TRABAJADORA, SERVICIO, ETC">
+                <input matInput (keyup)="CajaComponentClass.applyFilter($event.target.value, dataSource)" placeholder="BUSCAR CLIENTE, TRABAJADORA, SERVICIO, ETC">
             </mat-form-field>
         </form>
 
@@ -118,7 +118,8 @@
                 <ng-container *ngFor="let orden of element.ordenes">
                     <div style="font-weight:bold;color:blue"> {{orden.trabajadora.nombre}}<b style="color:red">
                             {{orden.servicio.valor | currency:'CLP':'symbol-narrow'}}</b></div>
-                    <div style="font-weight:bold; color:darkslategray"> -> {{orden.servicio.descripcion}}</div>
+                    <div style="font-weight:bold; color:darkslategray"> ->
+                        {{orden.servicio.descripcion}}</div>
 
 
                 </ng-container>
