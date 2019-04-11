@@ -38,8 +38,8 @@ export class AdmClientesAgregarComponent implements OnInit {
 
   }
 
-  async onSubmit() {
-
+  async onSubmit(botonDeshabilitado) {
+    botonDeshabilitado.disabled = true;
     if (this.clienteForm.valid == true) {
 
       if (!this.clienteForm.value.cumple.dia) {
@@ -53,6 +53,8 @@ export class AdmClientesAgregarComponent implements OnInit {
       await this.service.agregarCliente(this.clienteForm.value);
       this.dialogRef.close(true);
 
+    } else{
+      botonDeshabilitado.disabled = false;
     }
   }
 

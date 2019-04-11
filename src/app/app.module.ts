@@ -5,11 +5,11 @@ import { AppComponent } from './app.component';
 import { ListaServiciosComponent } from './lista-servicios/lista-servicios.component';
 import { ListaServiciosService } from './lista-servicios/lista-servicios.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+
 import { CobrosPendientesComponent } from './cobros-pendientes/cobros-pendientes.component';
 import { CajaComponent } from './caja/caja.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { LOCALE_ID, NgModule } from '@angular/core';
 import LocaleCL from '@angular/common/locales/es-CL';
 import { registerLocaleData } from '@angular/common';
@@ -102,8 +102,6 @@ registerLocaleData(LocaleCL);
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    TypeaheadModule.forRoot(),
-    NgbModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatButtonModule, MatCheckboxModule,

@@ -1,19 +1,44 @@
-<!-- <h2 mat-dialog-title>{{cliente.nombre}}</h2>
-<mat-dialog-content>Email:</mat-dialog-content>
-<mat-dialog-content>{{cliente.mail}}</mat-dialog-content>
 
-<mat-dialog-content>Numero: </mat-dialog-content>
-<mat-dialog-content>{{cliente.numero}}</mat-dialog-content>
+<mat-dialog-content >
+<ng-container *ngIf="check">
+   
 
-<mat-dialog-content>Cumple:</mat-dialog-content>
-<mat-dialog-content>{{cliente.cumple.dia}}-{{cliente.cumple.mes}}</mat-dialog-content>
+<mat-grid-list cols="1" rowHeight="40" >
+  <mat-grid-tile>
+      <h2 mat-dialog-title>{{clienteFiltrado.nombre}}</h2>
+  </mat-grid-tile>
+  <mat-grid-tile>
+      <div style="font-weight: bold">Email: {{clienteFiltrado.mail}}</div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+      <div style="font-weight: bold">Telefono: {{clienteFiltrado.numero}}</div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+      <div style="font-weight: bold">Cumple: {{clienteFiltrado.cumple.dia}} de {{clienteFiltrado.cumple.mes}}</div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+      <div style="font-weight: bold">Nota: {{clienteFiltrado.nota}}</div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+      <button mat-raised-button color="primary" mat-dialog-close>Cerrar</button>
+  </mat-grid-tile>
+</mat-grid-list>
+</ng-container>
 
-<mat-dialog-content>Nota:</mat-dialog-content>
-<mat-dialog-content>{{cliente.nota}}</mat-dialog-content>
+
+<ng-container *ngIf="checkError">
+   
+
+    <mat-grid-list cols="1" rowHeight="40" >
+     
+      <mat-grid-tile>
+          <div style="font-weight: bold;color:darkred">Error: Cliente Borrado</div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+          <button mat-raised-button color="primary" mat-dialog-close>Cerrar</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+    </ng-container>
 
 
-<mat-dialog-actions>
-  
-
-  <button mat-button [mat-dialog-close]="true">Cerrar</button>
-</mat-dialog-actions> -->
+</mat-dialog-content>

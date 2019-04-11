@@ -1,7 +1,5 @@
 <mat-dialog-content>
 
-  <button color="primary" mat-raised-button style=" margin-right: 8px;" (click)="lechedetoro()">dasdsadsd</button>
-
   <mat-grid-list cols="2" rowHeight="20px">
     <mat-grid-tile>
       <div style="position: absolute;left: 5px;font-weight:bold">
@@ -105,14 +103,19 @@
     </mat-grid-tile>
   </mat-grid-list>
   
-
-
+  <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <span>  Total {{precioTotal | currency:'CLP':'symbol-narrow'}}</span>
+        <span class="spacer"></span>
+        <button  color="accent" mat-raised-button style=" margin-left: 8px;" (click)="asignarServicios(botonCuliao)" id="botonCuliao">
+            Modificar Boleta
+          </button>
+          
+      </mat-toolbar-row>
+   
+</mat-toolbar>
   <mat-grid-list cols="1" rowHeight="40">
-    <mat-grid-tile>
-      <div class="spacer" style=" text-align: right;font-weight:bold">
-        Total {{precioTotal | currency:'CLP':'symbol-narrow'}}
-      </div>
-    </mat-grid-tile>
+  
 
 
     <mat-grid-tile>
@@ -130,15 +133,10 @@
 
 
     <mat-grid-tile>
-      <div class="spacer2">
-        <button color="accent" mat-raised-button style=" margin-right: 8px;" (click)="abrirModalPrecioVariable()">
+      <div >
+        <button color="warn" mat-raised-button  (click)="abrirModalPrecioVariable()">
           Precio Variable
-        </button>
-
-        <button color="primary" mat-raised-button style=" margin-right: 8px;" (click)="asignarServicios(botonCuliao)" id="botonCuliao">
-          Asignar
-        </button>
-        
+        </button>            
       </div>
     </mat-grid-tile>
   </mat-grid-list>

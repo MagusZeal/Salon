@@ -30,12 +30,18 @@ ngOnInit(){
   });
 }
 
- async onSubmit() {
+ async onSubmit(botonDeshabilitado) {
+  botonDeshabilitado.disabled = true;
     if (this.servicioForm.valid == true) {
 
 await this.service.agregarServicio(this.servicioForm.value);
  this.dialogRef.close(true);
+    } else{
+      botonDeshabilitado.disabled = false;
     }
+
+
+
   }
 
 

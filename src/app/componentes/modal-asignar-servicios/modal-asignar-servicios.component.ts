@@ -79,12 +79,12 @@ export class ModalAsignarServiciosComponent {
 
   }
 
-  async asignarServicios(botonCuliao) {
-
+  async asignarServicios(botonDeshabilitado) {
+    botonDeshabilitado.disabled = true;
+  
     if(this.ordenes.length == this.servicios.length && this.myControl.valid && this.ordenes.findIndex(o=> o == undefined) == -1){
-    console.log(this.minutoReserva.value);
-    // botonCuliao.disabled = true;
-    console.log(this.reservaHora);
+    
+
 
     if (this.reservaHora == true) {
 
@@ -104,6 +104,7 @@ if(this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid){
       document.getElementById('LinkCobros').click();
     }else{
       this.openSnackBar("Error! Debe asignar Fecha Reserva, hora y minutos validos ✋🏻", "Ok");
+      botonDeshabilitado.disabled = false;
     }
 
     } else {
@@ -121,11 +122,10 @@ if(this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid){
     }
   }else{
     this.openSnackBar("Error! Debe asignar trabajadora/s y cliente primero ✋🏻", "Ok");
+    botonDeshabilitado.disabled = false;
   }
 
-
-
-      // botonCuliao.disabled = false;
+   
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {

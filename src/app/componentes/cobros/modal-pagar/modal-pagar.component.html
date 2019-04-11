@@ -1,87 +1,3 @@
-<!-- <div class="modal-body" *ngIf="boletaSeleccionada">
-  <div class="form-group label-floating">
-      <label class="control-label">Nombre Cliente</label>
-      <input required type="text" [(ngModel)]="boletaSeleccionada.cliente.nombre" readonly="true"
-          class="form-control">
-
-
-  </div>
-
-
-  <div class="form-group label-floating">
-      <label class="control-label">Total a Pagar </label>
-      <input required type="text" [(ngModel)]="boletaSeleccionada.total" readonly="true"
-          class="form-control">
-
-  </div>
-
-  <div class="container">
-      <ng-container *ngFor="let boton of botones;index as i">
-          <div class="form-check">
-              <input class="form-check-input" type="radio" name="exampleRadios" [value]="boton.nombre"
-                  [checked]="botones[i].nombre == boton.nombre" id="exampleRadios1"
-                  [(ngModel)]="botonSeleccionado" (ngModelChange)="radioButtonChange(botonSeleccionado)">
-
-              <label class="form-check-label" for="exampleRadios1">
-                  {{boton.nombre}}
-              </label>
-          </div>
-      </ng-container>
-      <ng-container *ngFor="let checkbox of checkboxes;index as i">
-          <div *ngIf="checkbox.enabled" class="form-check">
-              <input class="form-check-input" type="checkbox" value="1" [(ngModel)]="checkbox.valor"
-                  id="defaultCheck1">
-              <label class="form-check-label" for="defaultCheck1">
-                  {{checkbox.nombre}}
-              </label>
-          </div>
-      </ng-container>
-
-  </div>
-
-  <div class="form-group label-floating">
-      <label class="control-label">Monto Entregado por Cliente</label>
-      <input required type="number" [(ngModel)]="montoPrincipal" (ngModelChange)="calcularVuelto()"
-          class="form-control">
-
-  </div>
-
-  <div class="form-group label-floating; check-element animate-show-hide;" *ngIf="checkboxes[0].valor">
-      <label class="control-label">Monto descuento</label>
-      <input required type="number" [(ngModel)]="montoDescuento" (ngModelChange)="calcularVuelto()"
-          class="form-control">
-
-  </div>
-  <div class="form-group label-floating; check-element animate-show-hide;" *ngIf="checkboxes[1].valor">
-      <label class="control-label">Monto descuento Gift Card</label>
-      <input required type="number" [(ngModel)]="montoGiftCard" (ngModelChange)="calcularVuelto()"
-          class="form-control">
-
-  </div>
-  <div class="form-group label-floating; check-element animate-show-hide;" *ngIf="checkboxes[2].valor">
-      <label class="control-label">Monto Efectivo</label>
-      <input required type="number" [(ngModel)]="montoEfectivo" (ngModelChange)="calcularVuelto()"
-          class="form-control">
-
-  </div>
-  <div class="form-group label-floating">
-      <label class="control-label"> Vuelto a Cliente </label>
-      <input required type="number" [(ngModel)]="montoVuelto" class="form-control" readonly="true">
-
-  </div>
-
-</div>
-<div class="alert alert-danger" role="alert" *ngIf="modalDescripcionError != ''">
-  <strong>{{modalDescripcionError}}</strong>
-</div>
-
-<div class="modal-footer">
-  <button type="submit" class="btn btn-success" (click)="pagarBoleta()">Pagar</button>
-  <button type="submit" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-</div>
-
- -->
-
 <mat-dialog-content>
   <h3 mat-header style="font-size: 20px">Pagar Boleta</h3>
   <mat-divider style="padding-bottom: 10px"></mat-divider>
@@ -151,7 +67,7 @@
     </mat-form-field>
   
 
-    <button mat-raised-button style="font-weight: bold;margin-right: 8px;" color="primary" (click)="pagarBoleta()">Pagar Servicios</button>
+    <button mat-raised-button #botonDeshabilitado style="font-weight: bold;margin-right: 8px;" color="primary" (click)="pagarBoleta(botonDeshabilitado)">Pagar Servicios</button>
     <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancelar</button>
     
   

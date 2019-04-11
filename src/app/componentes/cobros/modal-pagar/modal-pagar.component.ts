@@ -111,9 +111,9 @@ export class ModalPagarComponent implements OnInit {
     return campo;
 
   }
-  pagarBoleta() {
+  pagarBoleta(botonDeshabilitado) {
 
-
+    botonDeshabilitado.disabled = true;
 
     if (isNaN(this.montoPrincipal) || this.montoPrincipal == null) {
       this.montoPrincipal = 0;
@@ -135,7 +135,7 @@ export class ModalPagarComponent implements OnInit {
     if (this.boletaSeleccionada.total > (this.montoPrincipal + this.montoDescuento + this.montoGiftCard + this.montoEfectivo)) {
 
       this.openSnackBar("Lo sentimos! Monto cancelado debe ser mayor o igual al total a pagar 🙅‍", "Ok");
-
+      botonDeshabilitado.disabled = false;
       return;
     }
 

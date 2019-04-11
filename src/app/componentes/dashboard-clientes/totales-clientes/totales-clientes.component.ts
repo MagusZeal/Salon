@@ -36,7 +36,9 @@ export class TotalesClientesComponent implements OnInit {
       this.limpiar();
 
       this.mapearObjetosArray(o.jornadas)
-
+      console.log(this.boletas);
+      
+if(this.boletas.length > 0){
       this.procesarJornadas();
 
       this.dataSource = new MatTableDataSource<any>(this.clientesFiltrados);
@@ -46,6 +48,7 @@ export class TotalesClientesComponent implements OnInit {
 
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+    }
 
     })
   }
@@ -71,7 +74,7 @@ export class TotalesClientesComponent implements OnInit {
         this.clientesFiltrados[this.index].numeroServicios += this.boletas[i].ordenes.length;
 
       } else {
-        this.clientesFiltrados.push({ nombre: this.boletas[i].cliente.nombre, dineroInvertido: this.boletas[i].montoCobrado, numeroServicios: this.boletas[i].ordenes.length });
+        this.clientesFiltrados.push({ nombre: this.boletas[i].cliente.nombre, dineroInvertido: this.boletas[i].montoCobrado, numeroServicios: this.boletas[i].ordenes.length, idCliente:this.boletas[i].cliente.idCliente });
 
       }
 
@@ -83,7 +86,7 @@ export class TotalesClientesComponent implements OnInit {
 
   }
 
-  modalDatosCliente(nombre) {
+  modalDatosCliente(element) {
 
     this.dialog.open(ModalVerClienteComponent, {
       width: "700px",
@@ -91,8 +94,7 @@ export class TotalesClientesComponent implements OnInit {
       autoFocus: true,
       hasBackdrop: true,
       data: {
-
-        cliente: nombre
+        cliente: element
       }
 
     });

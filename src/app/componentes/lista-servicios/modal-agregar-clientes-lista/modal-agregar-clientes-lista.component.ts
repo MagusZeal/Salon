@@ -34,8 +34,8 @@ async ngOnInit() {
 
   }
 
-  async onSubmit() {
-
+  async onSubmit(botonDeshabilitado) {
+    botonDeshabilitado.disabled= true;
     if (this.clienteForm.valid == true) {
 
       if (!this.clienteForm.value.cumple.dia) {
@@ -49,7 +49,9 @@ async ngOnInit() {
       await this.service.agregarCliente(this.clienteForm.value);
    this.dialogRef.close();
     } else{
+
       this.openSnackBar("Lo sentimos! Verifique si el nombre es valido 🙅‍", "Ok");
+      botonDeshabilitado.disabled = false;
     }
   }
   mapearObjetosArray(objeto) {

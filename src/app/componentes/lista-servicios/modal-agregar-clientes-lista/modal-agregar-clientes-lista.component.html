@@ -1,5 +1,5 @@
 <mat-dialog-content  >
-    <form [formGroup]="clienteForm" novalidate (ngSubmit)="onSubmit()" >
+    <form [formGroup]="clienteForm" novalidate (ngSubmit)="onSubmit(botonDeshabilitado)" >
       
           <h4 style="color:darkviolet ">Agregar Cliente</h4>
     
@@ -81,7 +81,7 @@
             </mat-form-field>
     
       
-          <button mat-raised-button color="primary" type="submit" >Agregar Cliente</button>
+          <button mat-raised-button #botonDeshabilitado color="primary" type="submit" >Agregar Cliente</button>
           <button mat-raised-button color="accent" mat-dialog-close style="margin-left: 10px">Cerrar</button>
      
     </form>
