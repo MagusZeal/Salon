@@ -134,7 +134,7 @@ this.breakpoint = 2;
 
 
   async asignarServicios(botonCuliao) {
-
+    botonCuliao.disabled = true;
 
     if( !this.boletaEditar.ordenes.some(o=>o.trabajadora == undefined) && this.boletaEditar.ordenes.findIndex(o=> o == undefined) == -1){
    
@@ -161,6 +161,7 @@ if(this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid){
       this.dialogRef.close(true);
     
     }else{
+      botonCuliao.disabled = false;
       this.openSnackBar("Error! Debe asignar Fecha Reserva, hora y minutos validos ✋🏻", "Ok");
     }
 
@@ -181,12 +182,12 @@ if(this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid){
    
     }
   }else{
+    botonCuliao.disabled= false;
     this.openSnackBar("Error! Debe asignar trabajadora/s y cliente primero ✋🏻", "Ok");
   }
 
 
 
-      // botonCuliao.disabled = false;
   }
 
 

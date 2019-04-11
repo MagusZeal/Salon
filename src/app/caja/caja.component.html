@@ -9,7 +9,7 @@
 
         <div style="white-space: pre; font-weight: bold">
             <div>Total día</div>
-            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalDia | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalDia | currency:'CLP':'symbol-narrow'}}</div>
 
         </div>
 
@@ -19,7 +19,7 @@
         <div style="white-space: pre; font-weight: bold">
             <div>Efectivo</div>
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalEfectivo | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalEfectivo | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -27,7 +27,7 @@
         <div style="white-space: pre; font-weight: bold">
             <div>Crédito</div>
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalCredito | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalCredito | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -36,7 +36,7 @@
             <div>Débito</div>
 
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalDebito | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalDebito | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -46,7 +46,7 @@
             <div>Vuelto</div>
 
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalVuelto | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalVuelto | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -56,7 +56,7 @@
             <div>Transfer</div>
 
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalTransferencia | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalTransferencia | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -64,7 +64,7 @@
             <div>Gift Card</div>
 
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalGiftCard | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalGiftCard | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -72,7 +72,7 @@
             <div>Descuento</div>
 
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.resumenDia.totalDescuento | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalDescuento | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
 

@@ -52,6 +52,8 @@ if(this.boletas.length > 0){
 
     })
   }
+
+
   mapearObjetosArray(objeto) {
 
     for (var i in objeto) {
@@ -84,6 +86,10 @@ if(this.boletas.length > 0){
     this.total.totalInvertido = this.clientesFiltrados.map(o => o.dineroInvertido).reduce((a, b) => a + b);
     this.total.totalServicios = this.clientesFiltrados.map(o => o.numeroServicios).reduce((a, b) => a + b)
 
+  }
+  applyFilter(filterValue: string, dataSource: MatTableDataSource<any>) {
+    
+    dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   modalDatosCliente(element) {
