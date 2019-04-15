@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js';
 import { FormControl } from '@angular/forms';
 import { GraficosService } from './graficos.service';
-
+import { Chart } from 'node_modules/chart.js/dist/Chart.bundle.min.js';
 @Component({
   selector: 'app-graficos',
   templateUrl: './graficos.component.html',

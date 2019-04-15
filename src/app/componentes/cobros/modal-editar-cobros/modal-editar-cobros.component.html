@@ -107,8 +107,11 @@
       <mat-toolbar-row>
         <span>  Total {{precioTotal | currency:'CLP':'symbol-narrow'}}</span>
         <span class="spacer"></span>
+        <button  color="warn"  mat-raised-button mat-dialog-close style=" margin-left: 8px;" >
+          Salir
+        </button>
         <button  color="accent" #botonCuliao mat-raised-button style=" margin-left: 8px;" (click)="asignarServicios(botonCuliao)" id="botonCuliao">
-            Modificar Boleta
+            Modificar
           </button>
           
       </mat-toolbar-row>

@@ -124,6 +124,8 @@ export class EspecificoTrabajadoraComponent implements OnInit {
 
 
             }
+          
+            
             this.serviciosRealizadosTrabajadora.push({
               servicio: objeto[i].ordenes[z].servicio.descripcion,
 
