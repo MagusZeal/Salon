@@ -43,16 +43,13 @@
         <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuDashboards"
           style="font-size: 20px">Dashboards</button>
 
-        <ng-container *ngIf="user.isAdmin | async">
+      
           <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuAdministrar"
             style="font-size: 20px">Administrar</button>
 
-        </ng-container>
-        <ng-container *ngIf="user.isOwner  | async">
-          <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuAdministrar"
-            style="font-size: 20px">Administrar</button>
+   
 
-        </ng-container>
+ 
         <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuPerfil"
           style="font-size: 20px">Perfil</button>
       </ng-container>
@@ -61,7 +58,12 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 <mat-menu #menuAdministrar="matMenu">
+    <ng-container *ngIf="user.isAdmin | async">
   <button mat-menu-item routerLink="AdministrarServicios">Servicios</button>
+</ng-container>
+<ng-container *ngIf="user.isOwner | async">
+    <button mat-menu-item routerLink="AdministrarServicios">Servicios</button>
+  </ng-container>
   <button mat-menu-item routerLink="AdministrarClientes">Clientes</button>
 </mat-menu>
 <mat-menu #menuDashboards="matMenu">
