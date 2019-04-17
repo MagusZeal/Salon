@@ -1,43 +1,19 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" routerLink="Servicios">Salón SW</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" routerLink="Servicios">Servicios <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="CobrosPendientes">Cobros pendientes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="Caja">Caja</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="Dashboard">Dashboard</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Administrar
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" routerLink="AdministrarServicios">Administrar Servicios</a>
-            <a class="dropdown-item" routerLink="AdministrarClientes">Administrar Clientes</a>
-            <a class="dropdown-item" routerLink="DashboardClientes">Dashboard Clientes</a>
-            <a class="dropdown-item" href="#">Modificar Servicios</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Eliminar Servicios Temporales</a>
-          </div>
-        </li>
-     
-      </ul>
-      
-    </div>
-  </nav> -->
+<!-- <div *ngIf="user.uid | async as uid; else login">the user is logged in {{uid}}
+    <button (click)="user.logout()">logout</button>
+  <div *ngIf="user.isAdmin | async ">the user is admin
+<div><button (click)="user.logout()">logout</button></div>
+</div>
 
+</div>
+
+
+<ng-template #login>
+  <input [(ngModel)]="mail">
+  <input [(ngModel)]="password">
+
+  <button (click)="user.login(mail, password)">login</button>
+  you need to log in  <button (click)="user.loginGoogle()">login</button>
+</ng-template> -->
 <app-main-nav>
     <router-outlet></router-outlet>
 

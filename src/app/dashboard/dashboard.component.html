@@ -2,6 +2,7 @@
     <mat-toolbar-row>
         <span>Dashboard</span>
 
+
     </mat-toolbar-row>
 </mat-toolbar>
 <br>
@@ -25,28 +26,51 @@
 
 </mat-grid-list>
 
-<mat-grid-list cols="1" rowHeight="40px">
+<ng-container *ngIf="user.isOwner | async">
+    <mat-grid-list cols="1" rowHeight="40px">
+        <mat-grid-tile>
+            <form class="example-form">
+                <mat-form-field class="example-full-width">
+                    <mat-select placeholder="TODAS LAS TRABAJADORAS" (selectionChange)="seleccionarTrabajadora($event)">
+                        <mat-option>TODAS LAS TRABAJADORAS</mat-option>
+                        <ng-container *ngFor="let trabajadora of trabajadoras">
+
+                            <mat-option [value]="trabajadora">{{trabajadora.nombre}}</mat-option>
+                        </ng-container>
+
+                    </mat-select>
+
+                </mat-form-field>
+
+            </form>
+            <button mat-raised-button color="primary" style="margin-left: 5px" (click)="buscar()">Buscar</button>
+        </mat-grid-tile>
+    </mat-grid-list>
+</ng-container>
+
+
+
+<mat-grid-list cols="1" rowHeight="85px"  >
     <mat-grid-tile>
-        <form class="example-form">
-            <mat-form-field class="example-full-width">
-                <mat-select placeholder="TODAS LAS TRABAJADORAS" (selectionChange)="seleccionarTrabajadora($event)">
-                    <mat-option>TODAS LAS TRABAJADORAS</mat-option>
-                    <ng-container *ngFor="let trabajadora of trabajadoras">
+        <ng-container *ngFor="let tra of trabajadoras">
 
-                        <mat-option [value]="trabajadora">{{trabajadora.nombre}}</mat-option>
-                    </ng-container>
+            <div *ngIf="userId === tra.idTrabajadora">
+<p>
+                <mat-form-field appearance="outline" [floatLabel]="floatLabel" style="width: 100%">
+                    <mat-label>Trabajadora</mat-label>
+                    <input matInput required type="text" [(ngModel)]="tra.nombre" readonly="true" [formControl]="nombreTrabajadora">
+                </mat-form-field>
+</p>
 
-                </mat-select>
+            </div>
 
-            </mat-form-field>
-
-        </form>
-        <button mat-raised-button color="primary" style="margin-left: 5px" (click)="buscar()">Buscar</button>
+        </ng-container>
+        <button *ngIf="nombreTrabajadora.value" mat-raised-button color="primary" style="margin-left: 5px" (click)="buscarDatosTrabajadora(nombreTrabajadora.value)">Buscar</button>
     </mat-grid-tile>
 </mat-grid-list>
 
 <app-totales *ngIf="tablaTotalesCheckbox"></app-totales>
-<app-especifico-trabajadora  *ngIf="tablaSueldoCheckbox"></app-especifico-trabajadora>
+<app-especifico-trabajadora *ngIf="tablaSueldoCheckbox"></app-especifico-trabajadora>
 
 
 
@@ -286,67 +310,3 @@
         </ng-template>
     </ngb-tab>
 </ngb-tabset> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,12 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AsignarServiciosService } from './asignar-servicios.service';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { ListaServiciosComponent } from 'src/app/lista-servicios/lista-servicios.component';
 import { forbiddenNameValidator } from './validaciones';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'app-modal-asignar-servicios',
@@ -23,14 +24,16 @@ export class ModalAsignarServiciosComponent {
   nombresClientes: string[];
   filteredOptions: Observable<string[]>;
   options: string[] = ['One', 'Two', 'Three'];
-  myControl = new FormControl('',[Validators.required,forbiddenNameValidator(this.clientes)]);
+  myControl = new FormControl('', [Validators.required, forbiddenNameValidator(this.clientes)]);
   dpReserva = new FormControl(new Date(), [Validators.required]);
-  horaReserva = new FormControl('',[Validators.required]);
-  minutoReserva = new FormControl('',[Validators.required]);
+  horaReserva = new FormControl('', [Validators.required]);
+  minutoReserva = new FormControl('', [Validators.required]);
+  userId;
   horas = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
   minutos = ['00', '15', '30', '45'];
   reservaHora = false;
-  constructor(public dialogRef: MatDialogRef<ListaServiciosComponent>, private service: AsignarServiciosService, @Inject(MAT_DIALOG_DATA) public data: any, private snackBar: MatSnackBar) {
+  constructor(public dialogRef: MatDialogRef<ListaServiciosComponent>, private service: AsignarServiciosService,
+    @Inject(MAT_DIALOG_DATA) public data: any, private snackBar: MatSnackBar, public afAuth: AngularFireAuth) {
     this.servicios = data.servicios
   }
 
@@ -48,6 +51,13 @@ export class ModalAsignarServiciosComponent {
         startWith(''),
         map(value => this._filter(value))
       );
+
+    this.afAuth.authState.subscribe(user => {
+
+      if (user) this.userId = user.uid
+
+
+    })
   }
 
   mapearTrabajadorasArray(objeto) {
@@ -81,51 +91,51 @@ export class ModalAsignarServiciosComponent {
 
   async asignarServicios(botonDeshabilitado) {
     botonDeshabilitado.disabled = true;
-  
-    if(this.ordenes.length == this.servicios.length && this.myControl.valid && this.ordenes.findIndex(o=> o == undefined) == -1){
-    
+
+    if (this.ordenes.length == this.servicios.length && this.myControl.valid && this.ordenes.findIndex(o => o == undefined) == -1) {
 
 
-    if (this.reservaHora == true) {
 
-if(this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid){
-      const boleta = {
-        cliente: this.filtrarCliente(this.myControl.value),
-        total: this.ordenes.map(o => o.servicio.valor).reduce((a, b) => a + b),
-        fecha: (this.dpReserva.value.toLocaleString('es-CL').substring(0, 11) + this.horaReserva.value + ':' + this.minutoReserva.value + ':' + '01'),
-        ordenes: this.ordenes,
-        horaReservada: this.reservaHora,
-        hora: this.horaReserva.value,
-        minuto: this.minutoReserva.value
+      if (this.reservaHora == true) {
 
-      };
-      await this.service.agregarBoleta(boleta);
-      this.dialogRef.close();
-      document.getElementById('LinkCobros').click();
-    }else{
-      this.openSnackBar("Error! Debe asignar Fecha Reserva, hora y minutos validos ✋🏻", "Ok");
+        if (this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid) {
+          const boleta = {
+            cliente: this.filtrarCliente(this.myControl.value),
+            total: this.ordenes.map(o => o.servicio.valor).reduce((a, b) => a + b),
+            fecha: (this.dpReserva.value.toLocaleString('es-CL').substring(0, 11) + this.horaReserva.value + ':' + this.minutoReserva.value + ':' + '01'),
+            ordenes: this.ordenes,
+            horaReservada: this.reservaHora,
+            hora: this.horaReserva.value,
+            minuto: this.minutoReserva.value,
+            idUsuario:this.userId
+          };
+          await this.service.agregarBoleta(boleta);
+          this.dialogRef.close();
+          document.getElementById('LinkCobros').click();
+        } else {
+          this.openSnackBar("Error! Debe asignar Fecha Reserva, hora y minutos validos ✋🏻", "Ok");
+          botonDeshabilitado.disabled = false;
+        }
+
+      } else {
+        const boleta = {
+          cliente: this.filtrarCliente(this.myControl.value),
+          total: this.ordenes.map(o => o.servicio.valor).reduce((a, b) => a + b),
+          fecha: (new Date().toLocaleString('es-CL')).toString(),
+          ordenes: this.ordenes,
+          idUsuario: this.userId
+
+        };
+        await this.service.agregarBoleta(boleta);
+        this.dialogRef.close();
+        document.getElementById('LinkCobros').click();
+      }
+    } else {
+      this.openSnackBar("Error! Debe asignar trabajadora/s y cliente primero ✋🏻", "Ok");
       botonDeshabilitado.disabled = false;
     }
 
-    } else {
-      const boleta = {
-        cliente: this.filtrarCliente(this.myControl.value),
-        total: this.ordenes.map(o => o.servicio.valor).reduce((a, b) => a + b),
-        fecha: (new Date().toLocaleString('es-CL')).toString(),
-        ordenes: this.ordenes,
 
-
-      };
-      await this.service.agregarBoleta(boleta);
-      this.dialogRef.close();
-      document.getElementById('LinkCobros').click();
-    }
-  }else{
-    this.openSnackBar("Error! Debe asignar trabajadora/s y cliente primero ✋🏻", "Ok");
-    botonDeshabilitado.disabled = false;
-  }
-
-   
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -145,7 +155,7 @@ if(this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid){
         descripcion: servicio.descripcion,
         categoria: servicio.categoria,
         valor: servicio.valor,
-        idServicio:servicio.idServicio
+        idServicio: servicio.idServicio
       },
       'trabajadora': this.trabajadoraSeleccionada[i]
     };

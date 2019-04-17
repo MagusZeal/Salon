@@ -6,6 +6,12 @@ import { ListaServiciosComponent } from './lista-servicios/lista-servicios.compo
 import { ListaServiciosService } from './lista-servicios/lista-servicios.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+
 import { CobrosPendientesComponent } from './cobros-pendientes/cobros-pendientes.component';
 import { CajaComponent } from './caja/caja.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -20,7 +26,7 @@ import { AsignarServiciosService } from './componentes/modal-asignar-servicios/a
 
 import { DashboardClientesComponent } from './dashboard-clientes/dashboard-clientes.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MAT_DIALOG_DEFAULT_OPTIONS, MatInputModule, MatDialogModule, MatButtonToggleModule, MatNativeDateModule  } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MAT_DIALOG_DEFAULT_OPTIONS, MatInputModule, MatDialogModule, MatButtonToggleModule, MatNativeDateModule } from '@angular/material';
 import { MatTableModule, MatMenuModule, MatIconModule } from '@angular/material';
 import { MatSortModule, MatToolbarModule, MatSidenavModule } from '@angular/material';
 import { TableSortingExampleComponent } from './componentes/table-sorting-example/table-sorting-example.component';
@@ -29,7 +35,7 @@ import { ModalVerClientesServiciosComponent } from './componentes/dashboard-clie
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatListModule } from '@angular/material/list';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
@@ -49,8 +55,8 @@ import { AdmClientesAgregarComponent } from './componentes/adm-clientes/adm-clie
 import { AdmClientesEditarComponent } from './componentes/adm-clientes/adm-clientes-editar/adm-clientes-editar.component';
 import { AdmClientesBorrarComponent } from './componentes/adm-clientes/adm-clientes-borrar/adm-clientes-borrar.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDatepickerModule,  } from '@angular/material/datepicker';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatDatepickerModule, } from '@angular/material/datepicker';
+import { MatTabsModule } from '@angular/material/tabs';
 import { VerBoletaComponent } from './componentes/dashboard/ver-boleta/ver-boleta.component';
 import { GraficosComponent } from './graficos/graficos.component';
 import { ModalEditarCobrosComponent } from './componentes/cobros/modal-editar-cobros/modal-editar-cobros.component';
@@ -58,7 +64,11 @@ import { TotalesComponent } from './componentes/dashboard/totales/totales.compon
 import { EspecificoTrabajadoraComponent } from './componentes/dashboard/especifico-trabajadora/especifico-trabajadora.component';
 import { TotalesClientesComponent } from './componentes/dashboard-clientes/totales-clientes/totales-clientes.component';
 import { ModalAgregarClientesListaComponent } from './componentes/lista-servicios/modal-agregar-clientes-lista/modal-agregar-clientes-lista.component';
-
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './auth.guard';
+import { PasswordRecoveryComponent } from './componentes/login/password-recovery/password-recovery.component';
+import { ModalPasswordRecoveryComponent } from './componentes/login/modal-password-recovery/modal-password-recovery.component';
+import { PerfilComponent } from './perfil/perfil/perfil.component';
 
 
 registerLocaleData(LocaleCL);
@@ -95,12 +105,28 @@ registerLocaleData(LocaleCL);
     EspecificoTrabajadoraComponent,
     TotalesClientesComponent,
     ModalAgregarClientesListaComponent,
-   
+    LoginComponent,
+    PasswordRecoveryComponent,
+    ModalPasswordRecoveryComponent,
+    PerfilComponent,
+  
+  
   ],
+  
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyAEuWcpnCL2ctm5lc0Wu-7ho1TaORoxMJQ",
+      authDomain: "devs-c9cdc.firebaseapp.com",
+      databaseURL: "https://devs-c9cdc.firebaseio.com",
+      projectId: "devs-c9cdc",
+      storageBucket: "devs-c9cdc.appspot.com",
+      messagingSenderId: "477801868148"
+    }),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -131,12 +157,14 @@ registerLocaleData(LocaleCL);
   ],
   providers: [ListaServiciosService,
     AsignarServiciosService,
+    AuthGuard,
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
     { provide: LOCALE_ID, useValue: 'es-CL' }],
   bootstrap: [AppComponent],
   entryComponents: [
+    ModalPasswordRecoveryComponent,
     ModalVerClienteComponent,
     ModalVerClientesServiciosComponent,
     ModalAsignarServiciosComponent,
@@ -152,8 +180,12 @@ registerLocaleData(LocaleCL);
     AdmClientesBorrarComponent,
     VerBoletaComponent,
     ModalEditarCobrosComponent,
-    ModalAgregarClientesListaComponent
+    PasswordRecoveryComponent,
+    ModalAgregarClientesListaComponent,
+  
 
-  ]
+  ],
+
+
 })
 export class AppModule { }

@@ -10,4 +10,5 @@ interface IJornada {
     cliente: ICliente,
     ordenes: IOrden[];
     horaReservada: boolean
+    idUsuario:string
 }

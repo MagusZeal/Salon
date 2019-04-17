@@ -2,21 +2,29 @@
   <mat-sidenav #drawer class="sidenav" [ngClass]="{hidden : !(isHandset$ | async)}" fixedInViewport="false"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
-    <mat-toolbar >Menu</mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item routerLink="Servicios">Servicios</a>
-      <a mat-list-item routerLink="CobrosPendientes">CobrosPendientes</a>
-      <a mat-list-item routerLink="Caja">Caja</a>
-    
-    </mat-nav-list>
-    <button  mat-button [matMenuTriggerFor]="menuDashboards" style="font-size: 16px;font-weight: normal">Dashboards</button>
-    <mat-menu #menu="matMenu">
-  
-    </mat-menu>
-    <button  mat-button [matMenuTriggerFor]="menuAdministrar" style="font-size: 16px;font-weight: normal">Administrar</button>
-    <mat-menu #menu="matMenu">
-     
-    </mat-menu>
+    <mat-toolbar>Menu</mat-toolbar>
+    <ng-container *ngIf="user.uid | async">
+      <mat-nav-list>
+        <div>
+          <a mat-list-item routerLink="Servicios">Servicios</a>
+          <a mat-list-item routerLink="CobrosPendientes">CobrosPendientes</a>
+          <a mat-list-item routerLink="Caja">Caja</a>
+        </div>
+      </mat-nav-list>
+      <button mat-button [matMenuTriggerFor]="menuDashboards"
+        style="font-size: 16px;font-weight: normal">Dashboards</button>
+      <ng-container *ngIf="user.isAdmin || user.isOwner | async">
+        <button mat-button [matMenuTriggerFor]="menuAdministrar"
+          style="font-size: 16px;font-weight: normal">Administrar</button>
+      </ng-container>
+      <ng-container *ngIf="user.isOwner || user.isOwner | async">
+        <button mat-button [matMenuTriggerFor]="menuAdministrar"
+          style="font-size: 16px;font-weight: normal">Administrar</button>
+      </ng-container>
+      <br>
+      <button mat-button [matMenuTriggerFor]="menuPerfil" style="font-size: 16px;font-weight: normal">Perfil</button>
+
+    </ng-container>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
@@ -24,26 +32,45 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span routerLink="Servicios">SalonSW</span>
 
-      <span class="spacer"></span>
-      <a *ngIf="!(isHandset$ | async)" routerLink="Servicios">Servicios</a>
-      <a *ngIf="!(isHandset$ | async)" routerLink="CobrosPendientes">Cobros</a>
-      <a *ngIf="!(isHandset$ | async)" routerLink="Caja">Caja</a>
-   
-      <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuDashboards" style="font-size: 20px">Dashboards</button>
-      <mat-menu #menuDashboards="matMenu">
-        <button mat-menu-item routerLink="Dashboard">Dashboard</button>
-        <button mat-menu-item routerLink="DashboardClientes">Dashboard Clientes</button>
-        <button mat-menu-item routerLink="Graficos">Graficos</button>
-      </mat-menu>
-      <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuAdministrar" style="font-size: 20px">Administrar</button>
-      <mat-menu #menuAdministrar="matMenu">
-        <button mat-menu-item routerLink="AdministrarServicios">Servicios</button>
-        <button mat-menu-item routerLink="AdministrarClientes">Clientes</button>
-      </mat-menu>
-      
+      <span>SalonSW</span>
+      <ng-container *ngIf="user.uid | async">
+        <span class="spacer"></span>
+        <a *ngIf="!(isHandset$ | async)" routerLink="Servicios">Servicios</a>
+        <a *ngIf="!(isHandset$ | async)" routerLink="CobrosPendientes">Cobros</a>
+        <a *ngIf="!(isHandset$ | async)" routerLink="Caja">Caja</a>
+
+        <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuDashboards"
+          style="font-size: 20px">Dashboards</button>
+
+        <ng-container *ngIf="user.isAdmin | async">
+          <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuAdministrar"
+            style="font-size: 20px">Administrar</button>
+
+        </ng-container>
+        <ng-container *ngIf="user.isOwner  | async">
+          <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuAdministrar"
+            style="font-size: 20px">Administrar</button>
+
+        </ng-container>
+        <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuPerfil"
+          style="font-size: 20px">Perfil</button>
+      </ng-container>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>
 </mat-sidenav-container>
+<mat-menu #menuAdministrar="matMenu">
+  <button mat-menu-item routerLink="AdministrarServicios">Servicios</button>
+  <button mat-menu-item routerLink="AdministrarClientes">Clientes</button>
+</mat-menu>
+<mat-menu #menuDashboards="matMenu">
+  <button mat-menu-item routerLink="Dashboard">Dashboard</button>
+  <button mat-menu-item routerLink="DashboardClientes">Dashboard Clientes</button>
+  <!-- <button mat-menu-item routerLink="Graficos">Graficos</button> -->
+</mat-menu>
+<mat-menu #menuPerfil="matMenu">
+  <button mat-menu-item routerLink="Perfil">Perfil</button>
+  <button mat-menu-item (click)="user.logout()">Deslogear</button>
+
+</mat-menu>

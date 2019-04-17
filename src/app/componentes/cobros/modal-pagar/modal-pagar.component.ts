@@ -152,7 +152,8 @@ export class ModalPagarComponent implements OnInit {
       ordenes: this.boletaSeleccionada.ordenes,
       montoVuelto: this.montoVuelto,
       cliente: this.boletaSeleccionada.cliente,
-      horaReservada:this.boletaSeleccionada.horaReservada
+      horaReservada:this.boletaSeleccionada.horaReservada,
+      idUsuario:this.boletaSeleccionada.idUsuario
     };
 
     this.dialogRef.close();

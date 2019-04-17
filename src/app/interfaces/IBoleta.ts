@@ -4,5 +4,6 @@ interface IBoleta {
     fecha: string;
     horaReservada:boolean;
     ordenes: IOrden[];
+    idUsuario:string;
    
 }

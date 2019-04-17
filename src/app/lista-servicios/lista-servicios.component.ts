@@ -1,10 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ListaServiciosService } from '../lista-servicios/lista-servicios.service';
-import { NgForm, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { ModalAsignarServiciosComponent } from '../componentes/modal-asignar-servicios/modal-asignar-servicios.component';
 import { ModalCambiarPrecioComponent } from '../componentes/modal-cambiar-precio/modal-cambiar-precio.component';
-import { AdmClientesAgregarComponent } from '../componentes/adm-clientes/adm-clientes-agregar/adm-clientes-agregar.component';
 import { ModalAgregarClientesListaComponent } from '../componentes/lista-servicios/modal-agregar-clientes-lista/modal-agregar-clientes-lista.component';
 
 @Component({
@@ -139,6 +137,7 @@ export class ListaServiciosComponent implements OnInit {
       this.categoriaSeleccion = 'TODAS LAS CATEGORIAS';
     }
   }
+
 
   abrirModalPrecioVariable() {
 

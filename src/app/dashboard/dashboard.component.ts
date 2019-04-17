@@ -3,6 +3,8 @@ import { DashboardService } from '../dashboard/dashboard.service';
 import { FormControl } from '@angular/forms';
 import { TotalesService } from '../componentes/dashboard/totales/totales.service';
 import { EspecificoTrabajadoraService } from '../componentes/dashboard/especifico-trabajadora/especifico-trabajadora.service';
+import { UserService } from '../user.service';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 
 @Component({
@@ -20,10 +22,12 @@ export class DashboardComponent implements OnInit {
   breakpoint: number;
   dpInicio = new FormControl(new Date());
   dpTermino = new FormControl(new Date());
+  userId;
+  floatLabel="always";
+  nombreTrabajadora = new FormControl();
 
-
-
-  constructor(private Dashboard: DashboardService, private service: TotalesService, private serviceTrabajadora: EspecificoTrabajadoraService) { }
+  constructor(private Dashboard: DashboardService, private service: TotalesService, private serviceTrabajadora: EspecificoTrabajadoraService, 
+    public user : UserService, public afAuth: AngularFireAuth) { }
 
   seleccionarTrabajadora(event) {
     if (event.value) {
@@ -34,6 +38,11 @@ export class DashboardComponent implements OnInit {
     console.log(this.trabajadoraSeleccionada);
 
   }
+  buscarDatosTrabajadora(nombre) {
+   this.trabajadoraSeleccionada = nombre;
+   this.buscar();
+
+  }
 
   onResize(event) {
     this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 2;
@@ -41,8 +50,26 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 2;
-    this.trabajadoras = await Object.values(await this.Dashboard.obtenerTrabajadoras());
+   this.mapearTrabajadorasArray(await this.Dashboard.obtenerTrabajadoras());
+  this.afAuth.authState.subscribe(user => {
+ 
+    if(user) this.userId = user.uid
+
+
+  })  
+ 
+
     
+  }
+
+  mapearTrabajadorasArray(objeto) {
+
+    for (let key in objeto) {
+
+      let trabajadora = objeto[key];
+      trabajadora['idTrabajadora'] = key;
+      this.trabajadoras.push(trabajadora);
+    }
   }
 
   async buscar() {
