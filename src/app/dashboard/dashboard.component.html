@@ -56,7 +56,7 @@
 
             <div *ngIf="userId === tra.idTrabajadora">
 <p>
-                <mat-form-field appearance="outline" [floatLabel]="floatLabel" style="width: 100%">
+                <mat-form-field appearance="outline" [floatLabel]="floatLabel" style="width: 100%" class="hola" >
                     <mat-label>Trabajadora</mat-label>
                     <input matInput required type="text" [(ngModel)]="tra.nombre" readonly="true" [formControl]="nombreTrabajadora">
                 </mat-form-field>
@@ -65,7 +65,8 @@
             </div>
 
         </ng-container>
-        <button *ngIf="nombreTrabajadora.value" mat-raised-button color="primary" style="margin-left: 5px" (click)="buscarDatosTrabajadora(nombreTrabajadora.value)">Buscar</button>
+
+        <button *ngIf="!(user.isOwner | async)" mat-raised-button color="primary" style="margin-left: 5px" (click)="buscarDatosTrabajadora(nombreTrabajadora.value)">Buscar</button>
     </mat-grid-tile>
 </mat-grid-list>
 

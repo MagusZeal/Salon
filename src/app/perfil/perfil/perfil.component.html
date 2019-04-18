@@ -19,7 +19,7 @@
 
       <div *ngIf="userId === tra.idTrabajadora">
         <p>
-          <mat-form-field appearance="outline" [floatLabel]="floatLabel" style="width: 100%">
+          <mat-form-field appearance="outline" [floatLabel]="floatLabel" style="width: 100%" class="hola" >
             <mat-label>Trabajadora</mat-label>
             <input matInput required type="text" [(ngModel)]="tra.nombre" readonly="true"
               [formControl]="nombreTrabajadora">

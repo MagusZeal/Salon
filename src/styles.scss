@@ -2,3 +2,21 @@
 
 html, body { height: 100%; margin: 0 }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+  /* default and hover color */
+  .hola.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: black;
+   background-color:rgb(232, 240, 254); 
+  }
+  
+  
+  /* focused color */
+  .hola.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: rgb(2, 13, 161);
+  }
+  
+  /* floating label color */
+  .hola.mat-form-field-appearance-outline.mat-focused .mat-form-field-label { 
+    color: black; 
+  }

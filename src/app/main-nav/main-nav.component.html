@@ -13,14 +13,12 @@
       </mat-nav-list>
       <button mat-button [matMenuTriggerFor]="menuDashboards"
         style="font-size: 16px;font-weight: normal">Dashboards</button>
-      <ng-container *ngIf="user.isAdmin || user.isOwner | async">
+    
         <button mat-button [matMenuTriggerFor]="menuAdministrar"
           style="font-size: 16px;font-weight: normal">Administrar</button>
-      </ng-container>
-      <ng-container *ngIf="user.isOwner || user.isOwner | async">
-        <button mat-button [matMenuTriggerFor]="menuAdministrar"
-          style="font-size: 16px;font-weight: normal">Administrar</button>
-      </ng-container>
+ 
+    
+  
       <br>
       <button mat-button [matMenuTriggerFor]="menuPerfil" style="font-size: 16px;font-weight: normal">Perfil</button>
 

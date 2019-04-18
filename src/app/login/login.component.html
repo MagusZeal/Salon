@@ -13,7 +13,7 @@
     <form [formGroup]="loginForm" novalidate (ngSubmit)="login()">
     <mat-card-content>
         <p>
-            <mat-form-field appearance="outline"  [floatLabel]="floatLabel" style="width: 100%">
+            <mat-form-field appearance="outline"  [floatLabel]="floatLabel" class="hola" style="width: 100%">
               <mat-label>Ingrese Correo</mat-label>
               <input matInput type="email" placeholder="Salon@correo.cl" formControlName="email" >
               <mat-error *ngIf="email.errors?.required">
@@ -23,7 +23,7 @@
             </mat-form-field>
           </p>
           <p>
-            <mat-form-field appearance="outline" [floatLabel]="floatLabel" style="width: 100%">
+            <mat-form-field appearance="outline" [floatLabel]="floatLabel" class="hola"  style="width: 100%">
               <mat-label>Ingrese Contraseña</mat-label>
               <input matInput placeholder="xxxxxxx" type="password" formControlName="password">
               <mat-error *ngIf="password.errors?.required">
