@@ -8,14 +8,9 @@
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title style="font-weight:bold">
-                Cliente
+                Instrucciones
             </mat-panel-title>
-            <mat-panel-description style="font-weight:bold;">
-                Total
-            </mat-panel-description>
-            <mat-panel-description style="font-weight:bold;">
-                Borrar/Pagar
-            </mat-panel-description>
+
 
         </mat-expansion-panel-header>
         <div style="white-space: pre;">
@@ -25,8 +20,9 @@
             <div style="font-weight:bold"> Nombre Cliente : nombre del cliente del cual se hizo la boleta</div>
             <div style="font-weight:bold"> Total : cantidad de dinero registrado en la boleta</div>
             <div style="font-weight:bold"> Acciones : contiene dos botones</div>
-            <div style="font-weight:bold"> ---> boton borrar: borra la boleta por si hubo errores por ejemplo</div>
             <div style="font-weight:bold"> ---> boton pagar : para pagar la boleta se debe oprimir este boton</div>
+            <div style="font-weight:bold"> ---> boton editar: edita la boleta por si hubo errores por ejemplo</div>
+            <div style="font-weight:bold"> ---> boton borrar: borra la boleta por si hubo errores por ejemplo</div>
             <div style="font-weight:bold"> Click en boleta : detalles de la boleta
             </div>
         </div>
@@ -63,14 +59,14 @@
 
             </ng-container>
             <ng-container matColumnDef="acciones">
-                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <th mat-header-cell *matHeaderCellDef> Pagar/Editar/Borrar </th>
                 <td mat-cell *matCellDef="let element">
                     <button mat-icon-button color="primary" (click)="modalPagarBoleta(element)">
                         <mat-icon>attach_money</mat-icon>
                     </button>
-                    <button mat-icon-button color="primary" (click)="modalEditarBoleta(element)" >
-                            <mat-icon>edit</mat-icon>
-                          </button> 
+                    <button mat-icon-button color="accent" (click)="modalEditarBoleta(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
                     <button mat-icon-button color="warn" (click)="modalBorrarBoleta(element)">
                         <mat-icon>delete_forever</mat-icon>
                     </button>
@@ -140,14 +136,14 @@
 
             </ng-container>
             <ng-container matColumnDef="acciones">
-                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <th mat-header-cell *matHeaderCellDef> Pagar/Editar/Borrar </th>
                 <td mat-cell *matCellDef="let element">
                     <button mat-icon-button color="primary" (click)="modalPagarBoleta(element)">
                         <mat-icon>attach_money</mat-icon>
                     </button>
-                    <button mat-icon-button color="primary" (click)="modalEditarBoleta(element)" >
+                    <button mat-icon-button color="primary" (click)="modalEditarBoleta(element)">
                         <mat-icon>edit</mat-icon>
-                      </button> 
+                    </button>
                     <button mat-icon-button color="warn" (click)="modalBorrarBoleta(element)">
                         <mat-icon>delete_forever</mat-icon>
                     </button>
@@ -218,11 +214,11 @@
 
             </ng-container>
             <ng-container matColumnDef="acciones">
-                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <th mat-header-cell *matHeaderCellDef> Editar/Borrar </th>
                 <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button color="primary" (click)="modalEditarBoleta(element)" >
+                    <button mat-icon-button color="primary" (click)="modalEditarBoleta(element)">
                         <mat-icon>edit</mat-icon>
-                      </button> 
+                    </button>
                     <button mat-icon-button color="warn" (click)="modalBorrarBoleta(element)">
                         <mat-icon>delete_forever</mat-icon>
                     </button>

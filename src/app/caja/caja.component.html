@@ -4,12 +4,14 @@
     </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-grid-list [cols]="CajaComponentClass.getBreakpoint()" rowHeight="50px" (window:resize)="onResize($event)" style="white-space: pre;">
+<mat-grid-list [cols]="CajaComponentClass.getBreakpoint()" rowHeight="50px" (window:resize)="onResize($event)"
+    style="white-space: pre;">
     <mat-grid-tile>
 
         <div style="white-space: pre; font-weight: bold">
             <div>Total día</div>
-            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalDia | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">
+                {{CajaComponentClass.getResumenDia().totalDia | currency:'CLP':'symbol-narrow'}}</div>
 
         </div>
 
@@ -19,7 +21,8 @@
         <div style="white-space: pre; font-weight: bold">
             <div>Efectivo</div>
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalEfectivo | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">
+                {{CajaComponentClass.getResumenDia().totalEfectivo | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -27,7 +30,8 @@
         <div style="white-space: pre; font-weight: bold">
             <div>Crédito</div>
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalCredito | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">
+                {{CajaComponentClass.getResumenDia().totalCredito | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -36,7 +40,8 @@
             <div>Débito</div>
 
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalDebito | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">
+                {{CajaComponentClass.getResumenDia().totalDebito | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -46,7 +51,8 @@
             <div>Vuelto</div>
 
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalVuelto | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">
+                {{CajaComponentClass.getResumenDia().totalVuelto | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -56,7 +62,8 @@
             <div>Transfer</div>
 
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalTransferencia | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">
+                {{CajaComponentClass.getResumenDia().totalTransferencia | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -64,7 +71,8 @@
             <div>Gift Card</div>
 
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalGiftCard | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">
+                {{CajaComponentClass.getResumenDia().totalGiftCard | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -72,7 +80,8 @@
             <div>Descuento</div>
 
 
-            <div style=" font-weight: normal ">{{CajaComponentClass.getResumenDia().totalDescuento | currency:'CLP':'symbol-narrow'}}</div>
+            <div style=" font-weight: normal ">
+                {{CajaComponentClass.getResumenDia().totalDescuento | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
 
@@ -83,7 +92,8 @@
     <mat-grid-tile>
         <form class="example-form">
             <mat-form-field class="example-full-width">
-                <input matInput (keyup)="CajaComponentClass.applyFilter($event.target.value, dataSource)" placeholder="BUSCAR CLIENTE, TRABAJADORA, SERVICIO, ETC">
+                <input matInput (keyup)="CajaComponentClass.applyFilter($event.target.value, dataSource)"
+                    placeholder="BUSCAR CLIENTE, TRABAJADORA, SERVICIO, ETC">
             </mat-form-field>
         </form>
 
@@ -99,7 +109,8 @@
 
     <ng-container matColumnDef="total">
         <th mat-header-cell *matHeaderCellDef> Total </th>
-        <td mat-cell *matCellDef="let element" style="font-weight:bold;color:red">{{element.montoCobrado | currency:'CLP':'symbol-narrow'}}</td>
+        <td mat-cell *matCellDef="let element" style="font-weight:bold;color:red">
+            {{element.montoCobrado | currency:'CLP':'symbol-narrow'}}</td>
 
     </ng-container>
     <ng-container matColumnDef="borrar">
@@ -114,15 +125,35 @@
         <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
             <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                 <div style="font-weight:bold;"> Cliente: {{element.cliente.nombre}} </div>
-                <div style="font-weight:bold">Total: {{element.montoCobrado | currency:'CLP':'symbol-narrow'}}</div>
+                <div style="font-weight:bold">Total: <b style="color:red">{{element.montoCobrado | currency:'CLP':'symbol-narrow'}}</b></div>
                 <ng-container *ngFor="let orden of element.ordenes">
                     <div style="font-weight:bold;color:blue"> {{orden.trabajadora.nombre}}<b style="color:red">
                             {{orden.servicio.valor | currency:'CLP':'symbol-narrow'}}</b></div>
                     <div style="font-weight:bold; color:darkslategray"> ->
                         {{orden.servicio.descripcion}}</div>
 
-
+         
                 </ng-container>
+                <br>
+                <div style="font-weight:bold;"> Forma de Pago: <b style="color:rgb(105, 18, 163)">
+                        {{element.formaDePagoPrincipal }}</b></div>
+                    
+                <div style="font-weight:bold;"> Monto Principal: <b style="color:red">
+                        {{element.montoPrincipal | currency:'CLP':'symbol-narrow'}}</b></div>
+                    
+                <div *ngIf="element.montoDescuento > 0" style="font-weight:bold;"> Monto Descuento: <b style="color:red">
+                        {{element.montoDescuento | currency:'CLP':'symbol-narrow'}}</b></div>
+                   
+                <div *ngIf="element.montoEfectivo > 0" style="font-weight:bold;"> Monto Efectivo: <b style="color:red">
+                        {{element.montoEfectivo | currency:'CLP':'symbol-narrow'}}</b></div>
+                
+                <div *ngIf="element.montoGiftCard > 0" style="font-weight:bold;"> Monto GiftCard <b style="color:red">
+                        {{element.montoGiftCard | currency:'CLP':'symbol-narrow'}}</b></div>
+                
+                <div *ngIf="element.montoVuelto > 0" style="font-weight:bold;"> Monto Vuelto: <b style="color:red">
+                        {{element.montoVuelto | currency:'CLP':'symbol-narrow'}}</b></div>
+                  
+
                 <div style="font-weight:bold;color:darkviolet">Fecha boleta : {{element.fecha}}</div>
 
             </div>

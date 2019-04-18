@@ -37,10 +37,10 @@
 
   <mat-divider></mat-divider>
   <br>
-  <mat-form-field class="example-full-width" [floatLabel]="floatLabel">
+  <mat-form-field appearance="outline" class="example-full-width" [floatLabel]="floatLabel">
     <input matInput required type="number" [(ngModel)]="montoPrincipal" (ngModelChange)="calcularVuelto()"
       placeholder="Ej: 25000 (solo numeros)">
-    <mat-label style="font-size: 22px;color: darkblue">Monto Entregado por Cliente</mat-label>
+    <mat-label style="font-size: 22px;color: darkblue;font-weight: bold">Pago Principal <b style="color: rgb(221, 0, 0);font-weight: bold;font-size: 25px;"> {{botonSeleccionado}}</b></mat-label>
   </mat-form-field>
 
   <mat-form-field class="example-full-width" [floatLabel]="floatLabel" *ngIf="checkboxes[0].valor">

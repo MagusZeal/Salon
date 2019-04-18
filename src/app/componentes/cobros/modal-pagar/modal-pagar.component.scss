@@ -9,4 +9,19 @@
   }
 
 
-  
+  /* default and hover color */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: black;
+ background-color:rgb(232, 240, 254); 
+}
+
+
+/* focused color */
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: rgb(2, 13, 161);
+}
+
+/* floating label color */
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-label { 
+  color: green; 
+}
