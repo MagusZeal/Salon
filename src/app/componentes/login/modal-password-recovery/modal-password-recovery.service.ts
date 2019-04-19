@@ -13,7 +13,7 @@ export class ModalPasswordRecoveryService {
       width: "600px",
       maxWidth: "600px",
       hasBackdrop: true,
-     
+      closeOnNavigation: true
     });
   }
 }
