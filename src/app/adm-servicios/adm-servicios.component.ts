@@ -29,7 +29,7 @@ export class AdmServiciosComponent implements OnInit {
   }
 
   async ngOnInit() {
-
+    history.pushState(null, null, document.URL);
     this.servicios = [];
     this.mapearObjetosArray(await this.AdmServicios.obtenerServicios());
 
@@ -67,6 +67,7 @@ export class AdmServiciosComponent implements OnInit {
       maxWidth: "600px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: { servicios: this.servicios }
 
     });
@@ -87,6 +88,7 @@ export class AdmServiciosComponent implements OnInit {
       maxWidth: "600px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: {
         servicios: this.servicios,
         servicioSeleccionado: servicio
@@ -110,6 +112,7 @@ export class AdmServiciosComponent implements OnInit {
       maxWidth: "600px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: {
         servicioSeleccionado: servicio
       }

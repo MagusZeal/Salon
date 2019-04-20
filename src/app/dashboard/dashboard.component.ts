@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
 
+    history.pushState(null, null, document.URL);
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 2;
    this.mapearTrabajadorasArray(await this.Dashboard.obtenerTrabajadoras());
   this.afAuth.authState.subscribe(user => {

@@ -99,6 +99,7 @@ if(this.boletas.length > 0){
       maxWidth: "700px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: {
         cliente: element
       }
@@ -123,6 +124,7 @@ if(this.boletas.length > 0){
       maxWidth: "700px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: {
         serviciosCliente: this.clienteFiltrado,
         cliente: nombre

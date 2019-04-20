@@ -36,6 +36,7 @@ export class DashboardClientesComponent implements OnInit {
 
   async ngOnInit() {
 
+    history.pushState(null, null, document.URL);
     this.clientes = [];
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 2;
 

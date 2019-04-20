@@ -37,7 +37,7 @@ export class ListaServiciosComponent implements OnInit {
 
 
   async ngOnInit() {
-  
+    history.pushState(null, null, document.URL);
     this.ListaServicio.obtenerCategorias().subscribe(o => this.categorias = o)
     this.ListaServicio.obtenerServicios().subscribe(o => {
       this.mapearServiciosArray(o);
@@ -149,6 +149,7 @@ export class ListaServiciosComponent implements OnInit {
       width: "600px",
       maxWidth: "600px",
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: { servicios: this.serviciosSeleccionados, serviciosOriginales: this.serviciosOriginales }
     }
     );
@@ -183,6 +184,7 @@ export class ListaServiciosComponent implements OnInit {
       maxWidth: "600px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
     });
 
   }

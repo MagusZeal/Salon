@@ -13,7 +13,7 @@ import { AuthGuard } from './auth.guard';
 import { PerfilComponent } from './perfil/perfil/perfil.component';
 
 const routes: Routes = [
-  { path: '', component: ListaServiciosComponent, canActivate: [AuthGuard] },
+  { path: 'Servicios', component: ListaServiciosComponent, canActivate: [AuthGuard] },
   { path: 'Login', component: LoginComponent },
   { path: 'CobrosPendientes', component: CobrosPendientesComponent, canActivate: [AuthGuard] },
   { path: 'Caja', component: CajaComponent, canActivate: [AuthGuard] },
@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'DashboardClientes', component: DashboardClientesComponent, canActivate: [AuthGuard] },
   { path: 'Graficos', component: GraficosComponent, canActivate: [AuthGuard] },
   { path: 'Perfil', component: PerfilComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '/Servicios' }
 ];
 
 @NgModule({

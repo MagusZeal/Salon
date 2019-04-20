@@ -6,21 +6,18 @@
     <ng-container *ngIf="user.uid | async">
       <mat-nav-list>
         <div>
-          <a mat-list-item routerLink="Servicios">Servicios</a>
-          <a mat-list-item routerLink="CobrosPendientes">CobrosPendientes</a>
-          <a mat-list-item routerLink="Caja">Caja</a>
+          <a mat-list-item style="font-weight: bold" routerLink="Servicios" routerLinkActive="active-list-item">Servicios</a>
+          <a mat-list-item style="font-weight: bold" routerLink="CobrosPendientes" routerLinkActive="active-list-item">Cobros Pendientes</a>
+          <a mat-list-item style="font-weight: bold" routerLink="Caja" routerLinkActive="active-list-item">Caja</a>
+          <a mat-list-item style="font-weight: bold" routerLink="Dashboard" routerLinkActive="active-list-item">Dashboard</a>
+          <a mat-list-item style="font-weight: bold" routerLink="DashboardClientes" routerLinkActive="active-list-item">Dashboard Clientes</a>
+          <a mat-list-item *ngIf="user.isOwner | async" style="font-weight: bold" routerLink="AdministrarServicios" routerLinkActive="active-list-item">Administrar Servicios</a>
+          <a mat-list-item *ngIf="user.isAdmin | async" style="font-weight: bold" routerLink="AdministrarServicios" routerLinkActive="active-list-item">Administrar Servicios</a>
+          <a mat-list-item style="font-weight: bold" routerLink="AdministrarClientes" routerLinkActive="active-list-item">Administrar Clientes</a>
+          <a mat-list-item style="font-weight: bold" routerLink="Perfil" routerLinkActive="active-list-item">Perfil</a>
+          <button mat-button [matMenuTriggerFor]="menuDeslogear" style="font-size: 16px;font-weight: bold">Deslogear</button>
         </div>
       </mat-nav-list>
-      <button mat-button [matMenuTriggerFor]="menuDashboards"
-        style="font-size: 16px;font-weight: normal">Dashboards</button>
-    
-        <button mat-button [matMenuTriggerFor]="menuAdministrar"
-          style="font-size: 16px;font-weight: normal">Administrar</button>
- 
-    
-  
-      <br>
-      <button mat-button [matMenuTriggerFor]="menuPerfil" style="font-size: 16px;font-weight: normal">Perfil</button>
 
     </ng-container>
   </mat-sidenav>
@@ -37,17 +34,17 @@
         <a *ngIf="!(isHandset$ | async)" routerLink="Servicios">Servicios</a>
         <a *ngIf="!(isHandset$ | async)" routerLink="CobrosPendientes">Cobros</a>
         <a *ngIf="!(isHandset$ | async)" routerLink="Caja">Caja</a>
-
+        <a></a>
         <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuDashboards"
           style="font-size: 20px">Dashboards</button>
 
-      
-          <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuAdministrar"
-            style="font-size: 20px">Administrar</button>
 
-   
+        <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuAdministrar"
+          style="font-size: 20px">Administrar</button>
 
- 
+
+
+
         <button *ngIf="!(isHandset$ | async)" mat-button [matMenuTriggerFor]="menuPerfil"
           style="font-size: 20px">Perfil</button>
       </ng-container>
@@ -56,10 +53,10 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 <mat-menu #menuAdministrar="matMenu">
-    <ng-container *ngIf="user.isAdmin | async">
-  <button mat-menu-item routerLink="AdministrarServicios">Servicios</button>
-</ng-container>
-<ng-container *ngIf="user.isOwner | async">
+  <ng-container *ngIf="user.isAdmin | async">
+    <button mat-menu-item routerLink="AdministrarServicios">Servicios</button>
+  </ng-container>
+  <ng-container *ngIf="user.isOwner | async">
     <button mat-menu-item routerLink="AdministrarServicios">Servicios</button>
   </ng-container>
   <button mat-menu-item routerLink="AdministrarClientes">Clientes</button>
@@ -73,4 +70,7 @@
   <button mat-menu-item routerLink="Perfil">Perfil</button>
   <button mat-menu-item (click)="user.logout()">Deslogear</button>
 
+</mat-menu>
+<mat-menu #menuDeslogear="matMenu">
+  <button mat-menu-item (click)="user.logout()">Salir</button>
 </mat-menu>

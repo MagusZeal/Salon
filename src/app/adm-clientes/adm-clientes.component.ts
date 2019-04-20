@@ -22,6 +22,7 @@ export class AdmClientesComponent implements OnInit {
   constructor(private AdmClientes: AdmClientesService, public dialog: MatDialog) { }
 
   async ngOnInit() {
+    history.pushState(null, null, document.URL);
     this.clientes = [];
 
     this.dataSource = [];
@@ -67,6 +68,7 @@ export class AdmClientesComponent implements OnInit {
       maxWidth: "600px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: { clientes: this.clientes }
 
     });
@@ -88,6 +90,7 @@ export class AdmClientesComponent implements OnInit {
       maxWidth: "600px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: {
         clientes: this.clientes,
         clienteSeleccionado: cliente
@@ -112,6 +115,7 @@ export class AdmClientesComponent implements OnInit {
       maxWidth: "600px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: {
         clientes: this.clientes,
         clienteSeleccionado: cliente

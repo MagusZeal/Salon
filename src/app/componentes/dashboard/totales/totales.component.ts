@@ -301,6 +301,7 @@ console.log(this.gananciaLocal);
       maxWidth: "600px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: {
         boleta: boleta
       }

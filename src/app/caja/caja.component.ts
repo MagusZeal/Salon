@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CajaService } from '../caja/caja.service';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
 import { BorrarBoletaComponent } from '../componentes/caja/borrar-boleta/borrar-boleta.component';
 import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { animate, style, transition, state, trigger } from '@angular/animations';
@@ -53,6 +50,7 @@ export class CajaComponent implements OnInit {
 
 
   async ngOnInit() {
+    history.pushState(null, null, document.URL);
     this.boletas = [];
    
     this.CajaComponentClass = new CajaComponentClass();
@@ -94,9 +92,6 @@ export class CajaComponent implements OnInit {
 
   }
 
-lechedetoro(){
-  this.ngOnInit();
-}
 
 modalBorrarBoleta(boleta) {
   let c = new Date().toLocaleString('es-CL');
@@ -108,6 +103,7 @@ modalBorrarBoleta(boleta) {
     maxWidth: "600px",
     autoFocus: true,
     hasBackdrop: true,
+    closeOnNavigation: true,
     data: {
       boleta: boleta
     }

@@ -77,7 +77,7 @@ export class CobrosPendientesComponent implements OnInit {
 
 
     history.pushState(null, null, document.URL);
-
+   
     this.breakpoint = (window.innerWidth <= 400) ? 2 : 6;
     this.customCollapsedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
     this.customExpandedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
