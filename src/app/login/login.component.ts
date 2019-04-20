@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material';
 import { PasswordRecoveryComponent } from '../componentes/login/password-recovery/password-recovery.component.js';
 import { ModalPasswordRecoveryComponent } from '../componentes/login/modal-password-recovery/modal-password-recovery.component.js';
 import { ModalPasswordRecoveryService } from '../componentes/login/modal-password-recovery/modal-password-recovery.service.js';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,9 +21,17 @@ export class LoginComponent implements OnInit {
   });
   email = new FormControl('', [Validators.required]);
   password = new FormControl('',[Validators.required]);
-  constructor(public user : UserService, private fb: FormBuilder, public dialog: MatDialog, public service: ModalPasswordRecoveryService) { }
+  constructor(public user : UserService, public afAuth: AngularFireAuth, private fb: FormBuilder, public dialog: MatDialog, public service: ModalPasswordRecoveryService, private router:Router) { }
 
   ngOnInit() {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.router.navigate([''])
+      } else {
+        this.router.navigate(['/Login'])
+      }
+    });
+    
   }
 login(){
 

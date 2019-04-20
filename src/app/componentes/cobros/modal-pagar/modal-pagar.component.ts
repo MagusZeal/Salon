@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, HostListener } from '@angular/core';
 import { MAT_DIALOG_DATA, MatSnackBar, MatDialogRef } from '@angular/material';
 import { ModalPagarService } from './modal-pagar.service'
 import { CobrosPendientesComponent } from 'src/app/cobros-pendientes/cobros-pendientes.component';
@@ -7,7 +7,7 @@ import { CobrosPendientesComponent } from 'src/app/cobros-pendientes/cobros-pend
   templateUrl: './modal-pagar.component.html',
   styleUrls: ['./modal-pagar.component.scss']
 })
-export class ModalPagarComponent implements OnInit {
+export class ModalPagarComponent implements OnInit,OnDestroy {
   botones: any[] = [];
   boletaSeleccionada: IBoleta;
   checkboxes: any[] = [];
@@ -19,28 +19,42 @@ export class ModalPagarComponent implements OnInit {
   montoEfectivo: number;
   filter: any;
   floatLabel = 'always';
-
+one;
   constructor(public dialogRef: MatDialogRef<CobrosPendientesComponent>, private snackBar: MatSnackBar, private service: ModalPagarService, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.boletaSeleccionada = data.boleta
   }
-
+ 
+  ngOnDestroy(){
+    
+  }
+ 
+    
+  
   ngOnInit() {
-
-    this.botones = [
-      { "nombre": "Efectivo" },
-      { "nombre": "Tarjeta de Crédito" },
-      { "nombre": "Tarjeta de Débito" },
-      { "nombre": "Transferencia" },
-      { "nombre": "Gift Card" },
-    ]
-    this.checkboxes = [
-      { "nombre": "Descuento", "enabled": false, "valor": false },
-      { "nombre": "Gift Card", "enabled": false, "valor": false },
-      { "nombre": "Efectivo", "enabled": false, "valor": false }
-    ]
-
-    this.botonSeleccionado = "Efectivo";
-    this.radioButtonChange(this.botonSeleccionado);
+    // window.addEventListener('popstate',function(e){ 
+    //   console.log('asd');
+      
+    //   var baz = {baz: true}
+    //   history.pushState(baz, "unused argument", document.URL);
+    //   });
+     
+   
+      this.botones = [
+        { "nombre": "Efectivo" },
+        { "nombre": "Tarjeta de Crédito" },
+        { "nombre": "Tarjeta de Débito" },
+        { "nombre": "Transferencia" },
+        { "nombre": "Gift Card" },
+      ]
+      this.checkboxes = [
+        { "nombre": "Descuento", "enabled": false, "valor": false },
+        { "nombre": "Gift Card", "enabled": false, "valor": false },
+        { "nombre": "Efectivo", "enabled": false, "valor": false }
+      ]
+  
+      this.botonSeleccionado = "Efectivo";
+      this.radioButtonChange(this.botonSeleccionado);
+    
   }
 
   getCheckboxes() {

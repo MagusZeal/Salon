@@ -34,8 +34,10 @@ export class ListaServiciosComponent implements OnInit {
     console.log(menu);
   }
 
-  async ngOnInit() {
 
+
+  async ngOnInit() {
+  
     this.ListaServicio.obtenerCategorias().subscribe(o => this.categorias = o)
     this.ListaServicio.obtenerServicios().subscribe(o => {
       this.mapearServiciosArray(o);
@@ -190,6 +192,7 @@ export class ListaServiciosComponent implements OnInit {
     if (this.serviciosSeleccionados.length > 0) {
 
       const dialogConfig = new MatDialogConfig();
+   
       dialogConfig.width = "600px";
       dialogConfig.maxWidth = "600px";
       dialogConfig.autoFocus = true;

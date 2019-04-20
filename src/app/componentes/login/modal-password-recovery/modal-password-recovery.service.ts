@@ -10,6 +10,7 @@ export class ModalPasswordRecoveryService {
   constructor(public dialog: MatDialog) { }
   modal(){
     this.dialog.open(ModalPasswordRecoveryComponent, {
+
       width: "600px",
       maxWidth: "600px",
       hasBackdrop: true,

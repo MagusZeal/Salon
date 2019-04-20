@@ -39,7 +39,6 @@ export class ModalAsignarServiciosComponent {
 
   async ngOnInit() {
 
-
     this.service.obtenerTrabajadoras().subscribe(o => {
       this.mapearTrabajadorasArray(o);
 

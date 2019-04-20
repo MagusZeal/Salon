@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { CobrosPendientesService } from '../cobros-pendientes/cobros-pendientes.service';
 import { MatDialog, MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { ModalBorrarComponent } from '../componentes/cobros/modal-borrar/modal-borrar.component';
 import { ModalPagarComponent } from '../componentes/cobros/modal-pagar/modal-pagar.component';
 import { trigger, style, state, animate, transition } from '@angular/animations';
 import { ModalEditarCobrosComponent } from '../componentes/cobros/modal-editar-cobros/modal-editar-cobros.component';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cobros-pendientes',
@@ -20,7 +21,8 @@ import { ModalEditarCobrosComponent } from '../componentes/cobros/modal-editar-c
   ]
 })
 export class CobrosPendientesComponent implements OnInit {
-
+ 
+  
   boletas: any[] = [];
   boletaSeleccionada: IBoleta;
   breakpoint: number;
@@ -74,7 +76,7 @@ export class CobrosPendientesComponent implements OnInit {
   async ngOnInit() {
 
 
-
+    history.pushState(null, null, document.URL);
 
     this.breakpoint = (window.innerWidth <= 400) ? 2 : 6;
     this.customCollapsedHeight = (window.innerWidth <= 400) ? '100px' : '40px';
@@ -224,16 +226,19 @@ export class CobrosPendientesComponent implements OnInit {
 
   modalPagarBoleta(boleta) {
 
-    this.dialog.open(ModalPagarComponent, {
+    var dialogRef =  this.dialog.open(ModalPagarComponent, {
       width: "600px",
       maxWidth: "600px",
       maxHeight: "700px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: {
         boleta: boleta,
       }
     });
+   
+   
 
   }
 
@@ -245,6 +250,7 @@ export class CobrosPendientesComponent implements OnInit {
       maxWidth: "600px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: {
         boleta: boleta
       }
@@ -266,6 +272,7 @@ export class CobrosPendientesComponent implements OnInit {
       maxHeight: "700px",
       autoFocus: true,
       hasBackdrop: true,
+      closeOnNavigation: true,
       data: {
         boletaEditar: (JSON.parse(JSON.stringify(boleta)))
       }
