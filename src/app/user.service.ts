@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { of as ObservableOf, Observable } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { map, switchMap, first } from 'rxjs/operators'
-
+import { map, switchMap} from 'rxjs/operators'
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Router } from '@angular/router';
-import { ModalPasswordRecoveryComponent } from './componentes/login/modal-password-recovery/modal-password-recovery.component';
-import { MatDialog } from '@angular/material';
+
 
 
 @Injectable({

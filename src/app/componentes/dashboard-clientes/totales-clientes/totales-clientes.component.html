@@ -31,7 +31,7 @@
               <!-- dineroInvertido Column -->
               <ng-container matColumnDef="dineroInvertido">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Gastado </th>
-                  <td mat-cell *matCellDef="let element" (click)="modalServiciosCliente(element.nombre)"> {{element.dineroInvertido}} </td>
+                  <td mat-cell *matCellDef="let element" (click)="modalServiciosCliente(element.nombre)"> {{element.dineroInvertido |currency:'CLP':'symbol-narrow'}} </td>
               </ng-container>
 
 

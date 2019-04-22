@@ -1,0 +1,46 @@
+<mat-grid-list cols="2" rowHeight="20">
+  <mat-grid-tile>
+      <div style="position: absolute;left: 5px;font-weight:bold">
+          Servicios
+      </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+      <div style="position: absolute;left: 5px; font-weight:bold">
+          Precio
+      </div>
+  </mat-grid-tile>
+</mat-grid-list>
+<hr>
+<!-- sadasd -->
+
+<mat-grid-list cols="2" rowHeight="65">
+  <ng-container *ngFor="let servicio of serviciosOriginales;index as i">
+      <ng-container>
+          <mat-grid-tile>
+              <div>{{servicio.descripcion}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+              <mat-form-field class="example-full-width">
+                  <input matInput type="number" maxlength="5" placeholder="Precio ${{servicio.valor}}"
+                      min="{{servicio.valor}}" value="{{servicio.valor}}" [(ngModel)]="serviciosEditados[i].valor">
+                  <mat-hint *ngIf="servicio.valor > serviciosEditados[i].valor" style="color:red">$ debe ser mayor o
+                      igual</mat-hint>
+              </mat-form-field>
+          </mat-grid-tile>
+      </ng-container>
+  </ng-container>
+</mat-grid-list>
+
+<mat-grid-list cols="2" rowHeight="65">
+  <mat-grid-tile style="font-weight:bold">
+      <button mat-raised-button (click)="modificarPrecio()" color="primary"
+          style=" margin-right: 8px;">Aceptar</button>
+  </mat-grid-tile>
+  <mat-grid-tile style="font-weight:bold">
+
+
+      <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+      <button mat-raised-button color="warn" mat-dialog-close >Cerrar</button>
+  </mat-grid-tile>
+</mat-grid-list>

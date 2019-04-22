@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ListaServiciosService } from '../lista-servicios/lista-servicios.service';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { ModalAsignarServiciosComponent } from '../componentes/modal-asignar-servicios/modal-asignar-servicios.component';
-import { ModalCambiarPrecioComponent } from '../componentes/modal-cambiar-precio/modal-cambiar-precio.component';
+import { ModalAsignarServiciosComponent } from '../componentes/lista-servicios/modal-asignar-servicios/modal-asignar-servicios.component';
+import { ModalCambiarPrecioComponent } from '../componentes/lista-servicios/modal-cambiar-precio/modal-cambiar-precio.component';
 import { ModalAgregarClientesListaComponent } from '../componentes/lista-servicios/modal-agregar-clientes-lista/modal-agregar-clientes-lista.component';
 
 @Component({

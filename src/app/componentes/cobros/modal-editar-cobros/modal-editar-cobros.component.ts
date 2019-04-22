@@ -2,8 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { CobrosPendientesComponent } from 'src/app/cobros-pendientes/cobros-pendientes.component';
 import { ModalEditarCobrosService } from './modal-editar-cobros.service';
-import { ModalCambiarPrecioComponent } from '../../modal-cambiar-precio/modal-cambiar-precio.component';
 import { FormControl, Validators } from '@angular/forms';
+import { ModalCobrosCambiarPrecioComponent } from '../modal-cobros-cambiar-precio/modal-cobros-cambiar-precio.component';
 
 @Component({
   selector: 'app-modal-editar-cobros',
@@ -242,11 +242,13 @@ if(this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid){
 
 
 
-    const dialogRef = this.dialog.open(ModalCambiarPrecioComponent, {
+    const dialogRef = this.dialog.open(ModalCobrosCambiarPrecioComponent, {
       width: "600px",
       maxWidth: "600px",
       hasBackdrop: true,
-      data: { servicios: this.boletaEditar.ordenes.map(o=>o.servicio), serviciosOriginales: this.serviciosOriginales }
+      data: { 
+        servicios: this.boletaEditar.ordenes.map(o=>o.servicio), 
+        serviciosOriginales: this.serviciosOriginales }
     }
     );
 

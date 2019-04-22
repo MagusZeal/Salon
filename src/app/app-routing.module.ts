@@ -1,33 +1,55 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ListaServiciosComponent } from './lista-servicios/lista-servicios.component';
-import { CobrosPendientesComponent } from './cobros-pendientes/cobros-pendientes.component';
-import { CajaComponent } from './caja/caja.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { AdmClientesComponent } from './adm-clientes/adm-clientes.component'
-import { AdmServiciosComponent } from './adm-servicios/adm-servicios.component'
-import { DashboardClientesComponent } from './dashboard-clientes/dashboard-clientes.component'
-import { GraficosComponent } from './graficos/graficos.component';
-import { LoginComponent } from './login/login.component';
-import { AuthGuard } from './auth.guard';
-import { PerfilComponent } from './perfil/perfil/perfil.component';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+
 
 const routes: Routes = [
-  { path: 'Servicios', component: ListaServiciosComponent, canActivate: [AuthGuard] },
-  { path: 'Login', component: LoginComponent },
-  { path: 'CobrosPendientes', component: CobrosPendientesComponent, canActivate: [AuthGuard] },
-  { path: 'Caja', component: CajaComponent, canActivate: [AuthGuard] },
-  { path: 'Dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'AdministrarClientes', component: AdmClientesComponent, canActivate: [AuthGuard] },
-  { path: 'AdministrarServicios', component: AdmServiciosComponent, canActivate: [AuthGuard] },
-  { path: 'DashboardClientes', component: DashboardClientesComponent, canActivate: [AuthGuard] },
-  { path: 'Graficos', component: GraficosComponent, canActivate: [AuthGuard] },
-  { path: 'Perfil', component: PerfilComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '/Servicios' }
+  {
+    path: 'Servicios',
+    loadChildren: './lista-servicios/lista-servicios.module#ListaServiciosModule'
+  },
+  {
+    path: 'Login',
+    loadChildren: './login/login.module#LoginModule'
+  },
+  {
+    path: 'CobrosPendientes',
+    loadChildren: './cobros-pendientes/cobros-pendientes.module#CobrosPendientesModule'
+  },
+  {
+    path: 'Caja',
+    loadChildren: './caja/caja.module#CajaModule'
+  },
+  {
+    path: 'Dashboard',
+    loadChildren: './dashboard/dashboard.module#DashboardModule'
+  },
+  {
+    path: 'AdministrarClientes',
+    loadChildren: './adm-clientes/adm-clientes.module#AdmClientesModule'
+  },
+  {
+    path: 'AdministrarServicios',
+    loadChildren: './adm-servicios/adm-servicios.module#AdmServiciosModule'
+  },
+  {
+    path: 'DashboardClientes',
+    loadChildren: './dashboard-clientes/dashboard-clientes.module#DashboardClientesModule'
+  },
+
+  {
+    path: 'Perfil',
+    loadChildren: './perfil/perfil.module#PerfilModule'
+  },
+  {
+    path: '',
+    redirectTo: '/Servicios',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

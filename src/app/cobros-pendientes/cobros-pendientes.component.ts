@@ -5,7 +5,7 @@ import { ModalBorrarComponent } from '../componentes/cobros/modal-borrar/modal-b
 import { ModalPagarComponent } from '../componentes/cobros/modal-pagar/modal-pagar.component';
 import { trigger, style, state, animate, transition } from '@angular/animations';
 import { ModalEditarCobrosComponent } from '../componentes/cobros/modal-editar-cobros/modal-editar-cobros.component';
-import { first } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-cobros-pendientes',

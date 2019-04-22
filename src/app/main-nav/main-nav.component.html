@@ -6,7 +6,7 @@
     <ng-container *ngIf="user.uid | async">
       <mat-nav-list>
         <div>
-          <a mat-list-item style="font-weight: bold" routerLink="Servicios" routerLinkActive="active-list-item">Servicios</a>
+          <a mat-list-item style="font-weight: bold" routerLink="/Servicios" [routerLinkActiveOptions]="{exact:true}" routerLinkActive="active-list-item">Servicios</a>
           <a mat-list-item style="font-weight: bold" routerLink="CobrosPendientes" routerLinkActive="active-list-item">Cobros Pendientes</a>
           <a mat-list-item style="font-weight: bold" routerLink="Caja" routerLinkActive="active-list-item">Caja</a>
           <a mat-list-item style="font-weight: bold" routerLink="Dashboard" routerLinkActive="active-list-item">Dashboard</a>

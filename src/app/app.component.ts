@@ -12,10 +12,11 @@ import { Router } from '@angular/router';
 
 
 export class AppComponent {
-  title = 'salon';
   constructor(public user : UserService , public afAuth: AngularFireAuth, private router: Router){}
 
   ngOnInit() {
+  
+    
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.router.navigate([''])

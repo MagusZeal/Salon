@@ -236,7 +236,7 @@
                 <ng-container matColumnDef="montoCobrado">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
                     <td mat-cell *matCellDef="let element" (click)="modalVerBoletaDashboard(element)">
-                        {{element.montoCobrado}} </td>
+                        {{element.montoCobrado |currency:'CLP':'symbol-narrow'}} </td>
                 </ng-container>
 
 
