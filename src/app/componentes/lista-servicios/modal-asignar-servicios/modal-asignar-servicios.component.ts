@@ -8,6 +8,7 @@ import { startWith, map } from 'rxjs/operators';
 import { ListaServiciosComponent } from 'src/app/lista-servicios/lista-servicios.component';
 import { forbiddenNameValidator } from './validaciones';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modal-asignar-servicios',
@@ -33,7 +34,7 @@ export class ModalAsignarServiciosComponent {
   minutos = ['00', '15', '30', '45'];
   reservaHora = false;
   constructor(public dialogRef: MatDialogRef<ListaServiciosComponent>, private service: AsignarServiciosService,
-    @Inject(MAT_DIALOG_DATA) public data: any, private snackBar: MatSnackBar, public afAuth: AngularFireAuth) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private snackBar: MatSnackBar, public afAuth: AngularFireAuth,private router: Router) {
     this.servicios = data.servicios
   }
 
@@ -110,7 +111,7 @@ export class ModalAsignarServiciosComponent {
           };
           await this.service.agregarBoleta(boleta);
           this.dialogRef.close();
-          document.getElementById('LinkCobros').click();
+       this.router.navigate(['CobrosPendientes'])
         } else {
           this.openSnackBar("Error! Debe asignar Fecha Reserva, hora y minutos validos ✋🏻", "Ok");
           botonDeshabilitado.disabled = false;
