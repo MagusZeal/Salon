@@ -41,7 +41,7 @@ const routes: Routes = [
     loadChildren: './perfil/perfil.module#PerfilModule'
   },
   {
-    path: '',
+    path: '**',
     redirectTo: '/Servicios',
     pathMatch: 'full'
   }
