@@ -19,10 +19,15 @@ export class AsignarServiciosService {
   return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/trabajadoras.json?');
 }
 
-async agregarBoleta(boletaGuardar) {
+async agregarBoletaDia(boletaGuardar) {
 
-  return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?', boletaGuardar).toPromise();
+  return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletasDia.json?', boletaGuardar).toPromise();
 }
+async agregarBoletaReserva(boletaGuardar) {
+
+  return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletasReserva.json?', boletaGuardar).toPromise();
+}
+
 
 
 }

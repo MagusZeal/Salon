@@ -17,7 +17,7 @@ import { ICajaComponent } from './interfaz/ICajaComponent';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
- 
+
 })
 export class CajaComponent implements OnInit {
   CajaComponentClass: ICajaComponent;
@@ -25,7 +25,8 @@ export class CajaComponent implements OnInit {
   boletas: any[] = [];
   resumenDia;
   dataSource;
-
+  fechaHoy = new Date().toLocaleString('es-CL').substring(0, 10);
+  fecha;
   columnsToDisplay: string[] = ['nombre', 'total', 'borrar'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -50,15 +51,19 @@ export class CajaComponent implements OnInit {
 
 
   async ngOnInit() {
+    this.fecha = this.fechaHoy.substring(6, 10) + this.fechaHoy.substring(3, 5) + this.fechaHoy.substring(0, 2);
+    this.fecha = this.fecha - 1;
     history.pushState(null, null, document.URL);
     this.boletas = [];
-   
+
     this.CajaComponentClass = new CajaComponentClass();
 
     let c = new Date().toLocaleString('es-CL');
     c = c.substring(6, 10) + c.substring(3, 5) + c.substring(0, 2);
 
     this.mapearObjetosArray(await this.Caja.obtenerJornada(c));
+    this.mapearBoletasArray(await this.Caja.obtenerBoletasDia(), false);
+    this.mapearBoletasArray(await this.Caja.obtenerBoletasReserva(), true);
 
     this.dataSource = new MatTableDataSource<any>(this.boletas);
     this.dataSource.paginator = this.paginator;
@@ -78,7 +83,30 @@ export class CajaComponent implements OnInit {
 
 
   }
+  mapearBoletasArray(objeto, flag) {
 
+    for (let key in objeto) {
+
+
+      let boleta = objeto[key];
+      boleta['idBoleta'] = key;
+
+
+      var a = boleta.fecha.substring(6, 10) + boleta.fecha.substring(3, 5) + boleta.fecha.substring(0, 2);
+      if (a < (this.fecha)) {
+        console.log(boleta.fecha);
+        
+        if (flag == false) {
+          this.Caja.eliminarBoletasDia(boleta['idBoleta']).subscribe();
+        } else {
+          this.Caja.eliminarBoletasReserva(boleta['idBoleta']).subscribe();
+
+        }
+
+      }
+
+    }
+  }
 
   nestedFilterCheck(search, data, key) {
 
@@ -93,29 +121,29 @@ export class CajaComponent implements OnInit {
   }
 
 
-modalBorrarBoleta(boleta) {
-  let c = new Date().toLocaleString('es-CL');
-  c = c.substring(6, 10) + c.substring(3, 5) + c.substring(0, 2);
+  modalBorrarBoleta(boleta) {
+    let c = new Date().toLocaleString('es-CL');
+    c = c.substring(6, 10) + c.substring(3, 5) + c.substring(0, 2);
 
 
-  const dialogRef = this.dialog.open(BorrarBoletaComponent, {
-    width: "600px",
-    maxWidth: "600px",
-    autoFocus: true,
-    hasBackdrop: true,
-    closeOnNavigation: true,
-    data: {
-      boleta: boleta
-    }
-  });
-  dialogRef.afterClosed().subscribe(o => {
-    if (o == true) {
-      this.Caja.eliminarBoleta(c, boleta['idBoleta']).subscribe(o=>this.ngOnInit());
+    const dialogRef = this.dialog.open(BorrarBoletaComponent, {
+      width: "600px",
+      maxWidth: "600px",
+      autoFocus: true,
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      data: {
+        boleta: boleta
       }
-  })
+    });
+    dialogRef.afterClosed().subscribe(o => {
+      if (o == true) {
+        this.Caja.eliminarBoleta(c, boleta['idBoleta']).subscribe(o => this.ngOnInit());
+      }
+    })
 
 
-  
+
   }
 
 

@@ -13,12 +13,17 @@ import { MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material';
 import { MainNavModule } from './main-nav/main-nav.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthGuard } from './auth.guard';
+import { CustomPreloadingStrategy } from './custom-preloading-strategy.service';
+
+
 
 registerLocaleData(LocaleCL);
 
 @NgModule({
   declarations: [
     AppComponent,
+  
+    
   ],
 
   imports: [
@@ -37,8 +42,9 @@ registerLocaleData(LocaleCL);
     AngularFireDatabaseModule,
     BrowserAnimationsModule,
     MainNavModule,
+    
   ],
-  providers: [
+  providers: [CustomPreloadingStrategy,
     AuthGuard,
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} },

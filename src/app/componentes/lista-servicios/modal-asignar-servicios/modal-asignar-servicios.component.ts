@@ -24,6 +24,7 @@ export class ModalAsignarServiciosComponent {
   ordenes = [];
   nombresClientes: string[];
   filteredOptions: Observable<string[]>;
+  fechaHoy = new Date().toLocaleString('es-CL').substring(0, 10);
   options: string[] = ['One', 'Two', 'Three'];
   myControl = new FormControl('', [Validators.required, forbiddenNameValidator(this.clientes)]);
   dpReserva = new FormControl(new Date(), [Validators.required]);
@@ -34,7 +35,7 @@ export class ModalAsignarServiciosComponent {
   minutos = ['00', '15', '30', '45'];
   reservaHora = false;
   constructor(public dialogRef: MatDialogRef<ListaServiciosComponent>, private service: AsignarServiciosService,
-    @Inject(MAT_DIALOG_DATA) public data: any, private snackBar: MatSnackBar, public afAuth: AngularFireAuth,private router: Router) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private snackBar: MatSnackBar, public afAuth: AngularFireAuth, private router: Router) {
     this.servicios = data.servicios
   }
 
@@ -107,11 +108,18 @@ export class ModalAsignarServiciosComponent {
             horaReservada: this.reservaHora,
             hora: this.horaReserva.value,
             minuto: this.minutoReserva.value,
-            idUsuario:this.userId
+            idUsuario: this.userId
           };
-          await this.service.agregarBoleta(boleta);
-          this.dialogRef.close();
-       this.router.navigate(['CobrosPendientes'])
+          if (this.dpReserva.value.toLocaleString('es-CL').substring(0, 10) == this.fechaHoy) {
+            this.service.agregarBoletaReserva(boleta);
+            this.dialogRef.close();
+            this.router.navigate(['CobrosPendientes/reservasdia'])
+          }else{
+            this.service.agregarBoletaReserva(boleta);
+            this.dialogRef.close();
+            this.router.navigate(['CobrosPendientes/reservasfuturas'])
+          }
+
         } else {
           this.openSnackBar("Error! Debe asignar Fecha Reserva, hora y minutos validos ✋🏻", "Ok");
           botonDeshabilitado.disabled = false;
@@ -126,9 +134,9 @@ export class ModalAsignarServiciosComponent {
           idUsuario: this.userId
 
         };
-        await this.service.agregarBoleta(boleta);
+        await this.service.agregarBoletaDia(boleta);
         this.dialogRef.close();
-        document.getElementById('LinkCobros').click();
+        this.router.navigate(['CobrosPendientes/sinreserva'])
       }
     } else {
       this.openSnackBar("Error! Debe asignar trabajadora/s y cliente primero ✋🏻", "Ok");

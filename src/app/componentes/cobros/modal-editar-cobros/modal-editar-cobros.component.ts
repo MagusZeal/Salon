@@ -4,6 +4,7 @@ import { CobrosPendientesComponent } from 'src/app/cobros-pendientes/cobros-pend
 import { ModalEditarCobrosService } from './modal-editar-cobros.service';
 import { FormControl, Validators } from '@angular/forms';
 import { ModalCobrosCambiarPrecioComponent } from '../modal-cobros-cambiar-precio/modal-cobros-cambiar-precio.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modal-editar-cobros',
@@ -18,6 +19,7 @@ export class ModalEditarCobrosComponent implements OnInit {
   servicios: any[] = [];
   serviciosSeleccionados: IServicio[] = [];
   precioTotal = 0;
+  fechaHoy = new Date().toLocaleString('es-CL').substring(0, 10);
   clientes: ICliente[] = [];
   trabajadoras: any[] = [];
   clienteFiltrado: string;
@@ -27,12 +29,14 @@ export class ModalEditarCobrosComponent implements OnInit {
   dpReserva = new FormControl('', [Validators.required]);
   horaReserva = new FormControl('',[Validators.required]);
   minutoReserva = new FormControl('',[Validators.required]);
+  reserva;
   horas = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
   minutos = ['00', '15', '30', '45'];
   reservaHora = false;
   constructor(public dialogRef: MatDialogRef<CobrosPendientesComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
-    private service: ModalEditarCobrosService, public dialog: MatDialog, private snackBar: MatSnackBar) {
+    private service: ModalEditarCobrosService, public dialog: MatDialog, private snackBar: MatSnackBar, private router:Router) {
     this.boletaEditar = data.boletaEditar;
+    this.reserva = data.reserva
     if(this.boletaEditar.horaReservada == true){
      this.reservaHora = true;
       this.dpReserva = new FormControl(new Date(this.boletaEditar.fecha.substring(6,10),  this.boletaEditar.fecha.substring(3,5) -1, this.boletaEditar.fecha.substring(0,2)), [Validators.required]);
@@ -136,6 +140,10 @@ this.breakpoint = 2;
   async asignarServicios(botonCuliao) {
     botonCuliao.disabled = true;
 
+    
+if(this.boletaEditar.ordenes.length == 0){
+ return this.dialogRef.close(true);
+}
     if( !this.boletaEditar.ordenes.some(o=>o.trabajadora == undefined) && this.boletaEditar.ordenes.findIndex(o=> o == undefined) == -1){
    
     console.log(this.reservaHora);
@@ -155,11 +163,33 @@ if(this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid){
       };
       console.log("reserva");
       
-      console.log(boleta);
       
-      await this.service.editarBoleta(boleta,this.boletaEditar.idBoleta );
-      this.dialogRef.close(true);
+      if(this.reserva == false){
+        console.log(this.reserva);
+        console.log(this.boletaEditar.idBoleta);
+        
+        this.service.eliminarBoletaDia(this.boletaEditar.idBoleta).subscribe();
+     this.service.agregarBoletaReserva(boleta);
+     this.dialogRef.close(true);
+     if(this.fechaHoy == this.dpReserva.value.toLocaleString('es-CL').substring(0, 10)){
+      this.router.navigate(['CobrosPendientes/reservasdia']);
+     }else{
+      this.router.navigate(['CobrosPendientes/reservasfuturas']);
+     }
     
+    
+    }
+    else{
+
+      this.service.eliminarBoletaReserva(this.boletaEditar.idBoleta).subscribe();
+      this.service.agregarBoletaReserva(boleta);
+      this.dialogRef.close(true);
+      if(this.fechaHoy == this.dpReserva.value.toLocaleString('es-CL').substring(0, 10)){
+        this.router.navigate(['CobrosPendientes/reservasdia']);
+       }else{
+        this.router.navigate(['CobrosPendientes/reservasfuturas']);
+       }
+    }
     }else{
       botonCuliao.disabled = false;
       this.openSnackBar("Error! Debe asignar Fecha Reserva, hora y minutos validos ✋🏻", "Ok");
@@ -176,10 +206,25 @@ if(this.dpReserva.valid && this.horaReserva.valid && this.minutoReserva.valid){
       console.log("no reserva");
       
       console.log(boleta);
+      console.log(this.reserva);
       
-      await this.service.editarBoleta(boleta, this.boletaEditar.idBoleta);
-      this.dialogRef.close(true);
-   
+      if(this.reserva == false){
+        this.service.eliminarBoletaDia(this.boletaEditar.idBoleta).subscribe();
+        this.service.agregarBoletaDia(boleta);
+         this.dialogRef.close(true);
+       
+         this.router.navigate(['CobrosPendientes/sinreserva']);
+         
+       }
+       else{
+         console.log('asda');
+         
+         this.service.eliminarBoletaReserva(this.boletaEditar.idBoleta).subscribe();
+         this.service.agregarBoletaDia(boleta);
+          this.dialogRef.close(true);
+       
+          this.router.navigate(['CobrosPendientes/sinreserva']);
+       }
     }
   }else{
     botonCuliao.disabled= false;

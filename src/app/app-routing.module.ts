@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
+import { CustomPreloadingStrategy } from './custom-preloading-strategy.service';
 
 
 const routes: Routes = [
@@ -13,27 +14,27 @@ const routes: Routes = [
   },
   {
     path: 'CobrosPendientes',
-    loadChildren: './cobros-pendientes/cobros-pendientes.module#CobrosPendientesModule'
+    loadChildren: './cobros-pendientes/cobros-pendientes.module#CobrosPendientesModule' ,data: { preload: true, delay:1000 }
   },
   {
     path: 'Caja',
-    loadChildren: './caja/caja.module#CajaModule'
+    loadChildren: './caja/caja.module#CajaModule' ,data: { preload: true, delay:1010 }
   },
   {
     path: 'Dashboard',
-    loadChildren: './dashboard/dashboard.module#DashboardModule'
+    loadChildren: './dashboard/dashboard.module#DashboardModule' ,data: { preload: true, delay:1020 }
   },
   {
     path: 'AdministrarClientes',
-    loadChildren: './adm-clientes/adm-clientes.module#AdmClientesModule'
+    loadChildren: './adm-clientes/adm-clientes.module#AdmClientesModule',data: { preload: true, delay:1030 }
   },
   {
     path: 'AdministrarServicios',
-    loadChildren: './adm-servicios/adm-servicios.module#AdmServiciosModule'
+    loadChildren: './adm-servicios/adm-servicios.module#AdmServiciosModule',data: { preload: true, delay:1040 }
   },
   {
     path: 'DashboardClientes',
-    loadChildren: './dashboard-clientes/dashboard-clientes.module#DashboardClientesModule'
+    loadChildren: './dashboard-clientes/dashboard-clientes.module#DashboardClientesModule',data: { preload: true, delay:1050 }
   },
 
   {
@@ -49,7 +50,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)],
+    RouterModule.forRoot(routes, { preloadingStrategy: CustomPreloadingStrategy})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

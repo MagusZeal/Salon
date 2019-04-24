@@ -19,12 +19,23 @@ export class ModalEditarCobrosService {
     return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/servicios.json?').toPromise();
   }
 
-  async editarBoleta(boleta, id){
+  async agregarBoletaDia(boletaGuardar) {
 
-    return await this.http.put<any[]>(`https://devs-c9cdc.firebaseio.com/boletaCreada/${id}.json?`,boleta).toPromise();
-     
-   }
+    return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletasDia.json?', boletaGuardar).toPromise();
+  }
+  async agregarBoletaReserva(boletaGuardar) {
+  
+    return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletasReserva.json?', boletaGuardar).toPromise();
+  }
+  
+  eliminarBoletaDia(boletaBorrar) {
+    
+    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletasDia/${boletaBorrar}.json?`);
+  }
+  eliminarBoletaReserva(boletaBorrar) {
 
+    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletasReserva/${boletaBorrar}.json?`);
+  }
   async obtenerClientes(){
 
     return await  this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?').toPromise();

@@ -12,8 +12,5 @@ export class CobrosPendientesService {
     return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?').toPromise();
   }
 
-  eliminarBoleta(boletaBorrar) {
-
-    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletaCreada/${boletaBorrar}.json?`);
-  }
+ 
 }

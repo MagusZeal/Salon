@@ -21,10 +21,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatSelectModule} from '@angular/material/select';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalCobrosCambiarPrecioComponent } from '../componentes/cobros/modal-cobros-cambiar-precio/modal-cobros-cambiar-precio.component';
+import { BoletaSinReservaComponent } from '../componentes/cobros/boleta-sin-reserva/boleta-sin-reserva.component';
+import { BoletaReservaDiaComponent } from '../componentes/cobros/boleta-reserva-dia/boleta-reserva-dia.component';
+import { BoletaReservasFuturasComponent } from '../componentes/cobros/boleta-reservas-futuras/boleta-reservas-futuras.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,10 @@ import { ModalCobrosCambiarPrecioComponent } from '../componentes/cobros/modal-c
     ModalBorrarComponent,
     ModalPagarComponent,
     ModalEditarCobrosComponent,
-    ModalCobrosCambiarPrecioComponent
+    ModalCobrosCambiarPrecioComponent,
+    BoletaSinReservaComponent,
+    BoletaReservaDiaComponent,
+    BoletaReservasFuturasComponent
   ],
   imports: [
     CommonModule,

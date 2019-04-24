@@ -1,13 +1,14 @@
-import { Component, OnInit, Inject, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatSnackBar, MatDialogRef } from '@angular/material';
 import { ModalPagarService } from './modal-pagar.service'
 import { CobrosPendientesComponent } from 'src/app/cobros-pendientes/cobros-pendientes.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-modal-pagar',
   templateUrl: './modal-pagar.component.html',
   styleUrls: ['./modal-pagar.component.scss']
 })
-export class ModalPagarComponent implements OnInit,OnDestroy {
+export class ModalPagarComponent implements OnInit {
   botones: any[] = [];
   boletaSeleccionada: IBoleta;
   checkboxes: any[] = [];
@@ -19,42 +20,35 @@ export class ModalPagarComponent implements OnInit,OnDestroy {
   montoEfectivo: number;
   filter: any;
   floatLabel = 'always';
-one;
-  constructor(public dialogRef: MatDialogRef<CobrosPendientesComponent>, private snackBar: MatSnackBar, private service: ModalPagarService, @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.boletaSeleccionada = data.boleta
+  reserva;
+  one;
+  constructor(private router: Router, public dialogRef: MatDialogRef<CobrosPendientesComponent>, private snackBar: MatSnackBar, private service: ModalPagarService, @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.boletaSeleccionada = data.boleta;
+    this.reserva = data.reserva;
   }
- 
-  ngOnDestroy(){
-    
-  }
- 
-    
-  
+
+
+
+
   ngOnInit() {
-    // window.addEventListener('popstate',function(e){ 
-    //   console.log('asd');
-      
-    //   var baz = {baz: true}
-    //   history.pushState(baz, "unused argument", document.URL);
-    //   });
-     
-   
-      this.botones = [
-        { "nombre": "Efectivo" },
-        { "nombre": "Tarjeta de Crédito" },
-        { "nombre": "Tarjeta de Débito" },
-        { "nombre": "Transferencia" },
-        { "nombre": "Gift Card" },
-      ]
-      this.checkboxes = [
-        { "nombre": "Descuento", "enabled": false, "valor": false },
-        { "nombre": "Gift Card", "enabled": false, "valor": false },
-        { "nombre": "Efectivo", "enabled": false, "valor": false }
-      ]
-  
-      this.botonSeleccionado = "Efectivo";
-      this.radioButtonChange(this.botonSeleccionado);
-    
+
+
+    this.botones = [
+      { "nombre": "Efectivo" },
+      { "nombre": "Tarjeta de Crédito" },
+      { "nombre": "Tarjeta de Débito" },
+      { "nombre": "Transferencia" },
+      { "nombre": "Gift Card" },
+    ]
+    this.checkboxes = [
+      { "nombre": "Descuento", "enabled": false, "valor": false },
+      { "nombre": "Gift Card", "enabled": false, "valor": false },
+      { "nombre": "Efectivo", "enabled": false, "valor": false }
+    ]
+
+    this.botonSeleccionado = "Efectivo";
+    this.radioButtonChange(this.botonSeleccionado);
+
   }
 
   getCheckboxes() {
@@ -166,26 +160,31 @@ one;
       ordenes: this.boletaSeleccionada.ordenes,
       montoVuelto: this.montoVuelto,
       cliente: this.boletaSeleccionada.cliente,
-      horaReservada:this.boletaSeleccionada.horaReservada,
-      idUsuario:this.boletaSeleccionada.idUsuario
+      horaReservada: this.boletaSeleccionada.horaReservada,
+      idUsuario: this.boletaSeleccionada.idUsuario
     };
 
     this.dialogRef.close();
-    document.getElementById("LinkServicios").click();
-
-
+ 
 
     var a = this.boletaSeleccionada.fecha.substring(6, 10) + this.boletaSeleccionada.fecha.substring(3, 5) + this.boletaSeleccionada.fecha.substring(0, 2);
 
-
-    console.log(a);
-    console.log(jornada);
-
-
-    this.service.agregarJornada(a, jornada);
-    this.service.eliminarBoleta(this.boletaSeleccionada['idBoleta']).subscribe();
+    this.service.agregarJornada(a, jornada).subscribe();
+   
 
 
+    
+    
+
+
+    if (this.reserva == false) {
+      this.service.eliminarBoletaDia(this.boletaSeleccionada['idBoleta']).subscribe();
+
+    } else {
+      this.service.eliminarBoletaReserva(this.boletaSeleccionada['idBoleta']).subscribe();
+    }
+
+    this.router.navigate(['Caja']);
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
