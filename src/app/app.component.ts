@@ -19,7 +19,6 @@ export class AppComponent {
     
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        this.router.navigate([''])
       } else {
         this.router.navigate(['/Login'])
       }
