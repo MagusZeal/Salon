@@ -5,6 +5,10 @@ import { MatDialog, MatTableDataSource, MatPaginator } from '@angular/material';
 import { ModalAgregarComponent } from '../componentes/adm-servicios/modal-agregar/modal-agregar.component';
 import { ModalEditarComponent } from '../componentes/adm-servicios/modal-editar/modal-editar.component';
 import { ModalBorrarServicioComponent } from '../componentes/adm-servicios/modal-borrar-servicio/modal-borrar-servicio.component';
+import { UserService } from '../user.service';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-adm-servicios',
@@ -13,7 +17,8 @@ import { ModalBorrarServicioComponent } from '../componentes/adm-servicios/modal
 
 })
 export class AdmServiciosComponent implements OnInit {
-  constructor(private AdmServicios: AdmServiciosService, public dialog: MatDialog) { }
+  constructor(private AdmServicios: AdmServiciosService, public dialog: MatDialog, public user : UserService , public afAuth: AngularFireAuth ,
+     private db: AngularFireDatabase, private router: Router) { }
 
 
   servicios: IServicio[] = [];
@@ -29,6 +34,9 @@ export class AdmServiciosComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+
+
     history.pushState(null, null, document.URL);
     this.servicios = [];
     this.mapearObjetosArray(await this.AdmServicios.obtenerServicios());

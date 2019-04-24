@@ -36,6 +36,7 @@ export class BoletaReservasFuturasComponent implements OnInit {
     ).subscribe(customers => {
       
       this.boletasReservadasFuturas = customers;
+console.log(this.boletasReservadasFuturas);
 
       this.boletasReservadasFuturas = this.boletasReservadasFuturas.filter(o =>
         (o.fecha.substring(6, 10) + o.fecha.substring(3, 5) + o.fecha.substring(0, 2)) >

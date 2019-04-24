@@ -57,12 +57,12 @@ export class CajaComponentClass implements ICajaComponent {
     }
 
     MaptoResumenDia(objeto) {
-        let boletas = [];
-        for (let key in objeto) {
+       
+        for (var i in objeto) {
 
 
-            let boleta = objeto[key];
-            boleta['idBoleta'] = key;
+            let boleta = objeto[i];
+         
 
             this.resumenDia.totalDia += boleta.montoPrincipal + boleta.montoGiftCard +
                 boleta.montoDescuento + boleta.montoEfectivo - boleta.montoVuelto;
@@ -105,9 +105,9 @@ export class CajaComponentClass implements ICajaComponent {
                     break;
             }
 
-            boletas.push(boleta);
+          
         }
-        return boletas;
+       
     }
     applyFilter(filterValue: string, dataSource: MatTableDataSource<any>) {
     

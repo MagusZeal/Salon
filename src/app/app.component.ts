@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 
 
 export class AppComponent {
-  constructor(public user : UserService , public afAuth: AngularFireAuth, private router: Router){}
+  constructor(public afAuth: AngularFireAuth, private router: Router){}
 
   ngOnInit() {
   

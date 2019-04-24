@@ -1,27 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router, CanLoad, Route } from '@angular/router';
 import { UserService } from './user.service';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanLoad {
 
     constructor(private router: Router, public user : UserService) { }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (this.user.loggedIn()) {
-        console.log('Usuario Logeado');
-      
-            // logged in so return true
-            return true;
-        }
-
-        // not logged in so redirect to login page with the return url
+    canLoad(route: Route): boolean {
+    
+        let url: string = route.path;
+        console.log('Url:'+ url);
+        if (url) {
+            console.log('not logged in');
+            
+        this.router.navigate(['Login'])
+          return false;
+        }  
+        console.log('logged in');
         
-        this.router.navigate(['Login'], { queryParams: { returnUrl: state.url }});
-        console.log('Usuario NO Logeado');
-     
-        return false;
-    }
+        return true; 
+      }
  
 
 

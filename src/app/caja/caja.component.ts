@@ -5,6 +5,8 @@ import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { animate, style, transition, state, trigger } from '@angular/animations';
 import { CajaComponentClass } from './interfaz/CajaComponent';
 import { ICajaComponent } from './interfaz/ICajaComponent';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { map, timeInterval } from 'rxjs/operators';
 
 @Component({
   selector: 'app-caja',
@@ -28,12 +30,57 @@ export class CajaComponent implements OnInit {
   fechaHoy = new Date().toLocaleString('es-CL').substring(0, 10);
   fecha;
   columnsToDisplay: string[] = ['nombre', 'total', 'borrar'];
-
+  boletasboletas: any[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
 
-  constructor(private Caja: CajaService, public dialog: MatDialog) { }
+  constructor(private Caja: CajaService, public dialog: MatDialog, public db: AngularFireDatabase) {
+    let c = new Date().toLocaleString('es-CL');
+    c = c.substring(6, 10) + c.substring(3, 5) + c.substring(0, 2);
+    console.log(c);
+    console.log(`jornadas/${c}`);
+
+
+    db.list(`jornadas/${c}`).snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({
+
+
+          idBoleta: c.payload.key, ...c.payload.val()
+        }))
+      )
+    ).subscribe(customers => {
+
+
+      this.boletas = customers;
+      this.mapearObjetosArray(this.boletas);
+      console.log(this.boletas);
+
+
+
+
+      let c = new Date().toLocaleString('es-CL');
+      c = c.substring(6, 10) + c.substring(3, 5) + c.substring(0, 2);
+
+
+
+      this.dataSource = new MatTableDataSource<any>(this.boletas);
+      this.dataSource.paginator = this.paginator;
+
+      this.dataSource.filterPredicate = (data, filter: string) => {
+        const accumulator = (currentTerm, key) => {
+          return this.nestedFilterCheck(currentTerm, data, key);
+        };
+        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+        // Transform the filter by converting it to lowercase and removing whitespace.
+        const transformedFilter = filter.trim().toLowerCase();
+        return dataStr.indexOf(transformedFilter) !== -1;
+      };
+
+
+    });
+  }
 
   applyFilter(filterValue: string) {
 
@@ -51,35 +98,19 @@ export class CajaComponent implements OnInit {
 
 
   async ngOnInit() {
-    this.fecha = this.fechaHoy.substring(6, 10) + this.fechaHoy.substring(3, 5) + this.fechaHoy.substring(0, 2);
-    this.fecha = this.fecha - 1;
-    history.pushState(null, null, document.URL);
-    this.boletas = [];
 
     this.CajaComponentClass = new CajaComponentClass();
 
-    let c = new Date().toLocaleString('es-CL');
-    c = c.substring(6, 10) + c.substring(3, 5) + c.substring(0, 2);
+    history.pushState(null, null, document.URL);
 
-    this.mapearObjetosArray(await this.Caja.obtenerJornada(c));
+    this.fecha = this.fechaHoy.substring(6, 10) + this.fechaHoy.substring(3, 5) + this.fechaHoy.substring(0, 2);
+    this.fecha = this.fecha - 1;
+
+    console.log(1);
+    await new Promise(resolve => setTimeout(resolve, 15000)); // 3 sec
     this.mapearBoletasArray(await this.Caja.obtenerBoletasDia(), false);
     this.mapearBoletasArray(await this.Caja.obtenerBoletasReserva(), true);
-
-    this.dataSource = new MatTableDataSource<any>(this.boletas);
-    this.dataSource.paginator = this.paginator;
-
-    this.dataSource.filterPredicate = (data, filter: string) => {
-      const accumulator = (currentTerm, key) => {
-        return this.nestedFilterCheck(currentTerm, data, key);
-      };
-      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-      // Transform the filter by converting it to lowercase and removing whitespace.
-      const transformedFilter = filter.trim().toLowerCase();
-      return dataStr.indexOf(transformedFilter) !== -1;
-    };
-
-
-
+    console.log(2);
 
 
   }
@@ -87,24 +118,19 @@ export class CajaComponent implements OnInit {
 
     for (let key in objeto) {
 
-
       let boleta = objeto[key];
       boleta['idBoleta'] = key;
-
 
       var a = boleta.fecha.substring(6, 10) + boleta.fecha.substring(3, 5) + boleta.fecha.substring(0, 2);
       if (a < (this.fecha)) {
         console.log(boleta.fecha);
-        
+
         if (flag == false) {
           this.Caja.eliminarBoletasDia(boleta['idBoleta']).subscribe();
         } else {
           this.Caja.eliminarBoletasReserva(boleta['idBoleta']).subscribe();
-
         }
-
       }
-
     }
   }
 
@@ -116,7 +142,7 @@ export class CajaComponent implements OnInit {
 
 
   mapearObjetosArray(objeto) {
-    this.boletas = this.CajaComponentClass.MaptoResumenDia(objeto);
+    this.CajaComponentClass.MaptoResumenDia(objeto);
 
   }
 
