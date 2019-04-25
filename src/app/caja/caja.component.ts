@@ -3,10 +3,9 @@ import { CajaService } from '../caja/caja.service';
 import { BorrarBoletaComponent } from '../componentes/caja/borrar-boleta/borrar-boleta.component';
 import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { animate, style, transition, state, trigger } from '@angular/animations';
-import { CajaComponentClass } from './interfaz/CajaComponent';
 import { ICajaComponent } from './interfaz/ICajaComponent';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { map, timeInterval } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-caja',
@@ -25,12 +24,29 @@ export class CajaComponent implements OnInit {
   CajaComponentClass: ICajaComponent;
   breakpoint: number;
   boletas: any[] = [];
-  resumenDia;
+  resumenDia = {
+    serviciosRealizados: 0,
+    totalDia: 0,
+    totalDiaConBase: 0,
+    clientesAtendidos: 0,
+    totalTransbank: 0,
+    totalDebito: 0,
+    totalCredito: 0,
+    totalTransferencia: 0,
+    totalEfectivo: 0,
+    totalGiftCard: 0,
+    totalDescuento: 0,
+    totalVuelto: 0,
+
+  }
   dataSource;
   fechaHoy = new Date().toLocaleString('es-CL').substring(0, 10);
   fecha;
   columnsToDisplay: string[] = ['nombre', 'total', 'borrar'];
   boletasboletas: any[] = [];
+
+
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
@@ -54,10 +70,11 @@ export class CajaComponent implements OnInit {
 
 
       this.boletas = customers;
-      this.mapearObjetosArray(this.boletas);
+    
       console.log(this.boletas);
-
-
+   
+      this.mapResumenDia(this.boletas)
+console.log(this.resumenDia);
 
 
       let c = new Date().toLocaleString('es-CL');
@@ -82,24 +99,27 @@ export class CajaComponent implements OnInit {
     });
   }
 
-  applyFilter(filterValue: string) {
+  applyFilter(filterValue: string, dataSource: MatTableDataSource<any>) {
 
-    this.CajaComponentClass.applyFilter(filterValue, this.dataSource);
+    // this.CajaComponentClass.applyFilter(filterValue, this.dataSource);
 
+    dataSource.filter = filterValue.trim().toLowerCase();
 
 
   }
 
 
   onResize(event) {
-    this.CajaComponentClass.onResize(event);
+    this.breakpoint = (event.target.innerWidth <= 400) ? 4 : 8;
+    // this.CajaComponentClass.onResize(event);
   }
 
 
 
   async ngOnInit() {
 
-    this.CajaComponentClass = new CajaComponentClass();
+    this.breakpoint = (window.innerWidth <= 400) ? 4 : 8;
+
 
     history.pushState(null, null, document.URL);
 
@@ -167,10 +187,80 @@ export class CajaComponent implements OnInit {
         this.Caja.eliminarBoleta(c, boleta['idBoleta']).subscribe(o => this.ngOnInit());
       }
     })
+  }
+  mapResumenDia(objeto) {
+   this.limpiar();
+    for (var i in objeto) {
 
 
+      let boleta = objeto[i];
+   
 
+      this.resumenDia.totalDia += boleta.montoPrincipal + boleta.montoGiftCard +
+          boleta.montoDescuento + boleta.montoEfectivo - boleta.montoVuelto;
+      this.resumenDia.totalVuelto += boleta.montoVuelto;
+      switch (boleta.formaDePagoPrincipal) {
+          case 'Efectivo':
+
+              this.resumenDia.totalEfectivo += boleta.montoPrincipal - boleta.montoVuelto;
+              this.resumenDia.totalGiftCard += boleta.montoGiftCard;
+              this.resumenDia.totalDescuento += boleta.montoDescuento;
+
+              break;
+          case 'Tarjeta de Crédito':
+              this.resumenDia.totalCredito += boleta.montoPrincipal;
+              this.resumenDia.totalEfectivo += boleta.montoEfectivo - boleta.montoVuelto;
+              this.resumenDia.totalGiftCard += boleta.montoGiftCard;
+              this.resumenDia.totalDescuento += boleta.montoDescuento;
+
+              break;
+          case 'Tarjeta de Débito':
+
+              this.resumenDia.totalDebito += boleta.montoPrincipal;
+              this.resumenDia.totalEfectivo += boleta.montoEfectivo - boleta.montoVuelto;
+              this.resumenDia.totalGiftCard += boleta.montoGiftCard;
+              this.resumenDia.totalDescuento += boleta.montoDescuento;
+
+              break;
+          case 'Transferencia':
+
+              this.resumenDia.totalTransferencia += boleta.montoPrincipal;
+              this.resumenDia.totalGiftCard += boleta.montoGiftCard;
+              this.resumenDia.totalDescuento += boleta.montoDescuento;
+
+              break;
+          case 'Gift Card':
+              this.resumenDia.totalGiftCard += boleta.montoPrincipal;
+              this.resumenDia.totalDescuento += boleta.montoDescuento;
+          default:
+
+              break;
+      }
+
+    
   }
 
+
+
+    
+
+  }
+  limpiar(){
+    this.resumenDia = {
+      serviciosRealizados: 0,
+      totalDia: 0,
+      totalDiaConBase: 0,
+      clientesAtendidos: 0,
+      totalTransbank: 0,
+      totalDebito: 0,
+      totalCredito: 0,
+      totalTransferencia: 0,
+      totalEfectivo: 0,
+      totalGiftCard: 0,
+      totalDescuento: 0,
+      totalVuelto: 0,
+  
+    }
+  }
 
 }

@@ -4,14 +4,14 @@
     </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-grid-list [cols]="CajaComponentClass.getBreakpoint()" rowHeight="50px" (window:resize)="onResize($event)"
+<mat-grid-list [cols]="breakpoint" rowHeight="50px" (window:resize)="onResize($event)"
     style="white-space: pre;">
     <mat-grid-tile>
 
         <div style="white-space: pre; font-weight: bold">
             <div>Total día</div>
             <div style=" font-weight: normal ">
-                {{CajaComponentClass.getResumenDia().totalDia | currency:'CLP':'symbol-narrow'}}</div>
+                {{resumenDia.totalDia | currency:'CLP':'symbol-narrow'}}</div>
 
         </div>
 
@@ -22,7 +22,7 @@
             <div>Efectivo</div>
 
             <div style=" font-weight: normal ">
-                {{CajaComponentClass.getResumenDia().totalEfectivo | currency:'CLP':'symbol-narrow'}}</div>
+                {{resumenDia.totalEfectivo | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -31,7 +31,7 @@
             <div>Crédito</div>
 
             <div style=" font-weight: normal ">
-                {{CajaComponentClass.getResumenDia().totalCredito | currency:'CLP':'symbol-narrow'}}</div>
+                {{resumenDia.totalCredito | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -41,7 +41,7 @@
 
 
             <div style=" font-weight: normal ">
-                {{CajaComponentClass.getResumenDia().totalDebito | currency:'CLP':'symbol-narrow'}}</div>
+                {{resumenDia.totalDebito | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -52,7 +52,7 @@
 
 
             <div style=" font-weight: normal ">
-                {{CajaComponentClass.getResumenDia().totalVuelto | currency:'CLP':'symbol-narrow'}}</div>
+                {{resumenDia.totalVuelto | currency:'CLP':'symbol-narrow'}}</div>
         </div>
 
     </mat-grid-tile>
@@ -63,7 +63,7 @@
 
 
             <div style=" font-weight: normal ">
-                {{CajaComponentClass.getResumenDia().totalTransferencia | currency:'CLP':'symbol-narrow'}}</div>
+                {{resumenDia.totalTransferencia | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -72,7 +72,7 @@
 
 
             <div style=" font-weight: normal ">
-                {{CajaComponentClass.getResumenDia().totalGiftCard | currency:'CLP':'symbol-narrow'}}</div>
+                {{resumenDia.totalGiftCard | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
     <mat-grid-tile>
@@ -81,7 +81,7 @@
 
 
             <div style=" font-weight: normal ">
-                {{CajaComponentClass.getResumenDia().totalDescuento | currency:'CLP':'symbol-narrow'}}</div>
+                {{resumenDia.totalDescuento | currency:'CLP':'symbol-narrow'}}</div>
         </div>
     </mat-grid-tile>
 
@@ -92,7 +92,7 @@
     <mat-grid-tile>
         <form class="example-form">
             <mat-form-field class="example-full-width">
-                <input matInput (keyup)="CajaComponentClass.applyFilter($event.target.value, dataSource)"
+                <input matInput (keyup)="applyFilter($event.target.value, dataSource)"
                     placeholder="BUSCAR CLIENTE, TRABAJADORA, SERVICIO, ETC">
             </mat-form-field>
         </form>
