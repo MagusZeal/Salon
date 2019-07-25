@@ -33,6 +33,10 @@ const routes: Routes = [
     loadChildren: './adm-servicios/adm-servicios.module#AdmServiciosModule',data: { preload: true, delay:1040 }
   },
   {
+    path: 'AdministrarTrabajadoras',
+    loadChildren: './adm-trabajadoras/adm-trabajadoras.module#AdmTrabajadorasModule'
+  },
+  {
     path: 'DashboardClientes',
     loadChildren: './dashboard-clientes/dashboard-clientes.module#DashboardClientesModule',data: { preload: true, delay:1050 }
   },

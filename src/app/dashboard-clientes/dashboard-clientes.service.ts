@@ -11,12 +11,12 @@ export class DashboardClientesService {
 
   async obtenerClientes(){
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?').toPromise();
+    return await this.http.get<any[]>('clientes.json?').toPromise();
   }
 
   async obtenerJornadas(fechaInicio,fechaTermino){
 
-    return await this.http.get<any[]>(`https://devs-c9cdc.firebaseio.com/jornadas.json?orderBy="$key"&startAt="${fechaInicio}"&endAt="${fechaTermino}"`).toPromise();
+    return await this.http.get<any[]>(`jornadas.json?orderBy="$key"&startAt="${fechaInicio}"&endAt="${fechaTermino}"`).toPromise();
     
   }
 }

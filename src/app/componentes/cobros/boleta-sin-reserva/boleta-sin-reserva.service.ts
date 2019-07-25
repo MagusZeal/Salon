@@ -12,11 +12,11 @@ export class BoletaSinReservaService {
 
   async obtenerBoletas() {
    
-    return  this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/boletasDia.json?').toPromise();
+    return  this.http.get<any[]>('boletasDia.json?').toPromise();
   }
 
   eliminarBoleta(boletaBorrar) {
 
-    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletasDia/${boletaBorrar}.json?`);
+    return this.http.delete<any[]>(`boletasDia/${boletaBorrar}.json?`);
   }
 }

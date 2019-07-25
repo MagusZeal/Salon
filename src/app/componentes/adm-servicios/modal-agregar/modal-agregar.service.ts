@@ -9,13 +9,13 @@ export class ModalAgregarService {
 
   obtenerCategorias() {
 
-    return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/categorias.json?');
+    return this.http.get<any[]>('categorias.json?');
 
   }
 
   async agregarServicio(servicio) {
 
-    return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/servicios.json?', servicio).toPromise();
+    return await this.http.post<any[]>('servicios.json?', servicio).toPromise();
 
   }
 }

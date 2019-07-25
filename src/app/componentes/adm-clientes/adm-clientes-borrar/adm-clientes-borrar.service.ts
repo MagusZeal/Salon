@@ -9,7 +9,7 @@ export class AdmClientesBorrarService {
   constructor(private http: HttpClient) { }
 
   async eliminarCliente(idCliente) { 
-    return await this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/clientes/${idCliente}.json`).toPromise();
+    return await this.http.delete<any[]>(`clientes/${idCliente}.json`).toPromise();
   }
 
 }

@@ -10,7 +10,7 @@ export class ModalEditarService {
 
   obtenerCategorias() {
 
-    return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/categorias.json?');
+    return this.http.get<any[]>('categorias.json?');
 
   }
 
@@ -18,7 +18,7 @@ export class ModalEditarService {
 
 
 
-    return await this.http.put<any[]>(`https://devs-c9cdc.firebaseio.com/servicios/${id}.json`, servicio).toPromise();
+    return await this.http.put<any[]>(`servicios/${id}.json`, servicio).toPromise();
 
   }
 }

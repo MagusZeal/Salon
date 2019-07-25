@@ -11,7 +11,7 @@ export class ModalVerClienteService {
 
   async obtenerClientes(){
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?').toPromise();
+    return await this.http.get<any[]>('clientes.json?').toPromise();
   }
 
 }

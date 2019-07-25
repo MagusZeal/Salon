@@ -10,12 +10,12 @@ export class BoletaReservaDiaService {
 
   async obtenerBoletas() {
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/boletasReserva.json?').toPromise();
+    return await this.http.get<any[]>('boletasReserva.json?').toPromise();
   }
 
   eliminarBoleta(boletaBorrar) {
 console.log('a');
 
-    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletasReserva/${boletaBorrar}.json?`);
+    return this.http.delete<any[]>(`boletasReserva/${boletaBorrar}.json?`);
   }
 }

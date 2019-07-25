@@ -10,7 +10,7 @@ export class ModalBorrarServicioService {
 
   async eliminarServicio(servicio) {
 
-    return await this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/servicios/${servicio}.json`).toPromise();
+    return await this.http.delete<any[]>(`servicios/${servicio}.json`).toPromise();
   }
 
 }

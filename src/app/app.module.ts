@@ -14,7 +14,8 @@ import { MainNavModule } from './main-nav/main-nav.module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthGuard } from './auth.guard';
 import { CustomPreloadingStrategy } from './custom-preloading-strategy.service';
-
+import { environment } from '../environments/environment';
+import { HttpInterceptProviders } from './http-interceptors';
 
 
 registerLocaleData(LocaleCL);
@@ -30,14 +31,7 @@ registerLocaleData(LocaleCL);
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp({
-      apiKey: "AIzaSyAEuWcpnCL2ctm5lc0Wu-7ho1TaORoxMJQ",
-      authDomain: "devs-c9cdc.firebaseapp.com",
-      databaseURL: "https://devs-c9cdc.firebaseio.com",
-      projectId: "devs-c9cdc",
-      storageBucket: "devs-c9cdc.appspot.com",
-      messagingSenderId: "477801868148"
-    }),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     BrowserAnimationsModule,
@@ -46,6 +40,7 @@ registerLocaleData(LocaleCL);
   ],
   providers: [CustomPreloadingStrategy,
     AuthGuard,
+    HttpInterceptProviders,
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

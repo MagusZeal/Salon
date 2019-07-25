@@ -13,7 +13,7 @@ export class GraficosService {
 
   async obtenerJornadas(fechaInicio,fechaTermino){
 
-    return await this.http.get<any[]>(`https://devs-c9cdc.firebaseio.com/jornadas.json?orderBy="$key"&startAt="${fechaInicio}"&endAt="${fechaTermino}"`).toPromise();
+    return await this.http.get<any[]>(`jornadas.json?orderBy="$key"&startAt="${fechaInicio}"&endAt="${fechaTermino}"`).toPromise();
     
   }
 }

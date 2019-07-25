@@ -14,6 +14,7 @@
           <a mat-list-item *ngIf="user.isOwner | async" style="font-weight: bold" routerLink="AdministrarServicios" routerLinkActive="active-list-item">Administrar Servicios</a>
           <a mat-list-item *ngIf="user.isAdmin | async" style="font-weight: bold" routerLink="AdministrarServicios" routerLinkActive="active-list-item">Administrar Servicios</a>
           <a mat-list-item style="font-weight: bold" routerLink="AdministrarClientes" routerLinkActive="active-list-item">Administrar Clientes</a>
+          <a mat-list-item *ngIf="user.isOwner | async" style="font-weight: bold" routerLink="AdministrarTrabajadoras" routerLinkActive="active-list-item">Adm Trabajadoras</a>
           <a mat-list-item style="font-weight: bold" routerLink="Perfil" routerLinkActive="active-list-item">Perfil</a>
           <button mat-button [matMenuTriggerFor]="menuDeslogear" style="font-size: 16px;font-weight: bold">Deslogear</button>
         </div>
@@ -60,6 +61,9 @@
     <button mat-menu-item routerLink="AdministrarServicios">Servicios</button>
   </ng-container>
   <button mat-menu-item routerLink="AdministrarClientes">Clientes</button>
+  <ng-container *ngIf="user.isOwner | async">
+    <button mat-menu-item routerLink="AdministrarTrabajadoras">Trabajadoras</button>
+  </ng-container>
 </mat-menu>
 <mat-menu #menuDashboards="matMenu">
   <button mat-menu-item routerLink="Dashboard">Dashboard</button>

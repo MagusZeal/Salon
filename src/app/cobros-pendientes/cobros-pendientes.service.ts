@@ -9,7 +9,7 @@ export class CobrosPendientesService {
 
  async obtenerBoletas() {
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/boletaCreada.json?').toPromise();
+    return await this.http.get<any[]>('boletaCreada.json?').toPromise();
   }
 
  

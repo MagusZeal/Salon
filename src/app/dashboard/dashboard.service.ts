@@ -11,12 +11,12 @@ export class DashboardService {
 
   async obtenerTrabajadoras(){
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/trabajadoras.json?').toPromise();
+    return await this.http.get<any[]>('trabajadoras.json?').toPromise();
   }
 
 async obtenerJornadas(fechaInicio,fechaTermino){
 
-    return await this.http.get<any[]>(`https://devs-c9cdc.firebaseio.com/jornadas.json?orderBy="$key"&startAt="${fechaInicio}"&endAt="${fechaTermino}"`).toPromise();
+    return await this.http.get<any[]>(`jornadas.json?orderBy="$key"&startAt="${fechaInicio}"&endAt="${fechaTermino}"`).toPromise();
     
   }
 

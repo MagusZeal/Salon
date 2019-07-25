@@ -21,7 +21,7 @@ export class EspecificoTrabajadoraService {
 
 obtenerJornadas(fechaInicio,fechaTermino, trabajadora){
 
-    return this.http.get<any[]>(`https://devs-c9cdc.firebaseio.com/jornadas.json?orderBy="$key"&startAt="${fechaInicio}"&endAt="${fechaTermino}"`).subscribe(jornadas=>{
+    return this.http.get<any[]>(`jornadas.json?orderBy="$key"&startAt="${fechaInicio}"&endAt="${fechaTermino}"`).subscribe(jornadas=>{
 this.jornadas.next({trabajadora:trabajadora, jornadas:jornadas})
 
     });

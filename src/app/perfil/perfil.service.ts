@@ -9,7 +9,7 @@ export class PerfilService {
 
   obtenerTrabajadoras() {
 
-    return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/trabajadoras.json?');
+    return this.http.get<any[]>('trabajadoras.json?');
   }
   
 

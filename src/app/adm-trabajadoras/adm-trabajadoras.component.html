@@ -1,0 +1,190 @@
+<mat-toolbar style=" background-color: #e2461f; color: white">
+  <mat-toolbar-row>
+    <span>Administrar Trabajadoras</span>
+
+
+  </mat-toolbar-row>
+</mat-toolbar>
+<br>
+
+<mat-tab-group>
+  <mat-tab label="Modificar">
+    <br>
+    <mat-grid-list cols="1" rowHeight="75px">
+      <mat-grid-tile>
+        <form class="example-form">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Trabajadora" [(value)]="trabajadoraSeleccionada">
+
+              <ng-container *ngFor="let trabajadora of trabajadoras">
+
+                <mat-option [value]="trabajadora">{{trabajadora.nombre}}</mat-option>
+              </ng-container>
+
+            </mat-select>
+
+          </mat-form-field>
+
+        </form>
+        <button mat-raised-button color="primary" style="margin-left: 5px" (click)="buscar()">Buscar</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <br>
+    <mat-grid-list cols="1" rowHeight="70px" *ngIf="flag == true">
+      <mat-grid-tile>
+        <button mat-raised-button color="accent" style="margin-left: 5px"
+          (click)="modificarTrabajadora()">Modificar</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="1" rowHeight="70px" *ngIf="flag == true">
+      <mat-grid-tile>
+        <div>
+          Sueldo Base:
+        </div>
+
+        <mat-form-field class="example-full-width" style="margin-left: 50px">
+          <input matInput type="number" placeholder="Sueldo Base" [(ngModel)]="trabajadoraSeleccionada.sueldoBase">
+        </mat-form-field>
+
+
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="2" rowHeight="65px" *ngIf="flag == true">
+
+      <ng-container *ngFor="let categoria of categorias;index as i">
+
+
+        <mat-grid-tile>
+          <div style="position: absolute;right: 5px;font-weight:bold">
+            {{categoria.nombre}} :
+          </div>
+
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div style="position: absolute;left: 5px;font-weight:bold;">
+            <ng-container *ngFor="let c of trabajadoraSeleccionada.categoriaTrabajadora">
+              <ng-container *ngIf="c.categoria == categoria.nombre">
+
+
+                <mat-form-field class="example-full-width">
+                  <mat-select placeholder="porcentaje" [(value)]="c.porcentaje">
+
+                    <ng-container *ngFor="let opcion of opciones">
+
+                      <mat-option [value]="opcion">{{opcion}}</mat-option>
+                    </ng-container>
+
+                  </mat-select>
+
+                </mat-form-field>
+              </ng-container>
+
+
+
+            </ng-container>
+          </div>
+        </mat-grid-tile>
+      </ng-container>
+    </mat-grid-list>
+
+  </mat-tab>
+  <mat-tab label="Agregar">
+    <br>
+    <mat-grid-list cols="1" rowHeight="70px">
+      <mat-grid-tile>
+        <div>
+          Nombre Trabajadora:
+        </div>
+
+        <mat-form-field class="example-full-width" style="margin-left: 50px">
+          <input matInput type="text" placeholder="Nombre Trabajadora" [formControl]="nombre">
+        </mat-form-field>
+
+      </mat-grid-tile>
+      <mat-grid-tile>
+          <div>
+              Correo Electronico:
+            </div>
+    
+            <mat-form-field class="example-full-width" style="margin-left: 50px">
+              <input matInput type="email" placeholder="Email" [formControl]="email">
+            </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div>
+          Contraseña:
+        </div>
+
+        <mat-form-field class="example-full-width" style="margin-left: 50px">
+          <input matInput type="text" placeholder="Contraseña" [formControl]="password">
+        </mat-form-field>
+
+
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div>
+          Sueldo Base:
+        </div>
+
+        <mat-form-field class="example-full-width" style="margin-left: 50px">
+          <input matInput type="number" placeholder="Sueldo Base" [formControl]="sueldoBase">
+        </mat-form-field>
+
+
+      </mat-grid-tile>
+
+
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="1" rowHeight="70px">
+      <mat-grid-tile>
+        <button mat-raised-button color="primary" style="margin-left: 5px" (click)="agregarTrabajadora()">Agregar
+          Trabajadora</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="2" rowHeight="65px">
+
+      <ng-container *ngFor="let categoria of categorias;index as i">
+
+
+        <mat-grid-tile>
+          <div style="position: absolute;right: 5px;font-weight:bold">
+            {{categoria.nombre}} :
+          </div>
+
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div style="position: absolute;left: 5px;font-weight:bold;">
+            <ng-container *ngFor="let c of categoriasT">
+              <ng-container *ngIf="c.categoria == categoria.nombre">
+
+
+                <mat-form-field class="example-full-width">
+                  <mat-select placeholder="porcentaje" [(value)]="c.porcentaje">
+
+                    <ng-container *ngFor="let opcion of opciones">
+
+                      <mat-option [value]="opcion">{{opcion}}</mat-option>
+                    </ng-container>
+
+                  </mat-select>
+
+                </mat-form-field>
+              </ng-container>
+
+
+
+            </ng-container>
+          </div>
+        </mat-grid-tile>
+      </ng-container>
+    </mat-grid-list>
+
+  </mat-tab>
+
+</mat-tab-group>

@@ -10,16 +10,16 @@ export class ModalPagarService {
 
   eliminarBoletaDia(boletaBorrar) {
 
-    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletasDia/${boletaBorrar}.json?`);
+    return this.http.delete<any[]>(`boletasDia/${boletaBorrar}.json?`);
   }
 
   eliminarBoletaReserva(boletaBorrar) {
 
-    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletasReserva/${boletaBorrar}.json?`);
+    return this.http.delete<any[]>(`boletasReserva/${boletaBorrar}.json?`);
   }
 
   agregarJornada(fecha, boleta) {
 
-    return  this.http.post<any[]>(`https://devs-c9cdc.firebaseio.com/jornadas/${fecha}.json?`, boleta);
+    return this.http.post<any[]>(`jornadas/${fecha}.json?`, boleta);
   }
 }

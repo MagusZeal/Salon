@@ -9,31 +9,31 @@ export class CajaService {
 
   async obtenerJornada(fechaActual) {
 
-    return await this.http.get<any[]>(`https://devs-c9cdc.firebaseio.com/jornadas/${fechaActual}.json?`).toPromise();
+    return await this.http.get<any[]>(`jornadas/${fechaActual}.json?`).toPromise();
 
   }
   async obtenerBoletasDia() {
 
-    return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/boletasDia.json?').toPromise();
+    return this.http.get<any[]>('boletasDia.json?').toPromise();
   }
 
   async obtenerBoletasReserva() {
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/boletasReserva.json?').toPromise();
+    return await this.http.get<any[]>('boletasReserva.json?').toPromise();
   }
   
   eliminarBoletasDia(boletaBorrar) {
 
-    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletasDia/${boletaBorrar}.json?`);
+    return this.http.delete<any[]>(`boletasDia/${boletaBorrar}.json?`);
   }
   eliminarBoletasReserva(boletaBorrar) {
 
-    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletasReserva/${boletaBorrar}.json?`);
+    return this.http.delete<any[]>(`boletasReserva/${boletaBorrar}.json?`);
   }
 
   eliminarBoleta(fechaCaja, boletaBorrar) {
 
-    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/jornadas/${fechaCaja}/${boletaBorrar}.json?`);
+    return this.http.delete<any[]>(`jornadas/${fechaCaja}/${boletaBorrar}.json?`);
   }
 
 }

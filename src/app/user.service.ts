@@ -4,6 +4,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { map, switchMap } from 'rxjs/operators'
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Router } from '@angular/router';
+import { AngularFireModule } from 'angularfire2';
+import { HttpClient } from '@angular/common/http';
 
 
 
@@ -43,15 +45,39 @@ export class UserService {
   );
 
 
-  constructor(private afAuth: AngularFireAuth, private db: AngularFireDatabase, private router: Router) { }
+  constructor(private afAuth: AngularFireAuth, private db: AngularFireDatabase, private router: Router, private http: HttpClient) { }
   login(email, password) {
 
 
     this.afAuth.auth.signInWithEmailAndPassword(email, password);
- 
-  
+
+
   }
- 
+
+  singup(email, password, trabajadora) {
+
+
+    var user = this.afAuth.auth.currentUser;
+    console.log(this.afAuth.auth.currentUser);
+
+    this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then(() => {
+     console.log(this.afAuth.auth.currentUser.uid);
+  
+        this.addEmployee(trabajadora,this.afAuth.auth.currentUser.uid).subscribe();
+        console.log('si')
+        this.logout();
+
+        this.afAuth.auth.updateCurrentUser(user)
+
+      })
+      .catch((error) => {
+        console.log(error)
+
+      });
+
+
+  }
   // loginGoogle() {
   //   this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
   // }
@@ -69,4 +95,10 @@ export class UserService {
       .catch((error) => console.log(error))
   }
 
+  addEmployee(trabajadora,id) {
+
+    return this.http.put<any[]>(`trabajadoras/${id}.json?`, trabajadora);
+
+   
+  }
 }

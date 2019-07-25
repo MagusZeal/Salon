@@ -10,40 +10,40 @@ export class ModalEditarCobrosService {
 
   obtenerCategorias() {
 
-    return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/categorias.json?');
+    return this.http.get<any[]>('categorias.json?');
 
   }
 
  async obtenerServicios() {
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/servicios.json?').toPromise();
+    return await this.http.get<any[]>('servicios.json?').toPromise();
   }
 
   async agregarBoletaDia(boletaGuardar) {
 
-    return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletasDia.json?', boletaGuardar).toPromise();
+    return await this.http.post<any[]>('boletasDia.json?', boletaGuardar).toPromise();
   }
   async agregarBoletaReserva(boletaGuardar) {
   
-    return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/boletasReserva.json?', boletaGuardar).toPromise();
+    return await this.http.post<any[]>('boletasReserva.json?', boletaGuardar).toPromise();
   }
   
   eliminarBoletaDia(boletaBorrar) {
     
-    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletasDia/${boletaBorrar}.json?`);
+    return this.http.delete<any[]>(`boletasDia/${boletaBorrar}.json?`);
   }
   eliminarBoletaReserva(boletaBorrar) {
 
-    return this.http.delete<any[]>(`https://devs-c9cdc.firebaseio.com/boletasReserva/${boletaBorrar}.json?`);
+    return this.http.delete<any[]>(`boletasReserva/${boletaBorrar}.json?`);
   }
   async obtenerClientes(){
 
-    return await  this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?').toPromise();
+    return await  this.http.get<any[]>('clientes.json?').toPromise();
   }
 
  obtenerTrabajadoras() {
 
-  return this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/trabajadoras.json?');
+  return this.http.get<any[]>('trabajadoras.json?');
 }
 
 

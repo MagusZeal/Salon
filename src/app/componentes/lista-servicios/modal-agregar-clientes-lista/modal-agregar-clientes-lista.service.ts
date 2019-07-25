@@ -10,12 +10,12 @@ export class ModalAgregarClientesListaService {
 
   async obtenerClientes(){
 
-    return await this.http.get<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?').toPromise();
+    return await this.http.get<any[]>('clientes.json?').toPromise();
   }
 
   async agregarCliente(cliente){
 
-    return await this.http.post<any[]>('https://devs-c9cdc.firebaseio.com/clientes.json?',cliente).toPromise();
+    return await this.http.post<any[]>('clientes.json?',cliente).toPromise();
      
    }
 
