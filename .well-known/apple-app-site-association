@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "6AVMHD9S8E.cl.chilexpress.mobile.dev",
+        "paths": ["*"]
+      }
+    ]
+  }
+}
